@@ -1,3 +1,4 @@
-models/
 .idea/
 venv/
+.git-citius/
+__pycache--
