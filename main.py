@@ -139,7 +139,7 @@ def update_conversation(click, text):
         print(text)
 
         # call bot with user inputted text
-        response = [{"text": "Response"}]
+        # response = [{"text": "Response"}]
         response = clitest.talk(agent, text)
 
         # user message aligned left
@@ -147,22 +147,37 @@ def update_conversation(click, text):
 
         rspd = []
 
-        for r in reversed(response):
+        print(response)
+
+        for idx, r in enumerate(response):
+
             for response_type, value in r.items():
+
                 if response_type == "text":
-                    rspd = [dbc.Row([
-                        dbc.Col(html.Img(src="assets/bot.png", style={'width': '40px'}),
-                                width=1),
-                        dbc.Col(html.P(value, style={'text-align': 'left'}, className="from-them margin-b_one"),
-                                width=10)]
-                    )]
+
+                    if idx == len(response) - 1:
+                        rspd.append(dbc.Row([
+                            dbc.Col(html.Img(src="assets/bot.png", style={'width': '40px'}),
+                                    width=1),
+                            dbc.Col(html.P(value, style={'text-align': 'left'}, className="from-them margin-b_one"),
+                                    width=10)]
+                        ))
+                    else:
+                        rspd.append(dbc.Row([
+                            dbc.Col(html.P(style={'width': '40px'}),
+                                    width=1),
+                            dbc.Col(html.P(value, style={'text-align': 'left'}, className="from-them margin-b_one"),
+                                    width=10)]
+                        ))
 
                 # if response_type == "image":
                 #    image = Image(url=value)
                 #   display(image)
 
+        agent_convo = rspd[::-1]
+
         # append interaction to conversation history
-        conv_hist = rspd + conv_hist
+        conv_hist = agent_convo + conv_hist
 
         time.sleep(2)
         return conv_hist, html.Div(), False
