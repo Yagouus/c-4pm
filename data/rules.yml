@@ -1,0 +1,92 @@
+version: "3.1"
+
+rules:
+
+  - rule: activate subscribe form
+    steps:
+      - intent: subscribe
+      - action: newsletter_form
+      - active_loop: newsletter_form
+
+  - rule: submit form
+    condition:
+      # Condition that the form is active
+      - active_loop: newsletter_form
+    steps:
+      # Form is deactivated
+      - action: newsletter_form
+      - active_loop: null
+      - action: utter_subscribed
+
+  - rule: email unhappy path
+    condition:
+      - active_loop: newsletter_form
+    steps:
+      - intent: greet
+      - action: utter_ask_email
+      - active_loop: newsletter_form
+
+  - rule: Say goodbye anytime the user says goodbye
+    steps:
+      - intent: goodbye
+      - action: utter_goodbye
+
+  - rule: Say 'I am a bot' anytime the user challenges
+    steps:
+      - intent: bot_challenge
+      - action: utter_iamabot
+
+  - rule: behavior_check
+    steps:
+      - intent: behavior_check
+      - action: utter_behavior_check
+      - action: action_behavior_check
+
+  - rule: query_check
+    steps:
+      - intent: query_check
+      - action: utter_query_check
+
+  - rule: conformance_check
+    steps:
+      - intent: conformance_check
+      - action: utter_conformance_check
+
+  - rule: behavior_search
+    steps:
+      - intent: behavior_search
+      - action: utter_behavior_search
+
+  - rule: generate_conformant
+    steps:
+      - intent: generate_conformant
+      - action: utter_generate_conformant
+
+  # ---
+
+  - rule: type_ii
+    steps:
+      - intent: type_ii
+      - action: utter_type_ii
+      - action: action_type_ii
+
+  - rule: basic_description
+    steps:
+      - intent: basic_description
+      - action: utter_basic_description
+
+  - rule: temporal_contextualization
+    steps:
+      - intent: temporal_contextualization
+      - action: utter_temporal_contextualization
+
+  - rule: compliance
+    steps:
+      - intent: compliance
+      - action: utter_compliance
+
+  # Out of scope rule
+  - rule: Ask the user to rephrase whenever they send a message with low NLU confidence
+    steps:
+    - intent: nlu_fallback
+    - action: utter_please_rephrase

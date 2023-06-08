@@ -1,0 +1,145 @@
+version: "3.1"
+
+intents:
+  - greet
+  - goodbye
+  - bot_challenge
+  - behavior_check
+  - query_check
+  - conformance_check
+  - behavior_search
+  - generate_conformant
+  - type_ii
+  - basic_description
+  - temporal_contextualization
+  - compliance
+  - group_comparison
+
+actions:
+  - utter_greet
+  - utter_iamabot
+  - action_hello_world
+  - utter_behavior_check
+  - action_behavior_check
+  - utter_query_check
+  - utter_conformance_check
+  - utter_behavior_search
+  - utter_generate_conformant
+  - utter_type_ii
+  - utter_basic_description
+  - utter_temporal_contextualization
+  - utter_compliance
+  - action_type_ii
+
+responses:
+  utter_greet:
+    - text: |
+        Hello! How can I help you?
+    - text: |
+        Hi!
+    - text: |
+        General Kenobi...
+  utter_ask_email:
+    - text: |
+        What is your email address?
+  utter_subscribed:
+    - text: |
+        Check your inbox at {email} in order to finish subscribing to the newsletter!
+    - text: |
+        You're all set! Check your inbox at {email} to confirm your subscription.
+  utter_goodbye:
+    - text: |
+        See you!
+    - text: |
+        See you later alligator!
+  utter_iamabot:
+    - text: |
+        I'm a batman!
+  utter_behavior_check:
+    - text: |
+        Let me check if this behavior is possible...
+  utter_query_check:
+    - text: |
+        Let me run the query...
+  utter_conformance_check:
+    - text: |
+        Here you have all conformance {target}:
+  utter_behavior_search:
+    - text: |
+        Here are the {target} you are looking for:
+  utter_generate_conformant:
+    - text: |
+        Wait, I will generate new conformant traces...
+  utter_type_ii:
+    - text: |
+        This is how the process features you are interested relate to each other:
+  utter_basic_description:
+     - text: |
+        Here you have all the type-I sentences that have {attribute} as summarizer:
+  utter_temporal_contextualization:
+    - text: |
+        Here you have all the type-I sentences with a time reference:
+  utter_compliance:
+    - text: |
+        Checking how the attribute holds to the expectations...
+  utter_please_rephrase:
+  - text: I'm sorry, I didn't quite understand that. Could you rephrase?
+
+
+entities:
+  - email
+  - ltl
+  - attribute
+  - time
+  - target
+  - from
+  - to
+
+slots:
+  email:
+    type: text
+    influence_conversation: false
+    mappings:
+      - type: from_entity
+        entity: email
+        # This condition ensures that this slot is only filled with the newsletter_form is actually active
+        # So it cannot be retrieved at any other point of the conversation
+        conditions:
+          - active_loop: newsletter_form
+            requested_slot: email
+
+#  ltl:
+#    type: text
+#    influence_conversation: false
+#    mappings:
+#      - type: from_text
+#
+#  target:
+#    type: text
+#    influence_conversation: false
+#    mappings:
+#      - type: from_entity
+#        entity: target
+#
+#  from:
+#    type: text
+#    influence_conversation: false
+#    mappings:
+#      - type: from_entity
+#        entity: from
+#
+#  to:
+#    type: text
+#    influence_conversation: false
+#    mappings:
+#      - type: from_entity
+
+
+forms:
+  newsletter_form:
+    required_slots:
+      - email
+
+session_config:
+  session_expiration_time: 60
+  carry_over_slots_to_new_session: true
