@@ -1,4 +1,9 @@
 .idea/
 venv/
 .git-citius/
-__pycache--
+**/__pycache__
+.rasa/
+nl2ltl/__pycache__/
+nl2ltl/.rasa/
+nl2ltl/engines/rasa/.rasa/
+nl2ltl/engines/rasa/models

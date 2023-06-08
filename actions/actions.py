@@ -66,3 +66,18 @@ class ActionTypeII(Action):
             text="Recognized qualifier: " + str(qualifier) + " - Recognized summarizer: " + str(summarizer))
 
         return []
+
+class ConveySpecification(Action):
+
+    def name(self) -> Text:
+        return "convey_specification"
+
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        qualifier = next(tracker.get_latest_entity_values(entity_type="attribute", entity_role="qualifier"), None)
+        summarizer = next(tracker.get_latest_entity_values(entity_type="attribute", entity_role="summarizer"), None)
+        dispatcher.utter_message(
+            text="Recognized qualifier: " + str(qualifier) + " - Recognized summarizer: " + str(summarizer))
+
+        return []

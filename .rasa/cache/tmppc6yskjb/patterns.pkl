@@ -1,6 +1,0 @@
-[
-  {
-    "name": "attribute",
-    "pattern": "(\\bage\\b|\\bduration\\b|\\bwaiting\\ time\\b|\\bsex\\b|\\bexitus\\b|\\bsuccess\\ rate\\b)"
-  }
-]
