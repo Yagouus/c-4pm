@@ -7,3 +7,5 @@ nl2ltl/__pycache__/
 nl2ltl/.rasa/
 nl2ltl/engines/rasa/.rasa/
 nl2ltl/engines/rasa/models
+tests/
+declare4py_tests
