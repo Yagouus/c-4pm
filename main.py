@@ -13,16 +13,20 @@ import os
 import warnings
 import logging
 
+# Configuration fof the logger
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 logging.getLogger('werkzeug').setLevel(logging.ERROR)
 warnings.simplefilter(action='ignore', category=FutureWarning)
 
 # init app and add stylesheet
-# Define the dash app and select the bootstrap theme
 app = Dash(__name__, external_stylesheets=[dbc.themes.MINTY])
 
+# define the model the chatbot will be using
+#model_path = "models/20230522-122709-vivid-shore.tar.gz"
+model_path = "models/20230613-222831-right-code.tar.gz"
+
 # init the conversational agent
-agent = clitest.launch_bot("models/20230522-122709-vivid-shore.tar.gz", endpoints="endpoints.yml")
+agent = clitest.launch_bot(model_path, endpoints="endpoints.yml")
 
 # init a list of the sessions conversation history
 conv_hist = []

@@ -13,7 +13,6 @@ import os
 from pathlib import Path
 from typing import Dict
 
-import openai
 from pylogics.syntax.base import Formula
 
 from nl2ltl.engines.base import Engine

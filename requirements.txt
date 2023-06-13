@@ -230,3 +230,11 @@ Werkzeug==2.2.3
 widgetsnbextension==4.0.7
 wrapt==1.15.0
 yarl==1.9.1
+
+pandas~=2.0.2
+pm4py~=2.7.4
+logaut~=0.2.0
+mlxtend~=0.22.0
+clingo~=5.6.2
+pythomata~=0.3.2
+python-dotenv~=1.0.0

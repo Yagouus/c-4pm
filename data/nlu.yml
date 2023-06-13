@@ -26,6 +26,16 @@ nlu:
       - am I talking to a bot?
       - am I talking to a human?
 
+    ### DECLARE intents
+
+  - intent: convey_specification
+    examples: |
+      - Can you describe the process?
+      - Give me a description of the specification.
+      - Describe the process in natural language.
+      - How is the model?
+      - Tell me how the model is specified.Can
+
   - intent: behavior_check
     examples: |
       - Is it possible to perform activity Intervention before performing activity CAT?
@@ -38,10 +48,10 @@ nlu:
     examples: |
       - What can I do after performing [activity A]{"entity": "activity", "role": "from"}?
       - What relations hold between activities [A]{"entity": "activity", "role": "from"} and [B]{"entity": "activity", "role": "to"}?
-      - Is there any relationship between activities [admission]{"entity": "activity", "role": "from"} and [CAT]{"entity": "activity", "role": "from"}?
+      - Is there any relationship between activities [admission]{"entity": "activity", "role": "from"} and [CAT]{"entity": "activity", "role": "to"}?
       - What possible activities can I execute after performing a [MQX session]{"entity": "activity", "role": "from"}?
       - What can I do after performing a [CAT]{"entity": "activity", "role": "from"}?
-      - What activities can precede an [Intervention]{"entity": "activity", "role": "from"}?
+      - What activities can precede an [Intervention]{"entity": "activity", "role": "to"}?
 
     # Once a rule fires (intent is matched), a corresponding representation must be put together.
     # This depends not only on what rule (intent) has been matched, but also on the entities (concepts, attributes, etc)
@@ -64,55 +74,3 @@ nlu:
       - Can you generate a conforming trace for the corresponding model?
       - Can you give a possible trace for the corresponding model?
       - Is there any possible trace that conforms to the model?
-
-  # ---
-
-  - intent: type_ii
-    examples: |
-      - How does attribute [age]{"entity": "attribute", "role": "qualifier"} affect the [waiting time between activities A and B]{"entity": "attribute", "role": "summarizer"}?
-      - Is there any correlation between attribute [age]{"entity": "attribute", "role": "qualifier"} and attribute [exitus]{"entity": "attribute", "role": "summarizer"}?
-      - Does the [age]{"entity": "attribute", "role": "qualifier"} of a patient condition the [duration]{"entity": "attribute", "role": "summarizer"} of the case?
-      - How does the [sex]{"entity": "attribute", "role": "qualifier"} of a patient affect the [success rate]{"entity": "attribute", "role": "summarizer"} of interventions?
-      - Does the [year]{"entity": "attribute", "role": "qualifier"} a patient was intervened affect the [waiting time between activities A and B]{"entity": "attribute", "role": "summarizer"}?
-
-  - intent: basic_description
-    examples: |
-      - What can you tell me about attribute [age]{"entity": "attribute", "role": "summarizer"}?
-      - Give me information about the [duration]{"entity": "attribute", "role": "summarizer"} of the traces
-
-  # - intent: quantity_question
-  #  examples: |
-  #    - How many cases have a [long](linguistic_value) [duration](linguistic_variable)?
-  #    - Are there many cases with [](linguistic_value) [patients?](linguistic_variable)?
-
-  - intent: temporal_contextualization
-    examples: |
-      - How does the [waiting time between activities A and B](attribute) evolve over time?
-      - Describe the [number of events](attribute) during year 2019
-
-  - intent: compliance
-    examples: |
-      - How does the actual [duration]{"entity": "attribute", "role": "summarizer"} of the traces compare to the expected duration?
-      - Is the [waiting time between activities A and B]{"entity": "attribute", "role": "summarizer"} as expected?
-
-  # I need to create a mapping from the names of the attributes if they are not already in a NL format
-  # This would be extracted from process meta-data, so they can be easily recognized in the NLU part of the pipeline
-  # Also this lookup can be in an external file, which is helpful for keeping this file clean and ordered
-  - lookup: attribute
-    examples: |
-      - age
-      - duration
-      - waiting time
-      - sex
-      - exitus
-      - success rate
-
-  - synonym: waiting time A-B
-    examples: |
-      - waiting time between activities A and B
-      - wait from A to B
-      - wait time between A and B
-
-  - synonym: traces
-    examples: |
-      - cases

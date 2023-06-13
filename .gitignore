@@ -9,3 +9,4 @@ nl2ltl/engines/rasa/.rasa/
 nl2ltl/engines/rasa/models
 tests/
 declare4py_tests
+.env

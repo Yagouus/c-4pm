@@ -1,3 +1,4 @@
+recipe: default.v1
 language: en
 pipeline:
 - name: WhitespaceTokenizer
@@ -28,7 +29,7 @@ pipeline:
   dimensions: [ "time", "number", "amount-of-money", "distance", "email"]
   # allows you to configure the locale, by default the language is
   # used
-  locale: "de_DE"
+  locale: "en_GB"
   # if not set the default timezone of Duckling is going to be used
   # needed to calculate dates from relative expressions like "tomorrow"
   timezone: "Europe/Berlin"

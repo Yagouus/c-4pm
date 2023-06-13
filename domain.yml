@@ -4,32 +4,29 @@ intents:
   - greet
   - goodbye
   - bot_challenge
+  - convey_specification
   - behavior_check
   - query_check
   - conformance_check
   - behavior_search
   - generate_conformant
-  - type_ii
-  - basic_description
-  - temporal_contextualization
-  - compliance
-  - group_comparison
+
 
 actions:
   - utter_greet
+  - utter_goodbye
   - utter_iamabot
-  - action_hello_world
   - utter_behavior_check
-  - action_behavior_check
   - utter_query_check
   - utter_conformance_check
   - utter_behavior_search
   - utter_generate_conformant
-  - utter_type_ii
-  - utter_basic_description
-  - utter_temporal_contextualization
   - utter_compliance
+  - utter_convey_spec
+  - action_behavior_check
+  - action_hello_world
   - action_type_ii
+  - action_convey_specification
 
 responses:
   utter_greet:
@@ -39,14 +36,6 @@ responses:
         Hi!
     - text: |
         General Kenobi...
-  utter_ask_email:
-    - text: |
-        What is your email address?
-  utter_subscribed:
-    - text: |
-        Check your inbox at {email} in order to finish subscribing to the newsletter!
-    - text: |
-        You're all set! Check your inbox at {email} to confirm your subscription.
   utter_goodbye:
     - text: |
         See you!
@@ -70,18 +59,12 @@ responses:
   utter_generate_conformant:
     - text: |
         Wait, I will generate new conformant traces...
-  utter_type_ii:
-    - text: |
-        This is how the process features you are interested relate to each other:
-  utter_basic_description:
-     - text: |
-        Here you have all the type-I sentences that have {attribute} as summarizer:
-  utter_temporal_contextualization:
-    - text: |
-        Here you have all the type-I sentences with a time reference:
   utter_compliance:
     - text: |
         Checking how the attribute holds to the expectations...
+  utter_convey_spec:
+    - text: |
+        Here you have a description of the model in natural language
   utter_please_rephrase:
   - text: I'm sorry, I didn't quite understand that. Could you rephrase?
 

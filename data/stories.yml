@@ -1,8 +1,1 @@
 version: "3.1"
-
-stories:
-  - story: greet and subscribe
-    steps:
-      - intent: greet
-      - action: utter_greet
-      - action: action_hello_world

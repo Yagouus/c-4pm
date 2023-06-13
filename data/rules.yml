@@ -1,30 +1,11 @@
 version: "3.1"
 
 rules:
-
-  - rule: activate subscribe form
-    steps:
-      - intent: subscribe
-      - action: newsletter_form
-      - active_loop: newsletter_form
-
-  - rule: submit form
-    condition:
-      # Condition that the form is active
-      - active_loop: newsletter_form
-    steps:
-      # Form is deactivated
-      - action: newsletter_form
-      - active_loop: null
-      - action: utter_subscribed
-
-  - rule: email unhappy path
-    condition:
-      - active_loop: newsletter_form
+  - rule: Say hello anytime the user says hello
     steps:
       - intent: greet
-      - action: utter_ask_email
-      - active_loop: newsletter_form
+      - action: utter_greet
+      - action: action_hello_world
 
   - rule: Say goodbye anytime the user says goodbye
     steps:
@@ -62,31 +43,16 @@ rules:
       - intent: generate_conformant
       - action: utter_generate_conformant
 
-  # ---
 
-  - rule: type_ii
+  - rule: Describe a DECLARE specification in natural language
     steps:
-      - intent: type_ii
-      - action: utter_type_ii
-      - action: action_type_ii
-
-  - rule: basic_description
-    steps:
-      - intent: basic_description
-      - action: utter_basic_description
-
-  - rule: temporal_contextualization
-    steps:
-      - intent: temporal_contextualization
-      - action: utter_temporal_contextualization
-
-  - rule: compliance
-    steps:
-      - intent: compliance
-      - action: utter_compliance
+      - intent: convey_specification
+      - action: utter_convey_spec
+      - action: action_convey_specification
 
   # Out of scope rule
   - rule: Ask the user to rephrase whenever they send a message with low NLU confidence
     steps:
     - intent: nlu_fallback
     - action: utter_please_rephrase
+

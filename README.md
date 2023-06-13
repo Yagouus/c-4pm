@@ -20,19 +20,29 @@ to perform multiple reasoning tasks.
 
 - Python version: 3.10
 - Docker needs to be installed
-- [Lydia]() needs to be installed and configured
+- [Lydia]() needs to be installed and configured. Logaut needs to be installed
 - [NL2LTL]() is shipped within C-4PM (no need for separate installation)
 - The rest of the required libraries can be installed with `pip install -r requirements.txt`
 
-### Installing
+### Installation steps
 
-### Training your own model
+### Training and using your own model
+
+You can train a new model adapted to your use case by running the command `rasa train` in the project root folder.
+This will use files `domain.yml`, `config.yml`, `credentials.yml`, `endpoints.yml`, `data/nlu.yml` `data/rules.yml` 
+and `data/stories.yml` to train a new model.
+These files hold all the relevant information to train a language model for your conversational agent. 
+For more information on how to do this, please read [Rasa's docs](https://rasa.com/docs/rasa/tuning-your-model/)
+
+You can use the model you just trained by modifying the path in the variable `model_path` in `main.py` 
+with the corresponding name of your model.
 
 ### Running
 
 To run the conversational agent you need to run:
-- A Rasa actions server
-- A Docker container with [Duckling](https://hub.docker.com/r/rasa/duckling) running
+- A Rasa actions server. This can be done with by running the command `rasa run actions` in the project root folder.
+- A Docker container with [Duckling](https://hub.docker.com/r/rasa/duckling) running. 
+Duckling is used to parse things like emails, dates, temporal intervals and more.
 - 
 
 
