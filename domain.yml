@@ -80,6 +80,7 @@ entities:
   - target
   - from
   - to
+  - connector
 
 slots:
   email:

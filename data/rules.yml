@@ -36,7 +36,6 @@ rules:
   - rule: Behavior search - Look for cases in which some behavior happens
     steps:
       - intent: behavior_search
-      - action: utter_behavior_search
       - action: action_behavior_search
 
   - rule: generate_conformant

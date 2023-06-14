@@ -58,7 +58,7 @@ class ActionQueryCheck(Action):
         return []
 
 
-class ConveySpecification(Action):
+class ActionConveySpecification(Action):
 
     def name(self) -> Text:
         return "action_convey_specification"
@@ -80,6 +80,8 @@ class ConveySpecification(Action):
                 Chain Response[LacticAcid, Leucocytes]
                 Chain Precedence[ER Registration, ER Triage]
             """)
+
+        # TODO: Read model from file -> Check how they do it in Declare4py
 
         from declare_client import dec_to_basic_nl
         text = dec_to_basic_nl(test)
@@ -121,14 +123,26 @@ class ActionBehaviorSearch(Action):
     def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-        print("HEEEEYA")
 
-        utterance = tracker.latest_message['text']
+        utterance = str(tracker.latest_message['text'])
+
+        connectors = list(tracker.get_latest_entity_values("connector"))
+        mod_connectors = []
+
+        for connector in connectors:
+            x = connector.replace(" ", "")
+            utterance = utterance.replace(connector, x)
 
         from nl2ltl_client import run
         ltlf_formulas = run(utterance)
         print(ltlf_formulas)
 
-        dispatcher.utter_message(text="Your formula is: " + str(utterance))
+        result_text = f"Here are all the cases in which, {ltlf_formulas.to_english()}".capitalize()
+
+        for connector in connectors:
+            x = connector.replace(" ", "").lower()
+            result_text = result_text.replace(x, connector)
+
+        dispatcher.utter_message(text=result_text)
 
         return []

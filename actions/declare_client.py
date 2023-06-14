@@ -68,5 +68,19 @@ def dec_to_basic_nl(specification=""):
 
     return nl_specification
 
-def conformance_check(model, log):
-    pass
+def conformance_check():
+    from src.Declare4Py.ProcessModels.DeclareModel import DeclareModel
+    from src.Declare4Py.ProcessMiningTasks.Discovery.DeclareMiner import DeclareMiner
+    from src.Declare4Py.D4PyEventLog import D4PyEventLog
+
+    # log_path = os.path.join("../../../", "tests", "test_logs", "Sepsis Cases.xes.gz")
+    event_log = D4PyEventLog(case_name="case:concept:name")
+    event_log.parse_xes_log('../assets/Sepsis Cases.xes.gz')
+
+    discovery = DeclareMiner(log=event_log, consider_vacuity=False, min_support=1, itemsets_support=1,
+                             max_declare_cardinality=2)
+    discovered_model: DeclareModel = discovery.run()
+
+    print(discovered_model.serialized_constraints)
+
+conformance_check()

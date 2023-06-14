@@ -94,8 +94,8 @@ nlu:
       - Can you retrieve all the traces in which a [CRP](connector) is performed after [IV Liquid](connector)?
       - Give me all cases in which activity [ER Triage](connector) is performed after activity [Admission NC](connector)
       - Does [ER Registration](connector) happen after [Leucocytes](connector)?
-      - In which cases ER Registration happens?
-      - Tell me in which cases IV Liquid never happens
+      - In which cases [ER Registration](connector) happens?
+      - Tell me in which cases [IV Liquid](connector) never happens
 
 
   - intent: generate_conformant
