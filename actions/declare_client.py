@@ -10,7 +10,7 @@ def dec_to_basic_nl(specification=""):
 
         if line != "":
 
-            # Remove trailing whitespaces
+            # Remove leading whitespaces
             line = line.lstrip()
 
             # Detect the type of template
@@ -68,3 +68,5 @@ def dec_to_basic_nl(specification=""):
 
     return nl_specification
 
+def conformance_check(model, log):
+    pass

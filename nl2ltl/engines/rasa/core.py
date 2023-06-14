@@ -111,6 +111,7 @@ def _process_utterance(
     :param utterance: the natural language utterance
     :return: a dict with matching formulas and confidence
     """
+
     prediction = asyncio.run(rasa_agent.parse_message(utterance.strip()))
     rasa_result: RasaOutput = parse_rasa_output(prediction)
     matching_formulas: Dict[Formula, float] = parse_rasa_result(rasa_result, filtering)

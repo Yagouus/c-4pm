@@ -33,10 +33,11 @@ rules:
       - intent: conformance_check
       - action: utter_conformance_check
 
-  - rule: behavior_search
+  - rule: Behavior search - Look for cases in which some behavior happens
     steps:
       - intent: behavior_search
       - action: utter_behavior_search
+      - action: action_behavior_search
 
   - rule: generate_conformant
     steps:
@@ -44,7 +45,7 @@ rules:
       - action: utter_generate_conformant
 
 
-  - rule: Describe a DECLARE specification in natural language
+  - rule: Convey specification - Describe a DECLARE specification in natural language
     steps:
       - intent: convey_specification
       - action: utter_convey_spec

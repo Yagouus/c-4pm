@@ -37,6 +37,10 @@ For more information on how to do this, please read [Rasa's docs](https://rasa.c
 You can use the model you just trained by modifying the path in the variable `model_path` in `main.py` 
 with the corresponding name of your model.
 
+For training a NL2LTLf Rasa model with your own data, you can do this by running the command 
+`rasa train --config data/config.yml --domain data/domain.yml --data data/nlu_training.yml` 
+in the directory `nl2ltl/engines/rasa`.
+
 ### Running
 
 To run the conversational agent you need to run:

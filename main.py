@@ -23,7 +23,7 @@ app = Dash(__name__, external_stylesheets=[dbc.themes.MINTY])
 
 # define the model the chatbot will be using
 #model_path = "models/20230522-122709-vivid-shore.tar.gz"
-model_path = "models/20230613-222831-right-code.tar.gz"
+model_path = 'models/20230614-155515-closed-commission.tar.gz'
 
 # init the conversational agent
 agent = clitest.launch_bot(model_path, endpoints="endpoints.yml")

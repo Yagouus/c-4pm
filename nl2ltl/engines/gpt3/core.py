@@ -10,6 +10,7 @@ Website:
 """
 import json
 import os
+import openai
 from pathlib import Path
 from typing import Dict
 
@@ -20,7 +21,8 @@ from nl2ltl.engines.gpt3 import ENGINE_ROOT
 from nl2ltl.engines.gpt3.output import GPT3Output, parse_gpt3_output, parse_gpt3_result
 from nl2ltl.filters.base import Filter
 
-openai.api_key = os.getenv("OPENAI_API_KEY")
+#openai.api_key = os.getenv("OPENAI_API_KEY")
+openai.api_key = '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'
 engine_root = ENGINE_ROOT
 DATA_DIR = engine_root / "data"
 PROMPT_PATH = engine_root / DATA_DIR / "prompt.json"

@@ -9,9 +9,12 @@
 
 from typing import Any, Text, Dict, List
 
+import nest_asyncio
+
+nest_asyncio.apply()
+
 from rasa_sdk import Action, Tracker
 from rasa_sdk.executor import CollectingDispatcher
-
 
 
 class ActionHelloWorld(Action):
@@ -55,22 +58,6 @@ class ActionQueryCheck(Action):
         return []
 
 
-class ActionTypeII(Action):
-
-    def name(self) -> Text:
-        return "action_type_ii"
-
-    def run(self, dispatcher: CollectingDispatcher,
-            tracker: Tracker,
-            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-        qualifier = next(tracker.get_latest_entity_values(entity_type="attribute", entity_role="qualifier"), None)
-        summarizer = next(tracker.get_latest_entity_values(entity_type="attribute", entity_role="summarizer"), None)
-        dispatcher.utter_message(
-            text="Recognized qualifier: " + str(qualifier) + " - Recognized summarizer: " + str(summarizer))
-
-        return []
-
-
 class ConveySpecification(Action):
 
     def name(self) -> Text:
@@ -110,5 +97,38 @@ class ConveySpecification(Action):
         from openai_client import get_completion
         response = get_completion(prompt)
         dispatcher.utter_message(text=response)
+
+        return []
+
+
+class ActionConformanceCheck(Action):
+    def name(self) -> Text:
+        return "action_conformance_check"
+
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        ltl = next(tracker.get_latest_entity_values("ltl"), None)
+        dispatcher.utter_message(text="Your formula is: " + str(ltl))
+
+        return []
+
+
+class ActionBehaviorSearch(Action):
+    def name(self) -> Text:
+        return "action_behavior_search"
+
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        print("HEEEEYA")
+
+        utterance = tracker.latest_message['text']
+
+        from nl2ltl_client import run
+        ltlf_formulas = run(utterance)
+        print(ltlf_formulas)
+
+        dispatcher.utter_message(text="Your formula is: " + str(utterance))
 
         return []

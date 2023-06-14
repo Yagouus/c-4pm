@@ -23,10 +23,12 @@ actions:
   - utter_generate_conformant
   - utter_compliance
   - utter_convey_spec
-  - action_behavior_check
   - action_hello_world
-  - action_type_ii
+  - action_behavior_check
+  - action_query_check
   - action_convey_specification
+  - action_conformance_check
+  - action_behavior_search
 
 responses:
   utter_greet:
@@ -55,7 +57,7 @@ responses:
         Here you have all conformance {target}:
   utter_behavior_search:
     - text: |
-        Here are the {target} you are looking for:
+        Here are the {target} you are looking for. Redirecting to NL2LTL ->:
   utter_generate_conformant:
     - text: |
         Wait, I will generate new conformant traces...
@@ -66,7 +68,8 @@ responses:
     - text: |
         Here you have a description of the model in natural language
   utter_please_rephrase:
-  - text: I'm sorry, I didn't quite understand that. Could you rephrase?
+  - text: |
+      I'm sorry, I didn't quite understand that. Could you rephrase?
 
 
 entities:

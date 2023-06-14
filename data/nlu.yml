@@ -38,10 +38,10 @@ nlu:
 
   - intent: behavior_check
     examples: |
-      - Is it possible to perform activity Intervention before performing activity CAT?
-      - Can activity Intervention be performed before activity CAT?
-      - Is it admitted that an email is sent before a receiving a Slack?
-      - Is the following behavior possible? Every time activity Slack happens, it must be directly followed by activity Gmail
+      - Is it possible to perform activity [CRP](connector) before performing activity [ER Triage](connector)?
+      - Can activity [IV Antibiotics](connector) be performed before activity [Admission NC](connector)?
+      - Is it admitted that [Admission IC](connector) happens after [ER Sepsis Triage](connector)?
+      - Is the following behavior possible? Every time activity [Return ER](connector) happens, it must be directly followed by activity [Release A](connector) 
       - Is it allowed to perform an intervention without previously performing a CAT? 
 
   - intent: query_check
@@ -58,15 +58,44 @@ nlu:
     # Recognized on the sentence
   - intent: conformance_check
     examples: |
-      - Can you give me all conformant [traces](target)?
-      - Can you give me all the [variants](target) conforming to the model?
-      - What are the [traces](target) that conform to the model?
-      - Can you give me the [traces](target) that conform to the model?
+      - Can you give me all conformant traces?
+      - Can you give me all the cases conforming to the model?
+      - What are the cases that conform to the model?
+      - Can you give me the traces that conform to the model?
+      - Can you do conformance checking?
+      - Give me some conforming cases
+      - Conformant traces
+      - Show traces conforming to the model
 
   - intent: behavior_search
     examples: |
-      - Can you retrieve all the [traces](target) in which a CAT is performed before a patient is intervened?
-      - Give me all [cases](target) in which activity Inclusion is performed after activity Admission
+      - In which cases [ER Registration](connector) happens?
+      - Create a [ER Triage](connector) translation bot
+      - Send patient to [ER Sepsis Triage](connector)
+      - Give me all cases in which [Leucocytes](connector) is executed
+      - Is [CRP](connector) ever executed?
+      - Take care of the patient with [IV Liquid](connector)
+      - Will [IV Antibiotics](connector) eventually happen?
+      - Is [Admission NC](connector) executed in any case?
+      - Which cases have [Release A](connector) as an activity?
+      - Does [Return ER](connector) happen in any case?
+      - When does [Admission IC](connector) occur?
+      - In which cases [Return ER](connector) happens twice?
+      - Create a [ER Triage](connector) translation bot two times
+      - Send patient to [ER Sepsis Triage](connector) in two occasions
+      - Give me all cases in which [Leucocytes](connector) is executed twice
+      - Is [Admission NC](connector) ever executed in two repeated occasions?
+      - Take care of the patient with two [IV Liquid](connector)
+      - Will [IV Antibiotics](connector) eventually happen twice?
+      - Is [CRP](connector) executed two times in any case?
+      - Which cases have [Release A](connector) as a double activity?
+      - Does [ER Registration](connector) happen two times in any case?
+      - When does [Admission IC](connector) occur twice?
+      - Can you retrieve all the traces in which a [CRP](connector) is performed after [IV Liquid](connector)?
+      - Give me all cases in which activity [ER Triage](connector) is performed after activity [Admission NC](connector)
+      - Does [ER Registration](connector) happen after [Leucocytes](connector)?
+      - In which cases ER Registration happens?
+      - Tell me in which cases IV Liquid never happens
 
 
   - intent: generate_conformant
@@ -74,3 +103,23 @@ nlu:
       - Can you generate a conforming trace for the corresponding model?
       - Can you give a possible trace for the corresponding model?
       - Is there any possible trace that conforms to the model?
+
+
+  - lookup: connector
+    examples: |
+      - ER Registration
+      - Leucocytes
+      - CRP
+      - LacticAcid
+      - ER Triage
+      - ER Sepsis Triage
+      - IV Liquid
+      - IV Antibiotics
+      - Admission NC
+      - Release A
+      - Return ER
+      - Admission IC
+      - Release B
+      - Release C
+      - Release D
+      - Release E
