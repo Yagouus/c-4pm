@@ -12,7 +12,6 @@ from typing import Any, Text, Dict, List
 from rasa_sdk import Action, Tracker
 from rasa_sdk.executor import CollectingDispatcher
 
-from actions.openai_client import get_completion
 
 
 class ActionHelloWorld(Action):
@@ -78,29 +77,27 @@ class ConveySpecification(Action):
         return "action_convey_specification"
 
     def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-        text = f"""
-        ER triage occurs at least once
-        ER registration occurs at least once
-        ER registration occurs at most once
-        ER registration occurs exactly once
-        ER sepsis triage occurs at most once
-        ER registration or ER triage occur
-        If ER registration occurs, then ER triage occurs as well
-        If ER triage occurs, then ER registration occurs as well
-        ER registration or ER Sepsis Triage occur
-        ER Sepsis triage or ER registration occur
-        Leucocytes or ER registration occur
-        Leucocytes or ER Triage occur
-        Leucocytes or ER sepsis triage occur
-        ER registration or CRP occur
-        CRP or ER triage occur
-        ER sepsis triage or CRP occur
-        CRP or ER sepsis triage occur
-        Admission NC occurs two times
-        Each time Admission NC occurs, Release B occurs immediately afterwards
-        Each time Admission NC occurs, Release A occurs immediately afterwards
-        Each time Admission NC occurs, then IV Liquid occurs immediately beforehand
-        """
+        test = ("""
+                Existence2[Admission NC]
+                Chain Response[Admission NC, Release B]
+                Chain Response[Admission NC, Release A]
+                Chain Precedence[IV Liquid, Admission NC]
+                Chain Response[ER Registration, ER Triage]
+                Chain Precedence[Release A, Return ER]
+                Chain Precedence[ER Sepsis Triage, IV Antibiotics]
+                Chain Response[ER Sepsis Triage, IV Antibiotics]
+                Chain Precedence[Admission IC, Admission NC]
+                Chain Precedence[IV Antibiotics, Admission NC]
+                Chain Precedence[Admission NC, Release B]
+                Chain Response[Admission IC, Admission NC]
+                Chain Response[LacticAcid, Leucocytes]
+                Chain Precedence[ER Registration, ER Triage]
+            """)
+
+        from declare_client import dec_to_basic_nl
+        text = dec_to_basic_nl(test)
+
+        print(text)
 
         prompt = f"""
         Your task is to generate a short summary of a declarative process specification. 
@@ -110,6 +107,7 @@ class ConveySpecification(Action):
         ```{text}```
         """
 
+        from openai_client import get_completion
         response = get_completion(prompt)
         dispatcher.utter_message(text=response)
 

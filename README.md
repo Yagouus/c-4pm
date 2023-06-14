@@ -40,7 +40,7 @@ with the corresponding name of your model.
 ### Running
 
 To run the conversational agent you need to run:
-- A Rasa actions server. This can be done with by running the command `rasa run actions` in the project root folder.
+- A Rasa actions server. This can be done with by running the command `rasa run actions` in the `actions` folder inside the project root folder `cd actions`.
 - A Docker container with [Duckling](https://hub.docker.com/r/rasa/duckling) running. 
 Duckling is used to parse things like emails, dates, temporal intervals and more.
 - 
