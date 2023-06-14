@@ -5,11 +5,9 @@ from nl2ltl.filters.simple_filters import BasicFilter
 from nl2ltl.engines.utils import pretty
 from nl2ltl.engines.utils import _top_result
 
-#RasaEngine.train()
-
 engine = GPT3Engine()
 filter = BasicFilter()
-utterance = "Tell me in which cases IVLiquid happens"
+utterance = "Does ERTriage happen in any case?"
 
 ltlf_formulas = translate(utterance, engine, filter)
 _top_result(ltlf_formulas)
