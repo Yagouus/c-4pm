@@ -110,8 +110,11 @@ class ActionConformanceCheck(Action):
     def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-        ltl = next(tracker.get_latest_entity_values("ltl"), None)
-        dispatcher.utter_message(text="Your formula is: " + str(ltl))
+
+        from declare_client import conformance_check
+        traces = conformance_check()
+
+        dispatcher.utter_message(text="Here you have some conformant traces: " + traces)
 
         return []
 
@@ -146,3 +149,4 @@ class ActionBehaviorSearch(Action):
         dispatcher.utter_message(text=result_text)
 
         return []
+

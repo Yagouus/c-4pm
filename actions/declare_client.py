@@ -120,4 +120,4 @@ def conformance_check(threshold=0.8):
     return traces
 
 #model_discovery()
-print(conformance_check())
+#print(conformance_check())
