@@ -110,11 +110,18 @@ class ActionConformanceCheck(Action):
     def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-
         from declare_client import conformance_check
         traces = conformance_check()
 
-        dispatcher.utter_message(text="Here you have some conformant traces: " + traces)
+        text = ""
+
+        for idx, t in enumerate(traces):
+            text += "-" + str(t) + "\n\n"
+            if idx >= 5:
+                break
+
+        dispatcher.utter_message(
+            text="Here you have some conformant traces: \n\n" + text)
 
         return []
 
@@ -149,4 +156,3 @@ class ActionBehaviorSearch(Action):
         dispatcher.utter_message(text=result_text)
 
         return []
-
