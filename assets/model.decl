@@ -14,17 +14,17 @@ activity Release B
 activity Release C
 activity Release D
 activity Release E
-Existence2[Admission NC] | |
-Chain Response[Admission NC, Release B] | |
-Chain Response[Admission NC, Release A] | |
-Chain Precedence[IV Liquid, Admission NC] | |
-Chain Response[ER Registration, ER Triage] | |
-Chain Precedence[Release A, Return ER] | |
-Chain Precedence[ER Sepsis Triage, IV Antibiotics] | |
-Chain Response[ER Sepsis Triage, IV Antibiotics] | |
-Chain Precedence[Admission IC, Admission NC] | |
-Chain Precedence[IV Antibiotics, Admission NC] | |
-Chain Precedence[Admission NC, Release B] | |
-Chain Response[Admission IC, Admission NC] | |
-Chain Response[LacticAcid, Leucocytes] | |
-Chain Precedence[ER Registration, ER Triage] | |
+Existence2[Admission NC] | | |
+Chain Response[Admission NC, Release B] | | |
+Chain Response[Admission NC, Release A] | | |
+Chain Precedence[IV Liquid, Admission NC] | | |
+Chain Response[ER Registration, ER Triage] | | |
+Chain Precedence[Release A, Return ER] | | |
+Chain Precedence[ER Sepsis Triage, IV Antibiotics] | | |
+Chain Response[ER Sepsis Triage, IV Antibiotics] | | |
+Chain Precedence[Admission IC, Admission NC] | | |
+Chain Precedence[IV Antibiotics, Admission NC] | | |
+Chain Precedence[Admission NC, Release B] | | |
+Chain Response[Admission IC, Admission NC] | | |
+Chain Response[LacticAcid, Leucocytes] | | |
+Chain Precedence[ER Registration, ER Triage] | | |

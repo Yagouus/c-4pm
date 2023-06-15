@@ -1,5 +1,7 @@
 import textwrap
 
+import numpy as np
+
 
 def dec_to_basic_nl(specification=""):
     nl_specification = ""
@@ -68,7 +70,7 @@ def dec_to_basic_nl(specification=""):
 
     return nl_specification
 
-def conformance_check():
+def model_discovery():
     from src.Declare4Py.ProcessModels.DeclareModel import DeclareModel
     from src.Declare4Py.ProcessMiningTasks.Discovery.DeclareMiner import DeclareMiner
     from src.Declare4Py.D4PyEventLog import D4PyEventLog
@@ -83,4 +85,39 @@ def conformance_check():
 
     print(discovered_model.serialized_constraints)
 
-conformance_check()
+def conformance_check(threshold=0.8):
+
+    from src.Declare4Py.D4PyEventLog import D4PyEventLog
+    from src.Declare4Py.ProcessModels.DeclareModel import DeclareModel
+
+    event_log = D4PyEventLog(case_name="case:concept:name")
+    event_log.parse_xes_log('../assets/Sepsis Cases.xes.gz')
+
+    declare_model = DeclareModel().parse_from_file('../assets/model.decl')
+
+    model_constraints = declare_model.get_decl_model_constraints()
+
+    print("Model constraints:")
+    print("-----------------")
+    for idx, constr in enumerate(model_constraints):
+        print(idx, constr)
+
+    from src.Declare4Py.ProcessMiningTasks.ConformanceChecking.MPDeclareAnalyzer import MPDeclareAnalyzer
+    from src.Declare4Py.ProcessMiningTasks.ConformanceChecking.MPDeclareResultsBrowser import MPDeclareResultsBrowser
+
+    basic_checker = MPDeclareAnalyzer(log=event_log, declare_model=declare_model, consider_vacuity=True)
+    conf_check_res: MPDeclareResultsBrowser = basic_checker.run()
+
+    traces = []
+
+    # Truth values for the second trace
+    for idx in range(event_log.get_length()):
+        conf = conf_check_res.get_metric(trace_id=idx, metric="state")
+        perc = np.sum(conf) / len(conf)
+        if perc > threshold:
+            traces.append(event_log.attribute_log_projection(event_log.get_concept_name())[idx])
+
+    return traces
+
+#model_discovery()
+print(conformance_check())
