@@ -134,8 +134,8 @@ class ActionBehaviorSearch(Action):
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
 
+        # Run NL2LTLf
         utterance = str(tracker.latest_message['text'])
-
         connectors = list(tracker.get_latest_entity_values("connector"))
         mod_connectors = []
 
@@ -147,6 +147,14 @@ class ActionBehaviorSearch(Action):
         ltlf_formulas = run(utterance)
         print(ltlf_formulas)
 
+        # TODO translate from NL2LTL syntax to the syntax used by DECLARE4PY
+
+        # Conformance checking with ltl
+        from declare_client import conformance_check_ltl
+        traces = conformance_check_ltl(str(ltlf_formulas), connectors)
+
+        print(traces)
+
         result_text = f"Here are all the cases in which, {ltlf_formulas.to_english()}".capitalize()
 
         for connector in connectors:
@@ -154,5 +162,29 @@ class ActionBehaviorSearch(Action):
             result_text = result_text.replace(x, connector)
 
         dispatcher.utter_message(text=result_text)
+
+        return []
+
+
+class ActionConformanceCheckLTLF(Action):
+    def name(self) -> Text:
+        return "action_conformance_check_ltlf"
+
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+
+        # Run NL2LTLf
+        utterance = str(tracker.latest_message['text'])
+        from nl2ltl_client import run
+        ltlf_formulas = run(utterance)
+
+        # Conformance checking with ltl
+        from declare_client import conformance_check_ltl
+        traces = conformance_check_ltl(ltlf_formulas)
+
+        print(traces)
+
+        dispatcher.utter_message(text="Here you have traces conformant to your query: \n\n" )
 
         return []

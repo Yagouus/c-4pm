@@ -1,3 +1,4 @@
+#file: noinspection YAMLSchemaValidation
 version: "3.1"
 
 rules:
@@ -31,7 +32,12 @@ rules:
   - rule: conformance_check
     steps:
       - intent: conformance_check
-      - action: utter_conformance_check
+      - action: action_conformance_check
+
+  - rule: Conformance check with LTLF - Do conformance checking with user input formulae
+    steps:
+      - intent: conformance_check_ltlf
+      - action: action_conformance_check_ltlf
 
   - rule: Behavior search - Look for cases in which some behavior happens
     steps:
@@ -42,7 +48,6 @@ rules:
     steps:
       - intent: generate_conformant
       - action: utter_generate_conformant
-
 
   - rule: Convey specification - Describe a DECLARE specification in natural language
     steps:

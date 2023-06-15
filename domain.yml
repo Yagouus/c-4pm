@@ -10,6 +10,7 @@ intents:
   - conformance_check
   - behavior_search
   - generate_conformant
+  - conformance_check_ltlf
 
 
 actions:
@@ -29,6 +30,7 @@ actions:
   - action_convey_specification
   - action_conformance_check
   - action_behavior_search
+  - action_conformance_check_ltlf
 
 responses:
   utter_greet:

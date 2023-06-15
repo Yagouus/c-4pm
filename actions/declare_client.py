@@ -119,5 +119,36 @@ def conformance_check(threshold=0.8):
 
     return traces
 
+
+def conformance_check_ltl(ltlf, connectors):
+
+    from src.Declare4Py.D4PyEventLog import D4PyEventLog
+    from src.Declare4Py.ProcessModels.LTLModel import LTLModel
+    from src.Declare4Py.ProcessMiningTasks.ConformanceChecking.LTLAnalyzer import LTLAnalyzer
+
+    event_log = D4PyEventLog()
+    event_log.parse_xes_log('../assets/Sepsis Cases.xes.gz')
+
+    # TODO translate from NL2LTL syntax to the syntax used by DECLARE4PY
+    parsed_ltlf = ltlf
+
+    # Detect and translate the type of template
+    template = ltlf.split(sep=' ')[0].replace('(', '')
+    print("TIPO: ", template)
+    for c in connectors:
+        print(str(c))
+
+    model = LTLModel()
+    model.parse_from_string(parsed_ltlf)
+
+    analyzer = LTLAnalyzer(event_log, model)
+    df = analyzer.run()
+
+    print(df)
+
+
 #model_discovery()
 #print(conformance_check())
+
+#conformance_check_ltl("F(ER Registration)")
+
