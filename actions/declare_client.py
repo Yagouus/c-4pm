@@ -150,7 +150,8 @@ def conformance_check_ltl(ltlf, connectors):
             df = analyzer.run()
 
         case 'ExistenceTwo':
-            model.parse_from_string(f'F({connectors[0]})')
+            dec_template = LTLTemplate('existence_two_activity_a')
+            model = dec_template.fill_template([connectors[0]])
             analyzer = LTLAnalyzer(event_log, model)
             df = analyzer.run()
 

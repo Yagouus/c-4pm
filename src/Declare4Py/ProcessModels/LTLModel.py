@@ -120,6 +120,7 @@ class LTLTemplate:
         self.template_str: str = template_str
         self.parameters: [str] = []
         self.ltl_templates = {'eventually_activity_a': self.eventually_activity_a,
+                              'existence_two_activity_a': self.existence_two_activity_a,
                               'not_eventually_activity_a': self.not_eventually_activity_a,
                               'eventually_a_then_b': self.eventually_a_then_b,
                               'eventually_a_or_b': self.eventually_a_or_b,
@@ -159,6 +160,12 @@ class LTLTemplate:
     @staticmethod
     def eventually_activity_a(activity: List[str]) -> str:
         formula_str = "F(" + activity[0] + ")"
+        return formula_str
+
+    # Eventually(And(self.argument, Next(Eventually(self.argument))))
+    @staticmethod
+    def existence_two_activity_a(activity: List[str]) -> str:
+        formula_str = "F(" + activity[0] + " && F(" + activity[0] + "))"
         return formula_str
 
     @staticmethod
