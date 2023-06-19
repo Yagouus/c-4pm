@@ -155,14 +155,10 @@ def conformance_check_ltl(ltlf, connectors):
             df = analyzer.run()
 
         case 'Absence':
-            model.parse_from_string(f'F({connectors[0]})')
+            dec_template = LTLTemplate('not_eventually_activity_a')
+            model = dec_template.fill_template([connectors[0]])
             analyzer = LTLAnalyzer(event_log, model)
             df = analyzer.run()
-
-            # Use opposite values
-            df.loc[df["accepted"] == "True", "accepted"] = 0
-            df.loc[df["accepted"] == "False", "accepted"] = "True"
-            df.loc[df["accepted"] == 0, "accepted"] = "False"
 
         case 'RespondedExistence':
             dec_template = LTLTemplate('responded_existence')
