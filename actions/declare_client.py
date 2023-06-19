@@ -2,6 +2,8 @@ import textwrap
 
 import numpy as np
 
+from src.Declare4Py.ProcessModels.LTLModel import LTLTemplate
+
 
 def dec_to_basic_nl(specification=""):
     nl_specification = ""
@@ -134,12 +136,34 @@ def conformance_check_ltl(ltlf, connectors):
 
     # Detect and translate the type of template
     template = ltlf.split(sep=' ')[0].replace('(', '')
+
     print("TIPO: ", template)
     for c in connectors:
         print(str(c))
 
     model = LTLModel()
-    model.parse_from_string(parsed_ltlf)
+
+    match template:
+        case 'Existence':
+            dec_template = f'F({connectors[0]})'
+            model.parse_from_string(dec_template)
+        case 'ExistenceTwo':
+            dec_template = f'F({connectors[0]})'
+            model.parse_from_string(dec_template)
+        case 'Absence':
+            dec_template = f'F({connectors[0]})'
+            model.parse_from_string(dec_template)
+        case 'RespondedExistence':
+            dec_template = LTLTemplate('responded_existence')
+            model = dec_template.fill_template([connectors[0]], [connectors[1]])
+        case 'Response':
+            pass
+        case 'Precedence':
+            pass
+        case 'ChainResponse':
+            pass
+        case 'NotCoExistence':
+            pass
 
     analyzer = LTLAnalyzer(event_log, model)
     df = analyzer.run()

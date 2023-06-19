@@ -41,6 +41,7 @@ def _top_result(result: Dict[Formula, float]):
     print("=" * 150)
     k, v = list(result.items())[0]
     print(f"Declare Template: {str(k)}", end="\n")
+    print(f"LTLf Template: {k.to_ltlf()}", end="\n")
     print(f"English meaning:  {k.to_english()}", end="\n")
     print(f"Confidence:       {str(v)}", end="\n\n")
     return k
