@@ -50,5 +50,14 @@ Duckling is used to parse things like emails, dates, temporal intervals and more
 - 
 
 
-## Sample converstions
+## Sample conversations
+
+## Modifications to source libraries
+
+### LTLf2DFA
+- Adapted GPT prompt and RASA NLU training data to these proposal's objectives.
+- Added support to the "absence" Declare template in the GPT `prompt`
+
+### Declare4Py
+- Added support to the "absence" template in `LTLModel.py`so the absence concept can be used in different reasonin tasks.
 
