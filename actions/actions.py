@@ -138,16 +138,17 @@ class ActionBehaviorSearch(Action):
         utterance = str(tracker.latest_message['text'])
         connectors = list(tracker.get_latest_entity_values("connector"))
         mod_connectors = []
+        print(connectors)
 
         for connector in connectors:
             x = connector.replace(" ", "")
             utterance = utterance.replace(connector, x)
 
+        print(utterance)
+
         from nl2ltl_client import run
         ltlf_formulas = run(utterance)
         print(ltlf_formulas)
-
-        # TODO translate from NL2LTL syntax to the syntax used by DECLARE4PY
 
         # Conformance checking with ltl
         from declare_client import conformance_check_ltl

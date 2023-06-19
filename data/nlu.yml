@@ -96,6 +96,7 @@ nlu:
       - Does [ER Registration](connector) happen after [Leucocytes](connector)?
       - In which cases [ER Registration](connector) happens?
       - Tell me in which cases [IV Liquid](connector) never happens
+      - In which traces never happens [ER Triage](connector)?
 
 
   - intent: generate_conformant

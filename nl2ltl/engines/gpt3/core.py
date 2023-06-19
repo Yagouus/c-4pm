@@ -28,13 +28,14 @@ engine_root = ENGINE_ROOT
 DATA_DIR = engine_root / "data"
 PROMPT_PATH = engine_root / DATA_DIR / "prompt.json"
 
+
 class GPT3Engine(Engine):
     """The GPT-3 engine."""
 
     def __init__(
-        self,
-        prompt: Path = PROMPT_PATH,
-        temperature: float = 0.5,
+            self,
+            prompt: Path = PROMPT_PATH,
+            temperature: float = 0.5,
     ):
         """GPT-3 LLM Engine initialization."""
         self.prompt = self._load_prompt(prompt)
@@ -60,14 +61,14 @@ class GPT3Engine(Engine):
         self.__check_openai_version()
 
     def translate(
-        self, utterance: str, filtering: Filter = None
+            self, utterance: str, filtering: Filter = None
     ) -> Dict[Formula, float]:
         """From NL to best matching LTL formulas with confidence."""
         return _process_utterance(utterance, self.prompt, self.temperature, filtering)
 
 
 def _process_utterance(
-    utterance: str, prompt: str, temperature: float, filtering: Filter
+        utterance: str, prompt: str, temperature: float, filtering: Filter
 ) -> Dict[Formula, float]:
     """
     Process NL utterance.
@@ -75,6 +76,8 @@ def _process_utterance(
     :param utterance: the natural language utterance
     :return: a dict with matching formulas and confidence
     """
+
+
     query = "NL: " + utterance + "\n"
     prediction = openai.Completion.create(
         model="text-davinci-002",

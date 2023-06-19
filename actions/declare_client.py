@@ -72,6 +72,7 @@ def dec_to_basic_nl(specification=""):
 
     return nl_specification
 
+
 def model_discovery():
     from src.Declare4Py.ProcessModels.DeclareModel import DeclareModel
     from src.Declare4Py.ProcessMiningTasks.Discovery.DeclareMiner import DeclareMiner
@@ -87,8 +88,8 @@ def model_discovery():
 
     print(discovered_model.serialized_constraints)
 
-def conformance_check(threshold=0.8):
 
+def conformance_check(threshold=0.8):
     from src.Declare4Py.D4PyEventLog import D4PyEventLog
     from src.Declare4Py.ProcessModels.DeclareModel import DeclareModel
 
@@ -123,7 +124,6 @@ def conformance_check(threshold=0.8):
 
 
 def conformance_check_ltl(ltlf, connectors):
-
     from src.Declare4Py.D4PyEventLog import D4PyEventLog
     from src.Declare4Py.ProcessModels.LTLModel import LTLModel
     from src.Declare4Py.ProcessMiningTasks.ConformanceChecking.LTLAnalyzer import LTLAnalyzer
@@ -145,34 +145,61 @@ def conformance_check_ltl(ltlf, connectors):
 
     match template:
         case 'Existence':
-            dec_template = f'F({connectors[0]})'
-            model.parse_from_string(dec_template)
+            model.parse_from_string(f'F({connectors[0]})')
+            analyzer = LTLAnalyzer(event_log, model)
+            df = analyzer.run()
+
         case 'ExistenceTwo':
-            dec_template = f'F({connectors[0]})'
-            model.parse_from_string(dec_template)
+            model.parse_from_string(f'F({connectors[0]})')
+            analyzer = LTLAnalyzer(event_log, model)
+            df = analyzer.run()
+
         case 'Absence':
-            dec_template = f'F({connectors[0]})'
-            model.parse_from_string(dec_template)
+            model.parse_from_string(f'F({connectors[0]})')
+            analyzer = LTLAnalyzer(event_log, model)
+            df = analyzer.run()
+
+            # Use opposite values
+            df.loc[df["accepted"] == "True", "accepted"] = 0
+            df.loc[df["accepted"] == "False", "accepted"] = "True"
+            df.loc[df["accepted"] == 0, "accepted"] = "False"
+
         case 'RespondedExistence':
             dec_template = LTLTemplate('responded_existence')
             model = dec_template.fill_template([connectors[0]], [connectors[1]])
-        case 'Response':
-            pass
-        case 'Precedence':
-            pass
-        case 'ChainResponse':
-            pass
-        case 'NotCoExistence':
-            pass
+            analyzer = LTLAnalyzer(event_log, model)
+            df = analyzer.run()
 
-    analyzer = LTLAnalyzer(event_log, model)
-    df = analyzer.run()
+        case 'Response':
+            dec_template = LTLTemplate('response')
+            model = dec_template.fill_template([connectors[0]], [connectors[1]])
+            analyzer = LTLAnalyzer(event_log, model)
+            df = analyzer.run()
+
+        case 'Precedence':
+            dec_template = LTLTemplate('precedence')
+            model = dec_template.fill_template([connectors[0]], [connectors[1]])
+            analyzer = LTLAnalyzer(event_log, model)
+            df = analyzer.run()
+
+        case 'ChainResponse':
+            dec_template = LTLTemplate('chain_response')
+            model = dec_template.fill_template([connectors[0]], [connectors[1]])
+            analyzer = LTLAnalyzer(event_log, model)
+            df = analyzer.run()
+
+        case 'NotCoExistence':
+            model.parse_from_string(f'F({connectors[0]})')
+            model_2 = LTLModel()
+            model_2.parse_from_string(f'F({connectors[1]})')
+            analyzer = LTLAnalyzer(event_log, model)
+            df = analyzer.run()
+            analyzer = LTLAnalyzer(event_log, model_2)
+            df_2 = analyzer.run()
 
     print(df)
 
+# model_discovery()
+# print(conformance_check())
 
-#model_discovery()
-#print(conformance_check())
-
-#conformance_check_ltl("F(ER Registration)")
-
+# conformance_check_ltl("F(ER Registration)")
