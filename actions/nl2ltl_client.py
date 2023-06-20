@@ -16,4 +16,7 @@ def run(utterance):
     filter = BasicFilter()
 
     ltlf_formulas = translate(utterance, engine, filter)
-    return _top_result(ltlf_formulas)
+    if bool(ltlf_formulas):
+        return _top_result(ltlf_formulas)
+    else:
+        return None

@@ -140,7 +140,8 @@ class LTLTemplate:
                                      'not_response': self.not_response,
                                      'not_precedence': self.not_precedence,
                                      'not_chain_response': self.not_chain_response,
-                                     'not_chain_precedence': self.not_chain_precedence}
+                                     'not_chain_precedence': self.not_chain_precedence,
+                                     'not_coexistence': self.not_coexistence}
 
         self.templates = {**self.ltl_templates, **self.tb_declare_templates}
 
@@ -165,7 +166,7 @@ class LTLTemplate:
     # Eventually(And(self.argument, Next(Eventually(self.argument))))
     @staticmethod
     def existence_two_activity_a(activity: List[str]) -> str:
-        formula_str = "F(" + activity[0] + " && F(" + activity[0] + "))"
+        formula_str = "F(" + activity[0] + " && X(F(" + activity[0] + ")))"
         return formula_str
 
     @staticmethod
@@ -357,6 +358,12 @@ class LTLTemplate:
             formula += " || !("+source[i]+")"
         formula += ")"
         return formula
+
+    @staticmethod
+    def not_coexistence(activity: List[str]) -> str:
+        formula_str = f"F({activity[0]}) -> !F({activity[1]})"
+        return formula_str
+
 
     def fill_template(self, *activities: List[str]) -> LTLModel:
         """

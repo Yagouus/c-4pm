@@ -83,8 +83,6 @@ def _process_utterance(
     :return: a dict with matching formulas and confidence
     """
 
-    print(prompt)
-
     query = "NL: " + utterance + "\n"
     prediction = openai.Completion.create(
         model="text-davinci-002",

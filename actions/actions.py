@@ -138,31 +138,46 @@ class ActionBehaviorSearch(Action):
         utterance = str(tracker.latest_message['text'])
         connectors = list(tracker.get_latest_entity_values("connector"))
         mod_connectors = []
-        print(connectors)
+        #print(connectors)
 
         for connector in connectors:
             x = connector.replace(" ", "")
             utterance = utterance.replace(connector, x)
 
-        print(utterance)
+        #print(utterance)
 
         from nl2ltl_client import run
         ltlf_formulas = run(utterance)
+
+        if ltlf_formulas is None:
+            dispatcher.utter_message(
+                text="There are no cases in which that happens.")
+            return []
+
         print(ltlf_formulas)
+        print(ltlf_formulas.to_english())
 
         # Conformance checking with ltl
         from declare_client import conformance_check_ltl
         traces = conformance_check_ltl(str(ltlf_formulas), connectors)
+        text = ""
 
-        print(traces)
+        for idx, t in enumerate(traces):
+            text += "-" + str(t) + "\n\n"
+            if idx >= 5:
+                break
 
-        result_text = f"Here are all the cases in which, {ltlf_formulas.to_english()}".capitalize()
+        if len(traces) > 0:
+            result_text = f"Here are some cases in which, {ltlf_formulas.to_english()}".capitalize()
+        else:
+            result_text = "There are no cases in which that happens."
 
         for connector in connectors:
             x = connector.replace(" ", "").lower()
             result_text = result_text.replace(x, connector)
 
-        dispatcher.utter_message(text=result_text)
+        dispatcher.utter_message(
+            text=f'{result_text} \n\n {text}')
 
         return []
 

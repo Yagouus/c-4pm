@@ -7,6 +7,7 @@ from pylogics.parsers import parse_ltl
 from src.Declare4Py.Utils.utils import Utils
 from typing import List
 
+# THIS IS FOR LOCAL USE
 
 class LTLModel(ProcessModel, ABC):
 
@@ -120,6 +121,8 @@ class LTLTemplate:
         self.template_str: str = template_str
         self.parameters: [str] = []
         self.ltl_templates = {'eventually_activity_a': self.eventually_activity_a,
+                              'existence_two_activity_a': self.existence_two_activity_a,
+                              'not_eventually_activity_a': self.not_eventually_activity_a,
                               'eventually_a_then_b': self.eventually_a_then_b,
                               'eventually_a_or_b': self.eventually_a_or_b,
                               'eventually_a_next_b': self.eventually_a_next_b,
@@ -138,7 +141,8 @@ class LTLTemplate:
                                      'not_response': self.not_response,
                                      'not_precedence': self.not_precedence,
                                      'not_chain_response': self.not_chain_response,
-                                     'not_chain_precedence': self.not_chain_precedence}
+                                     'not_chain_precedence': self.not_chain_precedence,
+                                     'not_coexistence': self.not_coexistence}
 
         self.templates = {**self.ltl_templates, **self.tb_declare_templates}
 
@@ -159,6 +163,19 @@ class LTLTemplate:
     def eventually_activity_a(activity: List[str]) -> str:
         formula_str = "F(" + activity[0] + ")"
         return formula_str
+
+    # Eventually(And(self.argument, Next(Eventually(self.argument))))
+    @staticmethod
+    def existence_two_activity_a(activity: List[str]) -> str:
+        formula_str = "F(" + activity[0] + " && X(F(" + activity[0] + ")))"
+        print(formula_str)
+        return formula_str
+
+    @staticmethod
+    def not_eventually_activity_a(activity: List[str]) -> str:
+        formula_str = "!F(" + activity[0] + ")"
+        return formula_str
+
 
     @staticmethod
     def eventually_a_then_b(activity: List[str]) -> str:
@@ -343,6 +360,11 @@ class LTLTemplate:
             formula += " || !("+source[i]+")"
         formula += ")"
         return formula
+
+    @staticmethod
+    def not_coexistence(activity: List[str]) -> str:
+        formula_str = f"F({activity[0]}) -> !F({activity[1]})"
+        return formula_str
 
     def fill_template(self, *activities: List[str]) -> LTLModel:
         """

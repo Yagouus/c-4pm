@@ -131,72 +131,92 @@ def conformance_check_ltl(ltlf, connectors):
     event_log = D4PyEventLog()
     event_log.parse_xes_log('../assets/Sepsis Cases.xes.gz')
 
-    # TODO translate from NL2LTL syntax to the syntax used by DECLARE4PY
-    parsed_ltlf = ltlf
-
     # Detect and translate the type of template
     template = ltlf.split(sep=' ')[0].replace('(', '')
+    c_0 = ltlf.split(sep=' ')[1].replace(')', '')
 
-    print("TIPO: ", template)
-    for c in connectors:
-        print(str(c))
+    if len(ltlf.split(sep=' ')) > 2:
+        c_1 = ltlf.split(sep=' ')[2].replace(')', '')
+
+    print(template)
+    print(connectors)
+
+    # If no activity has been properly detected, return empty list of traces
+    if len(connectors) < 1:
+        return []
+
+    for connector in connectors:
+        x = connector.replace(" ", "").lower()
+        c_0_alt = c_0.replace(x, connector)
+        if len(connectors) > 1:
+            c_1_alt = c_1.replace(x, connector)
 
     model = LTLModel()
 
+    # Convert NL2LTL syntax to Declare4Py syntax
     match template:
         case 'Existence':
-            model.parse_from_string(f'F({connectors[0]})')
-            analyzer = LTLAnalyzer(event_log, model)
-            df = analyzer.run()
+            model.parse_from_string(f'F({c_0_alt})')
 
         case 'ExistenceTwo':
             dec_template = LTLTemplate('existence_two_activity_a')
-            model = dec_template.fill_template([connectors[0]])
-            analyzer = LTLAnalyzer(event_log, model)
-            df = analyzer.run()
+            model = dec_template.fill_template([c_0_alt])
 
         case 'Absence':
             dec_template = LTLTemplate('not_eventually_activity_a')
-            model = dec_template.fill_template([connectors[0]])
-            analyzer = LTLAnalyzer(event_log, model)
-            df = analyzer.run()
+            model = dec_template.fill_template([c_0_alt])
 
         case 'RespondedExistence':
             dec_template = LTLTemplate('responded_existence')
-            model = dec_template.fill_template([connectors[0]], [connectors[1]])
-            analyzer = LTLAnalyzer(event_log, model)
-            df = analyzer.run()
+            model = dec_template.fill_template([c_0_alt], [c_1_alt])
 
         case 'Response':
             dec_template = LTLTemplate('response')
-            model = dec_template.fill_template([connectors[0]], [connectors[1]])
-            analyzer = LTLAnalyzer(event_log, model)
-            df = analyzer.run()
+            model = dec_template.fill_template([c_0_alt], [c_1_alt])
 
         case 'Precedence':
             dec_template = LTLTemplate('precedence')
-            model = dec_template.fill_template([connectors[0]], [connectors[1]])
-            analyzer = LTLAnalyzer(event_log, model)
-            df = analyzer.run()
+            model = dec_template.fill_template([c_0_alt], [c_1_alt])
 
         case 'ChainResponse':
             dec_template = LTLTemplate('chain_response')
-            model = dec_template.fill_template([connectors[0]], [connectors[1]])
-            analyzer = LTLAnalyzer(event_log, model)
-            df = analyzer.run()
+            model = dec_template.fill_template([c_0_alt], [c_1_alt])
 
         case 'NotCoExistence':
-            model.parse_from_string(f'F({connectors[0]})')
-            model_2 = LTLModel()
-            model_2.parse_from_string(f'F({connectors[1]})')
-            analyzer = LTLAnalyzer(event_log, model)
-            df = analyzer.run()
-            analyzer = LTLAnalyzer(event_log, model_2)
-            df_2 = analyzer.run()
+            dec_template = LTLTemplate('chain_response')
+            model = dec_template.fill_template([c_0_alt], [c_1_alt])
 
-    print(df)
+    analyzer = LTLAnalyzer(event_log, model)
+    df = analyzer.run()
+
+    # Recover traces from the log
+    case_ids = list(df.query('accepted == True')['case:concept:name'])
+
+    import pm4py
+    traces = pm4py.filter_trace_attribute_values(event_log.get_log(),
+                                                 'concept:name',
+                                                 case_ids,
+                                                 case_id_key=' concept:name')
+
+    tr_attr_values = pm4py.project_on_event_attribute(traces, 'concept:name')
+
+    #print(df)
+    #print(case_ids)
+    #print('Total traces', len(df))
+    #print('Accepted trace ids', len(case_ids))
+    #print('Accepted traces', len(tr_attr_values))
+
+    #text = "\n"
+    #for idx, t in enumerate(tr_attr_values):
+    #    text += "-" + str(t) + "\n\n"
+    #    if idx >= 5:
+    #        break
+    #print(text)
+
+    return tr_attr_values
+
 
 # model_discovery()
 # print(conformance_check())
 
-# conformance_check_ltl("F(ER Registration)")
+#conformance_check_ltl("(ExistenceTwo ReleaseA)", ["ReleaseA"])

@@ -7,7 +7,7 @@ from nl2ltl.engines.utils import _top_result
 
 engine = GPT3Engine()
 filter = BasicFilter()
-utterance = "Does ERTriage happen in any case?"
+utterance = "Does ERTriage happen in any case in which Admission NC occurs?"
 
 ltlf_formulas = translate(utterance, engine, filter)
 _top_result(ltlf_formulas)

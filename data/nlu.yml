@@ -80,6 +80,7 @@ nlu:
       - Which cases have [Release A](connector) as an activity?
       - Does [Return ER](connector) happen in any case?
       - When does [Admission IC](connector) occur?
+      - In which cases [ER Registration](connector) happens?
       - In which cases [Return ER](connector) happens twice?
       - Create a [ER Triage](connector) translation bot two times
       - Send patient to [ER Sepsis Triage](connector) in two occasions
@@ -94,7 +95,8 @@ nlu:
       - Can you retrieve all the traces in which a [CRP](connector) is performed after [IV Liquid](connector)?
       - Give me all cases in which activity [ER Triage](connector) is performed after activity [Admission NC](connector)
       - Does [ER Registration](connector) happen after [Leucocytes](connector)?
-      - In which cases [ER Registration](connector) happens?
+      - Does at [Release D](connector) happen at some point after [Admission IC](connector) occurs?
+  
       - Tell me in which cases [IV Liquid](connector) never happens
       - In which traces never happens [ER Triage](connector)?
 

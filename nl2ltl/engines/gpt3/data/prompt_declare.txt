@@ -7,6 +7,10 @@ NL: In which cases ERRegistration happens?
 PATTERN: existence
 SYMBOLS: ERRegistration
 
+NL: Does ERTriage happen in any case?
+PATTERN: existence
+SYMBOLS: ERTriage
+
 NL: Give me all cases in which Leucocytes is executed
 PATTERN: existence
 SYMBOLS: Leucocytes
@@ -15,17 +19,17 @@ NL: When does AdmissionIC occur?
 PATTERN: existence
 SYMBOLS: AdmissionIC
 
-NL: Invite Sales employees sooner or later
+NL: Is CRP ever executed?
 PATTERN: existence
-SYMBOLS: Sales
+SYMBOLS: CRP
 
-NL: Add new Eventbrite attendees to MailChimp lists
+NL: Will IVAntibiotics eventually happen?
 PATTERN: existence
-SYMBOLS: Eventbrite
+SYMBOLS: IVAntibiotics
 
-NL: Copy products from PostgreSQL database to Salesforce
+NL: Are there any cases in which activity ERTriage occurs?
 PATTERN: existence
-SYMBOLS: Salesforce
+SYMBOLS: ERTriage
 
 NL: Populate a Salesforce campaign
 PATTERN: existence
@@ -47,6 +51,7 @@ NL: Use Slack to notify of unprocessed Kronos leave requests
 PATTERN: existence
 SYMBOLS: Slack
 
+
 NL: extract ReleaseA lead details at least twice
 PATTERN: existenceTwo
 SYMBOLS: ReleaseA
@@ -67,69 +72,51 @@ NL: Is CRP executed two times in any case?
 PATTERN: existenceTwo
 SYMBOLS: CRP
 
-NL: every time a response is created in SurveyMonkey, create an object in Amazon S3
-PATTERN: response
-SYMBOLS: SurveyMonkey, Amazon S3
 
-NL: always Create a new contact in Acoustic Campaign when a new contact is added in Salesforce
+NL: Can you retrieve all the traces in which a CRP is performed after IVLiquid?
+PATTERN: response
+SYMBOLS: IVLiquid, CRP
+
+NL: Give me all cases in which activity ERTriage is performed after activity AdmissionNC
 PATTERN: response
 SYMBOLS: Acoustic Campaign, Salesforce
 
-NL: Create a new Trello card at some point whenever a new event in Eventbrite is added
+NL: Does at ReleaseD happen at some point after AdmissionIC occurs?
 PATTERN: response
-SYMBOLS: Trello, Eventbrite
+SYMBOLS: ReleaseD, AdmissionIC
 
-NL: eventually Send a Microsoft Teams message whenever a response is created in SurveyMonkey
+NL: Does ERRegistration happen eventually after Leucocytes in any case?
 PATTERN: response
-SYMBOLS: Microsoft Teams, SurveyMonkey
+SYMBOLS: ERRegistration, Leucocytes
 
-NL: eventually Synchronize data between SAP and Salesforce whenever the Salesforce contact is being updated
+NL: Find traces in which IVAntibiotics occurs eventually whenever ERRegistration is performed
 PATTERN: response
-SYMBOLS: SAP and Salesforce, Salesforce
+SYMBOLS: IVAntibiotics, ERRegistration
 
-NL: whenever a response is created in SurveyMonkey, create an object in Amazon S3
+NL: whenever ERSepsisTriage happens, ReleaseA occurs
 PATTERN: response
-SYMBOLS: SurveyMonkey, Amazon S3
+SYMBOLS: ERSepsisTriage, ReleaseA
 
-NL: for every resolved case in Microsoft Dynamics 365, send a Slack notification
-PATTERN: response
-SYMBOLS: Microsoft Dynamics 365, Slack
 
-NL: Send a Slack message every time a high or highest priority issue is created in Jira
-PATTERN: response
-SYMBOLS: Slack, Jira
-
-NL: send a Gmail whenever I get a Slack message
-PATTERN: response
-SYMBOLS: Gmail, Slack
-
-NL: send me an Email every time I get a Slack message
-PATTERN: response
-SYMBOLS: Email, Slack
-
-NL: Send a Slack message whenever a response is created in SurveyMonkey
-PATTERN: response
-SYMBOLS: Slack, SurveyMonkey
-
-NL: whenever a new lead is added in Marketo, add a card to a list in Trello sometime after
-PATTERN: response
-SYMBOLS: Marketo, Trello
-
-NL: every time an Eventbrite is added, notify me via Slack right after
+NL: Find traces in which IVAntibiotics occurs right after ERRegistration is performed
 PATTERN: chainResponse
-SYMBOLS: Eventbrite, Slack
+SYMBOLS: ERRegistration, IVAntibiotics
 
-NL: every time there is a new Salesforce campaign, immediately create a new Trello card
+NL: Are there cases in which every time there is an AdmissionIC, is immediately performed IVAntibiotics?
 PATTERN: chainResponse
-SYMBOLS: Salesforce, Trello
+SYMBOLS: IVAntibiotics, AdmissionIC
 
-NL: open a ticket on ServiceNow immediately after receiving an identified issue in Slack
+NL: Are there any cases in which activity ER Triage occurs right after Admission NC?
 PATTERN: chainResponse
-SYMBOLS: ServiceNow, Slack
+SYMBOLS: AdmissionNC, ERTriage
 
-NL: every time there is a new Salesforce case, create a new Trello card for it right after
+NL: Give me all cases in which activity ERTriage occurs immediately after activity AdmissionNC is performed
 PATTERN: chainResponse
-SYMBOLS: Salesforce, Trello
+SYMBOLS: AdmissionNC, ERTriage
+
+NL: Does in any case ReleaseD happen right after AdmissionIC?
+PATTERN: chainResponse
+SYMBOLS: ReleaseD, AdmissionIC
 
 NL: Send me a Slack notification straight after a new Asana task is created
 PATTERN: chainResponse
@@ -151,29 +138,31 @@ NL: Sync Salesforce data right after a Gmail contact is being updated
 PATTERN: chainResponse
 SYMBOLS: Salesforce, Gmail
 
+
 NL: Create a new Trello card for a new Salesforce campaign
 PATTERN: respondedExistence
 SYMBOLS: Trello, Salesforce
 
-NL: if a new Insightly contact is created, then send me a Slack notification
+NL: In which cases where ReleaseB occurs, IVAntibiotics is also executed?
 PATTERN: respondedExistence
-SYMBOLS: Insightly, Slack
+SYMBOLS: ReleaseB, IVAntibiotics
 
-NL: if a response is created in SurveyMonkey, then Send a Slack message
+NL: When AdmissionNC happens, does IVLiquids occur before of after it?
 PATTERN: respondedExistence
-SYMBOLS: SurveyMonkey, Slack
+SYMBOLS: AdmissionNC, IVLiquids
 
-NL: make sure that if I receive a Gmail, then either I have already received a Slack message before or I will be receiving it
+NL: Is there any case in which if LacticAcid occurs, ReturnER occurs at any point?
 PATTERN: respondedExistence
-SYMBOLS: Gmail, Slack
+SYMBOLS: LacticAcid, ReturnER
 
-NL: synchronize Salesforce leads either before or after updating the Salesforce account
+NL: Does ERTriage occur either before or after AdmissionIC at any point in the process?
 PATTERN: respondedExistence
-SYMBOLS: Salesforce, Salesforce
+SYMBOLS: ERTriage, AdmissionNC
 
-NL: send a Gmail message when a new event is added in Eventbrite
+NL: Does ERTriage happen in any case in which AdmissionNC occurs?
 PATTERN: respondedExistence
-SYMBOLS: Gmail, Eventbrite
+SYMBOLS: AdmissionNC, ERTriage
+
 
 NL: ReleaseA does not occur
 PATTERN: absence
@@ -182,3 +171,11 @@ SYMBOLS: ReleaseA
 NL: Give me cases in which IVLiquid never happens
 PATTERN: absence
 SYMBOLS: IVLiquid
+
+NL: Are there any cases in which ReleaseA never takes place?
+PATTERN: absence
+SYMBOLS: ReleaseA
+
+NL: When does IVAntibiotics never happen?
+PATTERN: absence
+SYMBOLS: IVAntibiotics
