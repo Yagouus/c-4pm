@@ -59,5 +59,6 @@ Duckling is used to parse things like emails, dates, temporal intervals and more
 - Added support to the "absence" Declare template in the GPT `prompt`
 
 ### Declare4Py
-- Added support to the "absence" template in `LTLModel.py`so the absence concept can be used in different reasonin tasks.
+- Added support to the `absence` and `existence two` templates in `LTLModel.py`so the absence concept can be used in different reasonin tasks.
+
 

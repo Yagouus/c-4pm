@@ -11,5 +11,3 @@ utterance = "Does ERTriage happen in any case?"
 
 ltlf_formulas = translate(utterance, engine, filter)
 _top_result(ltlf_formulas)
-
-

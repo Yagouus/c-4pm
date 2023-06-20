@@ -26,7 +26,8 @@ load_dotenv('../.env')
 openai.api_key = os.getenv("OPENAI_API_KEY")
 engine_root = ENGINE_ROOT
 DATA_DIR = engine_root / "data"
-PROMPT_PATH = engine_root / DATA_DIR / "prompt.json"
+#PROMPT_PATH = engine_root / DATA_DIR / "prompt.json"
+PROMPT_PATH = engine_root / DATA_DIR / "prompt_declare.txt"
 
 
 class GPT3Engine(Engine):
@@ -42,7 +43,12 @@ class GPT3Engine(Engine):
         self.temperature = temperature
 
     def _load_prompt(self, prompt):
-        return json.load(open(prompt, "r"))["prompt"]
+        #return json.load(open(prompt, "r"))["prompt"]
+
+        with open(prompt, 'r') as file:
+            content = file.read()
+
+        return content
 
     @classmethod
     def __check_openai_version(cls):
@@ -77,6 +83,7 @@ def _process_utterance(
     :return: a dict with matching formulas and confidence
     """
 
+    print(prompt)
 
     query = "NL: " + utterance + "\n"
     prediction = openai.Completion.create(
