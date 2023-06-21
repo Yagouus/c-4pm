@@ -128,95 +128,116 @@ def conformance_check_ltl(ltlf, connectors):
     from src.Declare4Py.ProcessModels.LTLModel import LTLModel
     from src.Declare4Py.ProcessMiningTasks.ConformanceChecking.LTLAnalyzer import LTLAnalyzer
 
+    # Load event log
     event_log = D4PyEventLog()
     event_log.parse_xes_log('../assets/Sepsis Cases.xes.gz')
 
+    activities = []
+
     # Detect and translate the type of template
     template = ltlf.split(sep=' ')[0].replace('(', '')
-    c_0 = ltlf.split(sep=' ')[1].replace(')', '')
-
+    activities.append(ltlf.split(sep=' ')[1].replace(')', ''))
     if len(ltlf.split(sep=' ')) > 2:
-        c_1 = ltlf.split(sep=' ')[2].replace(')', '')
+        activities.append(ltlf.split(sep=' ')[2].replace(')', ''))
 
     print(template)
     print(connectors)
 
-    # If no activity has been properly detected, return empty list of traces
+
+
+    # If no activity has been properly detected by rasa, return empty list of traces
     if len(connectors) < 1:
         return []
-
-    for connector in connectors:
-        x = connector.replace(" ", "").lower()
-        c_0_alt = c_0.replace(x, connector)
-        if len(connectors) > 1:
-            c_1_alt = c_1.replace(x, connector)
 
     model = LTLModel()
 
     # Convert NL2LTL syntax to Declare4Py syntax
     match template:
         case 'Existence':
-            model.parse_from_string(f'F({c_0_alt})')
+            model.parse_from_string(f'F({activities[0]})')
 
         case 'ExistenceTwo':
             dec_template = LTLTemplate('existence_two_activity_a')
-            model = dec_template.fill_template([c_0_alt])
+            model = dec_template.fill_template([activities[0]])
 
         case 'Absence':
             dec_template = LTLTemplate('not_eventually_activity_a')
-            model = dec_template.fill_template([c_0_alt])
+            model = dec_template.fill_template([activities[0]])
 
         case 'RespondedExistence':
             dec_template = LTLTemplate('responded_existence')
-            model = dec_template.fill_template([c_0_alt], [c_1_alt])
+            model = dec_template.fill_template([activities[0]], [activities[1]])
 
         case 'Response':
             dec_template = LTLTemplate('response')
-            model = dec_template.fill_template([c_0_alt], [c_1_alt])
+            model = dec_template.fill_template([activities[0]], [activities[1]])
 
         case 'Precedence':
             dec_template = LTLTemplate('precedence')
-            model = dec_template.fill_template([c_0_alt], [c_1_alt])
+            model = dec_template.fill_template([activities[0]], [activities[1]])
 
         case 'ChainResponse':
             dec_template = LTLTemplate('chain_response')
-            model = dec_template.fill_template([c_0_alt], [c_1_alt])
+            model = dec_template.fill_template([activities[0]], [activities[1]])
 
         case 'NotCoExistence':
             dec_template = LTLTemplate('chain_response')
-            model = dec_template.fill_template([c_0_alt], [c_1_alt])
+            model = dec_template.fill_template([activities[0]], [activities[1]])
 
     analyzer = LTLAnalyzer(event_log, model)
     df = analyzer.run()
 
-    # Recover traces from the log
-    case_ids = list(df.query('accepted == True')['case:concept:name'])
-
+    # Recover cases from the log and project the trace
     import pm4py
+    case_ids = list(df.query('accepted == True')['case:concept:name'])
     traces = pm4py.filter_trace_attribute_values(event_log.get_log(),
                                                  'concept:name',
                                                  case_ids,
                                                  case_id_key=' concept:name')
 
+    print('Vacuosly accepted traces', len(traces))
+
+    # Filter traces that vacuosely satisfy the constraints
+    # A trace needs to contain both activities that make the constraint
+
+    for connector in connectors:
+        x = connector.replace(" ", "")
+        print("X", x, "Connector", connector)
+        for idx, a in enumerate(activities):
+            print("A", a)
+            activities[idx] = a.replace(x, connector)
+
+    #print(activities)
+
+
+
+    # TODO: Need to add spaces back to original name, or create a map
+    for a in activities:
+        traces = pm4py.filter_event_attribute_values(
+            traces,
+            'concept:name',
+            {a},
+            case_id_key='concept:name')
+
     tr_attr_values = pm4py.project_on_event_attribute(traces, 'concept:name')
 
-    #print(df)
-    #print(case_ids)
-    #print('Total traces', len(df))
-    #print('Accepted trace ids', len(case_ids))
-    #print('Accepted traces', len(tr_attr_values))
+    # print(df)
+    # print(case_ids)
+    # print('Total traces', len(df))
+    # print('Accepted trace ids', len(case_ids))
 
-    #text = "\n"
-    #for idx, t in enumerate(tr_attr_values):
+    print('Accepted traces', len(traces))
+
+    # text = "\n"
+    # for idx, t in enumerate(tr_attr_values):
     #    text += "-" + str(t) + "\n\n"
     #    if idx >= 5:
     #        break
-    #print(text)
+    # print(text)
 
     return tr_attr_values
-
 
 # model_discovery()
 # print(conformance_check())
 
-#conformance_check_ltl("(ExistenceTwo ReleaseA)", ["ReleaseA"])
+# conformance_check_ltl("(ExistenceTwo ReleaseA)", ["ReleaseA"])

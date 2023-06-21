@@ -91,11 +91,19 @@ SYMBOLS: ERRegistration, Leucocytes
 
 NL: Find traces in which IVAntibiotics occurs eventually whenever ERRegistration is performed
 PATTERN: response
-SYMBOLS: IVAntibiotics, ERRegistration
+SYMBOLS: ERRegistration, IVAntibiotics
 
 NL: whenever ERSepsisTriage happens, ReleaseA occurs
 PATTERN: response
 SYMBOLS: ERSepsisTriage, ReleaseA
+
+NL: Are they traces in which IVLiquid occurs sometime after ERRegistration is performed?
+PATTERN: response
+SYMBOLS: IVLiquid, ERRegistration
+
+NL: Give me traces in which after Admission NC occurs Leucocytes is performed
+PATTERN: response
+SYMBOLS: AdmissionNC, ERTriage
 
 
 NL: Find traces in which IVAntibiotics occurs right after ERRegistration is performed
@@ -104,7 +112,7 @@ SYMBOLS: ERRegistration, IVAntibiotics
 
 NL: Are there cases in which every time there is an AdmissionIC, is immediately performed IVAntibiotics?
 PATTERN: chainResponse
-SYMBOLS: IVAntibiotics, AdmissionIC
+SYMBOLS: AdmissionIC, IVAntibiotics
 
 NL: Are there any cases in which activity ER Triage occurs right after Admission NC?
 PATTERN: chainResponse
@@ -117,6 +125,10 @@ SYMBOLS: AdmissionNC, ERTriage
 NL: Does in any case ReleaseD happen right after AdmissionIC?
 PATTERN: chainResponse
 SYMBOLS: ReleaseD, AdmissionIC
+
+NL: Give me the traces in which after ERTriage occurs IVAntibiotics is immediately performed
+PATTERN: chainResponse
+SYMBOLS: ERTriage, IVAntibiotics
 
 NL: Send me a Slack notification straight after a new Asana task is created
 PATTERN: chainResponse

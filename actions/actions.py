@@ -137,45 +137,52 @@ class ActionBehaviorSearch(Action):
         # Run NL2LTLf
         utterance = str(tracker.latest_message['text'])
         connectors = list(tracker.get_latest_entity_values("connector"))
-        mod_connectors = []
-        #print(connectors)
 
+        # Remove possible spaces in the connectors
         for connector in connectors:
             x = connector.replace(" ", "")
             utterance = utterance.replace(connector, x)
 
-        #print(utterance)
-
+        # NL2LTL and get formula and confidence
         from nl2ltl_client import run
-        ltlf_formulas = run(utterance)
+        formula, confidence = run(utterance)
 
-        if ltlf_formulas is None:
+        # Check confidence in result
+        if confidence < 0.7:
             dispatcher.utter_message(
-                text="There are no cases in which that happens.")
+                text="I'm not sure about the behaviour you are asking, can you please reformulate your question?.")
             return []
 
-        print(ltlf_formulas)
-        print(ltlf_formulas.to_english())
+        if formula is None:
+            dispatcher.utter_message(text="There are no cases in which that happens.")
+            return []
+
+        print(formula)
+        print(formula.to_english())
 
         # Conformance checking with ltl
         from declare_client import conformance_check_ltl
-        traces = conformance_check_ltl(str(ltlf_formulas), connectors)
-        text = ""
+        traces = conformance_check_ltl(str(formula), connectors)
 
+        if len(traces) > 0:
+            result_text = f"Here are some cases in which, {formula.to_english()}".capitalize()
+        else:
+            dispatcher.utter_message(text="There are no cases in which that happens.")
+            return []
+
+        # Convert traces to text
+        text = ""
         for idx, t in enumerate(traces):
-            text += "-" + str(t) + "\n\n"
+            text += "" + str(t).replace("'", "").replace("[", "").replace("]", "") + "\n\n"
             if idx >= 5:
                 break
 
-        if len(traces) > 0:
-            result_text = f"Here are some cases in which, {ltlf_formulas.to_english()}".capitalize()
-        else:
-            result_text = "There are no cases in which that happens."
-
+        # Add spaces back to the string
         for connector in connectors:
             x = connector.replace(" ", "").lower()
             result_text = result_text.replace(x, connector)
 
+        # Return the message
         dispatcher.utter_message(
             text=f'{result_text} \n\n {text}')
 
@@ -189,7 +196,6 @@ class ActionConformanceCheckLTLF(Action):
     def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-
         # Run NL2LTLf
         utterance = str(tracker.latest_message['text'])
         from nl2ltl_client import run
@@ -201,6 +207,6 @@ class ActionConformanceCheckLTLF(Action):
 
         print(traces)
 
-        dispatcher.utter_message(text="Here you have traces conformant to your query: \n\n" )
+        dispatcher.utter_message(text="Here you have traces conformant to your query: \n\n")
 
         return []
