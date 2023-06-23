@@ -1,6 +1,7 @@
 import textwrap
 
 import numpy as np
+import pm4py
 
 from src.Declare4Py.ProcessModels.LTLModel import LTLTemplate
 
@@ -98,13 +99,6 @@ def conformance_check(threshold=0.8, opposite=False):
 
     declare_model = DeclareModel().parse_from_file('../assets/model.decl')
 
-    #model_constraints = declare_model.get_decl_model_constraints()
-
-    #print("Model constraints:")
-    #print("-----------------")
-    #for idx, constr in enumerate(model_constraints):
-     #   print(idx, constr)
-
     from src.Declare4Py.ProcessMiningTasks.ConformanceChecking.MPDeclareAnalyzer import MPDeclareAnalyzer
     from src.Declare4Py.ProcessMiningTasks.ConformanceChecking.MPDeclareResultsBrowser import MPDeclareResultsBrowser
 
@@ -127,121 +121,60 @@ def conformance_check(threshold=0.8, opposite=False):
     return traces
 
 
-def conformance_check_ltl(ltlf, connectors):
+def conformance_check_ltl(formula, connectors):
     from src.Declare4Py.D4PyEventLog import D4PyEventLog
-    from src.Declare4Py.ProcessModels.LTLModel import LTLModel
     from src.Declare4Py.ProcessMiningTasks.ConformanceChecking.LTLAnalyzer import LTLAnalyzer
 
     # Load event log
     event_log = D4PyEventLog()
     event_log.parse_xes_log('../assets/Sepsis Cases.xes.gz')
 
-    activities = []
-
     # Detect and translate the type of template
-    template = ltlf.split(sep=' ')[0].replace('(', '')
-    activities.append(ltlf.split(sep=' ')[1].replace(')', ''))
-    if len(ltlf.split(sep=' ')) > 2:
-        activities.append(ltlf.split(sep=' ')[2].replace(')', ''))
-
-    print(template)
-    print(connectors)
-
-
+    template, *activities = formula.strip('()').split()
 
     # If no activity has been properly detected by rasa, return empty list of traces
-    if len(connectors) < 1:
+    cs = [c.replace(' ', '') for c in connectors]
+    if not connectors or sorted(cs) != sorted(activities):
         return []
 
-    model = LTLModel()
-
     # Convert NL2LTL syntax to Declare4Py syntax
-    match template:
-        case 'Existence':
-            model.parse_from_string(f'F({activities[0]})')
+    template_mapping = {
+        'Existence': 'eventually_activity_a',
+        'ExistenceTwo': 'existence_two_activity_a',
+        'Absence': 'not_eventually_activity_a',
+        'RespondedExistence': 'responded_existence',
+        'Response': 'response',
+        'Precedence': 'precedence',
+        'ChainResponse': 'chain_response',
+        'NotCoExistence': 'chain_response'
+    }
 
-        case 'ExistenceTwo':
-            dec_template = LTLTemplate('existence_two_activity_a')
+    # Translate NL2LTL to Declare4Py syntax
+    if template := template_mapping.get(template):
+        dec_template = LTLTemplate(template)
+        if template in ['eventually_activity_a', 'existence_two_activity_a', 'not_eventually_activity_a']:
             model = dec_template.fill_template([activities[0]])
-
-        case 'Absence':
-            dec_template = LTLTemplate('not_eventually_activity_a')
-            model = dec_template.fill_template([activities[0]])
-
-        case 'RespondedExistence':
-            dec_template = LTLTemplate('responded_existence')
+        else:
             model = dec_template.fill_template([activities[0]], [activities[1]])
+    else:
+        return None
 
-        case 'Response':
-            dec_template = LTLTemplate('response')
-            model = dec_template.fill_template([activities[0]], [activities[1]])
-
-        case 'Precedence':
-            dec_template = LTLTemplate('precedence')
-            model = dec_template.fill_template([activities[0]], [activities[1]])
-
-        case 'ChainResponse':
-            dec_template = LTLTemplate('chain_response')
-            model = dec_template.fill_template([activities[0]], [activities[1]])
-
-        case 'NotCoExistence':
-            dec_template = LTLTemplate('chain_response')
-            model = dec_template.fill_template([activities[0]], [activities[1]])
-
+    # Perform conformance checking
     analyzer = LTLAnalyzer(event_log, model)
     df = analyzer.run()
 
-    # Recover cases from the log and project the trace
-    import pm4py
-    case_ids = list(df.query('accepted == True')['case:concept:name'])
-    traces = pm4py.filter_trace_attribute_values(event_log.get_log(),
-                                                 'concept:name',
-                                                 case_ids,
-                                                 case_id_key=' concept:name')
-
-    print('Vacuosly accepted traces', len(traces))
-
-    # Filter traces that vacuosely satisfy the constraints
-    # A trace needs to contain both activities that make the constraint
-
-    for connector in connectors:
-        x = connector.replace(" ", "")
-        print("X", x, "Connector", connector)
-        for idx, a in enumerate(activities):
-            print("A", a)
-            activities[idx] = a.replace(x, connector)
-
-    #print(activities)
+    # Recover accepted cases from the log and filter those containing all activities in the constraint
+    if accepted_cases := df.loc[df['accepted'], 'case:concept:name'].tolist():
+        traces = pm4py.filter_trace_attribute_values(event_log.get_log(), 'concept:name', accepted_cases,
+                                                     case_id_key='concept:name')
+        for a in connectors:
+            traces = pm4py.filter_event_attribute_values(traces, 'concept:name', {a}, case_id_key='concept:name')
+        return pm4py.project_on_event_attribute(traces, 'concept:name')
+    else:
+        return []
 
 
-
-    # TODO: Need to add spaces back to original name, or create a map
-    for a in activities:
-        traces = pm4py.filter_event_attribute_values(
-            traces,
-            'concept:name',
-            {a},
-            case_id_key='concept:name')
-
-    tr_attr_values = pm4py.project_on_event_attribute(traces, 'concept:name')
-
-    # print(df)
-    # print(case_ids)
-    # print('Total traces', len(df))
-    # print('Accepted trace ids', len(case_ids))
-
-    print('Accepted traces', len(traces))
-
-    # text = "\n"
-    # for idx, t in enumerate(tr_attr_values):
-    #    text += "-" + str(t) + "\n\n"
-    #    if idx >= 5:
-    #        break
-    # print(text)
-
-    return tr_attr_values
-
-def beahvior_check_ltl(ltlf, connectors):
+def behavior_check_ltl(ltlf, connectors):
     pass
 
 
