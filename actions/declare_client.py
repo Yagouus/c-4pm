@@ -89,7 +89,7 @@ def model_discovery():
     print(discovered_model.serialized_constraints)
 
 
-def conformance_check(threshold=0.8):
+def conformance_check(threshold=0.8, opposite=False):
     from src.Declare4Py.D4PyEventLog import D4PyEventLog
     from src.Declare4Py.ProcessModels.DeclareModel import DeclareModel
 
@@ -98,12 +98,12 @@ def conformance_check(threshold=0.8):
 
     declare_model = DeclareModel().parse_from_file('../assets/model.decl')
 
-    model_constraints = declare_model.get_decl_model_constraints()
+    #model_constraints = declare_model.get_decl_model_constraints()
 
-    print("Model constraints:")
-    print("-----------------")
-    for idx, constr in enumerate(model_constraints):
-        print(idx, constr)
+    #print("Model constraints:")
+    #print("-----------------")
+    #for idx, constr in enumerate(model_constraints):
+     #   print(idx, constr)
 
     from src.Declare4Py.ProcessMiningTasks.ConformanceChecking.MPDeclareAnalyzer import MPDeclareAnalyzer
     from src.Declare4Py.ProcessMiningTasks.ConformanceChecking.MPDeclareResultsBrowser import MPDeclareResultsBrowser
@@ -117,8 +117,12 @@ def conformance_check(threshold=0.8):
     for idx in range(event_log.get_length()):
         conf = conf_check_res.get_metric(trace_id=idx, metric="state")
         perc = np.sum(conf) / len(conf)
-        if perc > threshold:
-            traces.append(event_log.attribute_log_projection(event_log.get_concept_name())[idx])
+        if not opposite:
+            if perc > threshold:
+                traces.append(event_log.attribute_log_projection(event_log.get_concept_name())[idx])
+        else:
+            if perc < threshold:
+                traces.append(event_log.attribute_log_projection(event_log.get_concept_name())[idx])
 
     return traces
 
@@ -237,7 +241,12 @@ def conformance_check_ltl(ltlf, connectors):
 
     return tr_attr_values
 
+def beahvior_check_ltl(ltlf, connectors):
+    pass
+
+
 # model_discovery()
 # print(conformance_check())
 
 # conformance_check_ltl("(ExistenceTwo ReleaseA)", ["ReleaseA"])
+

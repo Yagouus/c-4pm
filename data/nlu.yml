@@ -36,26 +36,6 @@ nlu:
       - How is the model?
       - Tell me how the model is specified.Can
 
-  - intent: behavior_check
-    examples: |
-      - Is it possible to perform activity [CRP](connector) before performing activity [ER Triage](connector)?
-      - Can activity [IV Antibiotics](connector) be performed before activity [Admission NC](connector)?
-      - Is it admitted that [Admission IC](connector) happens after [ER Sepsis Triage](connector)?
-      - Is the following behavior possible? Every time activity [Return ER](connector) happens, it must be directly followed by activity [Release A](connector) 
-      - Is it allowed to perform an intervention without previously performing a CAT? 
-
-  - intent: query_check
-    examples: |
-      - What can I do after performing [activity A]{"entity": "activity", "role": "from"}?
-      - What relations hold between activities [A]{"entity": "activity", "role": "from"} and [B]{"entity": "activity", "role": "to"}?
-      - Is there any relationship between activities [admission]{"entity": "activity", "role": "from"} and [CAT]{"entity": "activity", "role": "to"}?
-      - What possible activities can I execute after performing a [MQX session]{"entity": "activity", "role": "from"}?
-      - What can I do after performing a [CAT]{"entity": "activity", "role": "from"}?
-      - What activities can precede an [Intervention]{"entity": "activity", "role": "to"}?
-
-    # Once a rule fires (intent is matched), a corresponding representation must be put together.
-    # This depends not only on what rule (intent) has been matched, but also on the entities (concepts, attributes, etc)
-    # Recognized on the sentence
   - intent: conformance_check
     examples: |
       - Can you give me all conformant traces?
@@ -95,10 +75,28 @@ nlu:
       - Can you retrieve all the traces in which a [CRP](connector) is performed after [IV Liquid](connector)?
       - Give me all cases in which activity [ER Triage](connector) is performed after activity [Admission NC](connector)
       - Does [ER Registration](connector) happen after [Leucocytes](connector)?
-      - Does at [Release D](connector) happen at some point after [Admission IC](connector) occurs?
-  
+      - Does [Release D](connector) happen at some point after [Admission IC](connector) occurs?
       - Tell me in which cases [IV Liquid](connector) never happens
       - In which traces never happens [ER Triage](connector)?
+
+  - intent: behavior_check
+    examples: |
+      - Is it possible to perform activity [CRP](connector) before performing activity [ER Triage](connector)?
+      - Can activity [IV Antibiotics](connector) be performed before activity [Admission NC](connector)?
+      - Is it admitted that [Admission IC](connector) happens after [ER Sepsis Triage](connector)?
+      - Is the following behavior possible? Every time activity [Return ER](connector) happens, it must be directly followed by activity [Release A](connector) 
+      - Is it allowed to perform activity [IV Liquids](connector) without previously performing activity [ER Triage](connector)? 
+      - If [Admission NC](connector) has not happened yet, can activity [Release A](connector) happen?
+      - Can activity [ER Triage](connector) occur after activity [Admission NC](connector)?
+
+  - intent: query_check
+    examples: |
+      - What can I do after performing [activity A]{"entity": "activity", "role": "from"}?
+      - What relations hold between activities [A]{"entity": "activity", "role": "from"} and [B]{"entity": "activity", "role": "to"}?
+      - Is there any relationship between activities [admission]{"entity": "activity", "role": "from"} and [CAT]{"entity": "activity", "role": "to"}?
+      - What possible activities can I execute after performing a [MQX session]{"entity": "activity", "role": "from"}?
+      - What can I do after performing a [CAT]{"entity": "activity", "role": "from"}?
+      - What activities can precede an [Intervention]{"entity": "activity", "role": "to"}?
 
 
   - intent: generate_conformant
@@ -106,7 +104,9 @@ nlu:
       - Can you generate a conforming trace for the corresponding model?
       - Can you give a possible trace for the corresponding model?
       - Is there any possible trace that conforms to the model?
+      
 
+# Dictionaries for entities
 
   - lookup: connector
     examples: |

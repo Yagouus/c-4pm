@@ -18,10 +18,9 @@ rules:
       - intent: bot_challenge
       - action: utter_iamabot
 
-  - rule: behavior_check
+  - rule: Behavior check - Check if some behavior is allowed by the specification, return traces if they are
     steps:
       - intent: behavior_check
-      - action: utter_behavior_check
       - action: action_behavior_check
 
   - rule: query_check
@@ -29,17 +28,17 @@ rules:
       - intent: query_check
       - action: utter_query_check
 
-  - rule: conformance_check
+  - rule: Conformance_check - Do conformance checking and return traces that are conformant to the specification
     steps:
       - intent: conformance_check
       - action: action_conformance_check
 
-  - rule: Conformance check with LTLF - Do conformance checking with user input formulae
+  - rule: Non-conformant check - Do conformance checking and return traces that are conformant to the specification
     steps:
-      - intent: conformance_check_ltlf
-      - action: action_conformance_check_ltlf
+      - intent: conformance_check
+      - action: action_non_conformant_check
 
-  - rule: Behavior search - Look for cases in which some behavior happens
+  - rule: Behavior search - Look for cases in which some behavior happens (conformance check with user-input ltlf)
     steps:
       - intent: behavior_search
       - action: action_behavior_search

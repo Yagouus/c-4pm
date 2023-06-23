@@ -20,7 +20,8 @@ to perform multiple reasoning tasks.
 
 - Python version: 3.10
 - Docker needs to be installed
-- [Lydia]() needs to be installed and configured. Logaut needs to be installed
+- [Lydia](https://github.com/whitemech/lydia) needs to be installed and configured. 
+To do so, we recommend the [Logaut guide](https://pypi.org/project/logaut/).
 - [NL2LTL]() is shipped within C-4PM (no need for separate installation)
 - The rest of the required libraries can be installed with `pip install -r requirements.txt`
 

@@ -191,3 +191,7 @@ SYMBOLS: ReleaseA
 NL: When does IVAntibiotics never happen?
 PATTERN: absence
 SYMBOLS: IVAntibiotics
+
+NL: Is it allowed to perform activity IV Liquids without previously performing activity ER Triage?
+PATTERN: notRespondedExistence
+SYMBOLS: ERTriage, IVLiquids
