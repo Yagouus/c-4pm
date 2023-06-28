@@ -191,6 +191,34 @@ class ActionConformanceCheck(Action):
         return []
 
 
+class ActionNonConformantCheck(Action):
+    def name(self) -> Text:
+        return "action_non_conformant_check"
+
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        """
+        Performs conformance checking based on a declarative specification and an event log.
+        :param dispatcher:
+        :param tracker:
+        :param domain:
+        :return: Nothing
+        """
+
+        # Run the conformance checking method
+        from declare_client import conformance_check
+        traces = conformance_check(opposite=True)
+
+        # Create and dispatch the message to the user
+        variants = list({str(t) for t in traces})
+        examples = "\n\n".join(t.translate(str.maketrans("", "", "[]'")) for t in random.sample(variants, k=4))
+        message = f"In total, there are {len(traces)} NON-conformant traces. Here are some examples: \n\n{examples}"
+        dispatcher.utter_message(text=message)
+
+        return []
+
+
 class ActionBehaviorSearch(Action):
     def name(self) -> Text:
         return "action_behavior_search"
@@ -249,24 +277,4 @@ class ActionBehaviorSearch(Action):
         return []
 
 
-class ActionNonConformantCheck(Action):
-    def name(self) -> Text:
-        return "action_non_conformant_check"
 
-    def run(self, dispatcher: CollectingDispatcher,
-            tracker: Tracker,
-            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-        from declare_client import conformance_check
-        traces = conformance_check(opposite=True)
-
-        text = ""
-
-        for idx, t in enumerate(traces):
-            text += "-" + str(t) + "\n\n"
-            if idx >= 5:
-                break
-
-        dispatcher.utter_message(
-            text="Here you have some conformant traces: \n\n" + text)
-
-        return []

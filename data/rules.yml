@@ -35,7 +35,7 @@ rules:
 
   - rule: Non-conformant check - Do conformance checking and return traces that are conformant to the specification
     steps:
-      - intent: conformance_check
+      - intent: non_conformanct_check
       - action: action_non_conformant_check
 
   - rule: Behavior search - Look for cases in which some behavior happens (conformance check with user-input ltlf)

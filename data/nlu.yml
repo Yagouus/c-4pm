@@ -47,6 +47,13 @@ nlu:
       - Conformant traces
       - Show traces conforming to the model
 
+  - intent: non_conformant_check
+    examples: |
+      - Are there any non conformant traces?
+      - Give me some traces that do not conform to the model
+      - How many traces don't conform to the specification?
+      - Show traces that do not respect the specification
+
   - intent: behavior_search
     examples: |
       - In which cases [ER Registration](connector) happens?
