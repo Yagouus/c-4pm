@@ -211,4 +211,4 @@ if __name__ == '__main__':
 
     # clitest.chat("models/20230522-122709-vivid-shore.tar.gz", endpoints="endpoints.yml")
 
-    app.run_server(debug=False)
+    app.run_server(debug=True)
