@@ -231,9 +231,9 @@ class ActionBehaviorSearch(Action):
         # Parse input data: Remove possible spaces in the connectors
         utterance = str(tracker.latest_message['text'])
         connectors = list(tracker.get_latest_entity_values("connector"))
-        #for connector in connectors:
-        #    x = connector.replace(" ", "")
-        #    utterance = utterance.replace(connector, x)
+        for connector in connectors:
+            x = connector.replace(" ", "")
+            utterance = utterance.replace(connector, x)
 
         # NL2LTL and get formula and confidence
         from nl2ltl_client import run
