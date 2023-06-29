@@ -237,9 +237,15 @@ class ActionBehaviorSearch(Action):
 
         # NL2LTL and get formula and confidence
         from nl2ltl_client import run
-        formula, confidence = run(utterance)
+        res = run(utterance)
+        if res:
+            formula, confidence = res
+        else:
+            dispatcher.utter_message(text=(f"I'm not sure I understood the behavior you are looking for."
+                                           "Can you please reformulate your question?"))
+            return []
 
-        # Check confidence in result if Rasa and GPT do not agree or GPT could not parse a formula
+            # Check confidence in result if Rasa and GPT do not agree or GPT could not parse a formula
         # Check that NL2ltl and rasa agree on number of activities detected
         activities = [a.replace(')', '') for a in str(formula).split()[1:]]
 
@@ -249,7 +255,7 @@ class ActionBehaviorSearch(Action):
 
         if len(connectors) != len(activities) or formula is None:
             dispatcher.utter_message(text=(f"Are you sure {str(activities).strip('[]')} occur/s in the process? "
-                                           "Please check you have written the name of the activities correctly?"))
+                                           "Please check you have written the name of the activities correctly."))
             return []
 
         # Conformance checking with ltl
