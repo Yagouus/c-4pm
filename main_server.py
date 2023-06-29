@@ -20,10 +20,9 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 logging.getLogger('werkzeug').setLevel(logging.ERROR)
 warnings.simplefilter(action='ignore', category=FutureWarning)
 
-server = flask.Flask(__name__)
-
 # init app and add stylesheet
-app = Dash(__name__, external_stylesheets=[dbc.themes.MINTY],server=server)
+app = Dash(__name__, external_stylesheets=[dbc.themes.MINTY])
+server = app.server
 
 # define the model the chatbot will be using
 #model_path = "models/20230522-122709-vivid-shore.tar.gz"
