@@ -24,6 +24,8 @@ to perform multiple reasoning tasks.
 To do so, we recommend the [Logaut guide](https://pypi.org/project/logaut/).
 - [NL2LTL]() is shipped within C-4PM (no need for separate installation)
 - The rest of the required libraries can be installed with `pip install -r requirements.txt`
+- Sometimes, due to you own machine configuration, some packages listed in  `requirements.txt` may not install correctly
+in those cases, please install those packages by hand with `pip install package-name`
 
 ### Installation steps
 
