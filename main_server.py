@@ -13,15 +13,17 @@ import os
 import warnings
 import logging
 
+import flask
+
 # Configuration fof the logger
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 logging.getLogger('werkzeug').setLevel(logging.ERROR)
 warnings.simplefilter(action='ignore', category=FutureWarning)
 
-# init app and add stylesheet
-app = Dash(__name__, external_stylesheets=[dbc.themes.MINTY])
+server = flask.Flask(__name__) # define flask app.server
 
-server = app.server
+# init app and add stylesheet
+app = Dash(__name__, external_stylesheets=[dbc.themes.MINTY],server=server)
 
 # define the model the chatbot will be using
 #model_path = "models/20230522-122709-vivid-shore.tar.gz"
@@ -210,4 +212,4 @@ if __name__ == '__main__':
 
     # clitest.chat("models/20230522-122709-vivid-shore.tar.gz", endpoints="endpoints.yml")
 
-    app.run(debug=True)
+    app.run(debug=False)
