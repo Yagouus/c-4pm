@@ -20,7 +20,7 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 logging.getLogger('werkzeug').setLevel(logging.ERROR)
 warnings.simplefilter(action='ignore', category=FutureWarning)
 
-server = flask.Flask(__name__) # define flask app.server
+server = flask.Flask(__name__)
 
 # init app and add stylesheet
 app = Dash(__name__, external_stylesheets=[dbc.themes.MINTY],server=server)
@@ -212,4 +212,4 @@ if __name__ == '__main__':
 
     # clitest.chat("models/20230522-122709-vivid-shore.tar.gz", endpoints="endpoints.yml")
 
-    app.run(debug=False)
+    app.run_server(debug=False)
