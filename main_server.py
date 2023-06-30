@@ -13,16 +13,16 @@ import os
 import warnings
 import logging
 
+import config
+
 # Configuration fof the logger
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 logging.getLogger('werkzeug').setLevel(logging.ERROR)
 warnings.simplefilter(action='ignore', category=FutureWarning)
 
 # init app and add stylesheet
-app = Dash(__name__, external_stylesheets=[dbc.themes.COSMO])
-server = app.server
-app.scripts.config.serve_locally = True
-app.css.config.serve_locally = True
+#app = Dash(__name__, external_stylesheets=[dbc.themes.COSMO], serve_locally=False)
+#server = app.server
 
 # define the model the chatbot will be using
 # model_path = "models/20230522-122709-vivid-shore.tar.gz"
@@ -38,7 +38,7 @@ conv_hist = []
 PLOTLY_LOGO = "assets/bot.png"
 
 # app ui
-app.layout = html.Div(children=[
+layout = html.Div(children=[
 
     # Title
     # html.Br(),
@@ -274,12 +274,25 @@ def update_conversation(click, text):
 #     else:
 #         return True
 
+def init_dashboard(server):
 
-if __name__ == '__main__':
+    dash_app = Dash(
+        server=server,
+        url_base_pathname=config.url_base_pathname,
+        external_stylesheets=[dbc.themes.BOOTSTRAP],
+        title="Template survey"
+    )
+
+    dash_app.layout = layout
+    #all_callbacks(dash_app)
+    return dash_app.server
+
+
+#if __name__ == '__main__':
     # endpoints = EndpointConfig("http://localhost:5055/webhook")
     # chat("models/20230522-122709-vivid-shore.tar.gz", endpoints="endpoints.yml")
     # rasa.run(model="models/20230522-122709-vivid-shore.tar.gz", endpoints="endpoints.yml")
 
     # clitest.chat("models/20230522-122709-vivid-shore.tar.gz", endpoints="endpoints.yml")
 
-    app.run_server(debug=False, host='0.0.0.0')
+  #  app.run_server(debug=False, host='0.0.0.0')
