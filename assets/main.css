@@ -8,6 +8,11 @@ colors = {
     'text': '#7FDBFF'
 }*/
 
+html, body {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
 .div_hover:hover {
     background: #e8f5e9
 }
