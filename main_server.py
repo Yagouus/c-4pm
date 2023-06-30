@@ -19,8 +19,8 @@ logging.getLogger('werkzeug').setLevel(logging.ERROR)
 warnings.simplefilter(action='ignore', category=FutureWarning)
 
 # init app and add stylesheet
-app = Dash(__name__, external_stylesheets=[dbc.themes.COSMO])
-server = app.server
+app = Dash(__name__, external_stylesheets=[dbc.themes.COSMO], requests_pathname_prefix='/c-4pm/')
+#server = app.server
 app.scripts.config.serve_locally = True
 app.css.config.serve_locally = True
 
