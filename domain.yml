@@ -4,6 +4,8 @@ intents:
   - greet
   - goodbye
   - bot_challenge
+  - upload
+  - discovery
   - convey_specification
   - conformance_check
   - non_conformant_check
@@ -11,6 +13,7 @@ intents:
   - behavior_check
   - query_check
   - generate_conformant
+  - consistency_check
 
 
 actions:
@@ -24,6 +27,8 @@ actions:
   - utter_generate_conformant
   - utter_compliance
   - utter_convey_spec
+  - utter_discovery
+  - utter_upload
   - action_hello_world
   - action_behavior_check
   - action_query_check
@@ -39,7 +44,7 @@ responses:
     - text: |
         Hi!
     - text: |
-        General Kenobi...
+        Hello there! I'm C-4PM. What can I do for you?
   utter_goodbye:
     - text: |
         See you!
@@ -47,7 +52,7 @@ responses:
         See you later alligator!
   utter_iamabot:
     - text: |
-        I'm a batman!
+        I'm C-4PM a conversational assistant ready to help you.
   utter_behavior_check:
     - text: |
         Let me check if this behavior is possible...
@@ -62,16 +67,26 @@ responses:
         Here are the {target} you are looking for. Redirecting to NL2LTL ->:
   utter_generate_conformant:
     - text: |
-        Wait, I will generate new conformant traces...
+        Behavior generation is not yet implemented in Declare4Py. As soon as this is available I will be able to do
+        this for you
   utter_compliance:
     - text: |
         Checking how the attribute holds to the expectations...
   utter_convey_spec:
     - text: |
-        Here you have a description of the model in natural language
+        Here you have a description of the model in natural language:
   utter_please_rephrase:
   - text: |
       I'm sorry, I didn't quite understand that. Could you rephrase?
+  utter_discovery:
+    - text: |
+        I'm sorry, for this demo the specification is already discovered
+  utter_upload:
+    - text: |
+        Sadly, I cannot allow you to upload a log. The demo is restricted to the Sepsis log
+  utter_consistency_check:
+    - text: |
+        Sorry, I cannot do this yet.
 
 
 entities:
@@ -84,18 +99,18 @@ entities:
   - to
   - connector
 
-slots:
-  email:
-    type: text
-    influence_conversation: false
-    mappings:
-      - type: from_entity
-        entity: email
-        # This condition ensures that this slot is only filled with the newsletter_form is actually active
-        # So it cannot be retrieved at any other point of the conversation
-        conditions:
-          - active_loop: newsletter_form
-            requested_slot: email
+#slots:
+#  email:
+#    type: text
+#    influence_conversation: false
+#    mappings:
+#      - type: from_entity
+#        entity: email
+#        # This condition ensures that this slot is only filled with the newsletter_form is actually active
+#        # So it cannot be retrieved at any other point of the conversation
+#        conditions:
+#          - active_loop: newsletter_form
+#            requested_slot: email
 
 #  ltl:
 #    type: text
@@ -124,10 +139,10 @@ slots:
 #      - type: from_entity
 
 
-forms:
-  newsletter_form:
-    required_slots:
-      - email
+#forms:
+#  newsletter_form:
+#    required_slots:
+#      - email
 
 session_config:
   session_expiration_time: 60

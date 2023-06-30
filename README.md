@@ -10,16 +10,25 @@ to perform multiple reasoning tasks.
 
 ## Abstract
 
-## Installation
+The effective presentation of process models to non-expert users in a way that allows them to understand
+and query these models is a well-known research challenge. Conversational interfaces, with their low
+expertise requirements, offer a potential solution. While procedural models like Petri nets are not ideal
+for linguistic presentation, declarative models, specifically the Declare specification, provide a more
+suitable option. This paper introduces C-4PM, the first conversational interface for declarative process
+specifications. C-4PM facilitates tasks such as consistency, conformance, and model checking through a
+conversation-driven modular pipeline. The feasibility of the tool was assessed through a preliminary
+evaluation on a healthcare process.
 
-### Basic requirements
+## Installation
 
 > **_NOTE:_**  Creating a virtual environment is highly recommended. For best compatibility this 
 > should be done using Python 3.10 as `python3.10 -m venv ./venv`. If you don't have Python 3.10 installed,
 > you can do it (in MacOS) with `brew install python@3.10`
 
-- Python version: 3.10
-- Docker needs to be installed
+### Basic requirements
+
+- Python version: 3.10 (`brew install python@3.10)
+- Docker needs to be installed (`brew install docker`)
 - [Lydia](https://github.com/whitemech/lydia) needs to be installed and configured. 
 To do so, we recommend the [Logaut guide](https://pypi.org/project/logaut/).
 - [NL2LTL]() is shipped within C-4PM (no need for separate installation)
@@ -53,7 +62,14 @@ Duckling is used to parse things like emails, dates, temporal intervals and more
 - 
 
 
-## Sample conversations
+## Sample questions
+
+| Task |  Question | Answer
+
+In which cases ER Triage occurs right after ER Registration?
+
+Generalizacion capabilities: Direct "Find traces in which IV Antibiotics occurs right after LacticAcid is performed" and indirect "Find traces in which IV Antibiotics are given to the patient right after a lactic acid test is performed" queries return the same result. 
+
 
 ## Modifications to source libraries
 
@@ -63,5 +79,6 @@ Duckling is used to parse things like emails, dates, temporal intervals and more
 
 ### Declare4Py
 - Added support to the `absence` and `existence two` templates in `LTLModel.py`so the absence concept can be used in different reasonin tasks.
+
 
 

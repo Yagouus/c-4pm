@@ -24,24 +24,35 @@ colors = {
     color: black
 }
 
+.conversation {
+  padding: 5px;
+
+  /*border-radius: 25px;
+  border: 3px solid #582eee;*/
+}
+
     /*font-family: Arial, Helvetica'', 'sans-serif',*/
 .imessage {
-  background-color: #fff;
+  background-color: #ffffff;
   border-radius: 0.25rem;
   display: flex;
   flex-direction: column-reverse;
   font-family: "SanFrancisco";
-  height: 600px;
+  height: 80vh;
   overflow: scroll;
   font-size: 1rem;
   margin: 0 auto 1rem;
   padding: 0.5rem 1.5rem;
 }
 
+.imessage::-webkit-scrollbar{
+    display: none;
+  }
+
 .imessage p {
   border-radius: 1.15rem;
   line-height: 1;
-  max-width: 75%;
+  max-width: 100%;
   padding: 0.5rem .875rem;
   position: relative;
   word-wrap: break-word;
@@ -57,13 +68,13 @@ colors = {
 
 p.from-me {
   align-self: flex-end;
-  background-color: #00796B;
+  background-color: #582eee;
   color: #fff;
 }
 
 p.from-me::before {
   border-bottom-left-radius: 0.8rem 0.7rem;
-  border-right: 1rem solid #00796B;
+  border-right: 1rem solid #582eee;
   right: -0.35rem;
   transform: translate(0, -0.1rem);
 }
@@ -77,16 +88,16 @@ p.from-me::after {
 }
 
 p[class^="from-"] {
-  margin: 0.5rem 0;
+  margin: 0.2rem 0;
   width: fit-content;
 }
 
 p.from-me ~ p.from-me {
-  margin: 0.25rem 0 0;
+  margin: 0.2rem 0 0;
 }
 
 p.from-me ~ p.from-me:not(:last-child) {
-  margin: 0.25rem 0 0;
+  margin: 0.2rem 0 0;
 }
 
 p.from-me ~ p.from-me:last-child {
@@ -99,7 +110,6 @@ p.from-them {
   color: #000;
 }
 
-/*
 p.from-them:before {
   border-bottom-right-radius: 0.8rem 0.7rem;
   border-left: 1rem solid #e5e5ea;
@@ -113,7 +123,7 @@ p.from-them::after {
   left: 20px;
   transform: translate(-30px, -2px);
   width: 10px;
-}*/
+}
 
 p[class^="from-"].emoji {
   background: none;
@@ -139,18 +149,6 @@ p[class^="from-"].emoji::before {
 .margin-t_one {
   margin-top: 1rem !important;
 }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 /* general styling */
@@ -195,6 +193,27 @@ h2 {
   margin-bottom: 1.25rem;
   max-width: 100%;
   padding: 0;
+}
+
+.myAlert-top{
+    position: absolute;
+    z-index: 1000;
+    top: 5px;
+    left:2%;
+    width: 96%;
+}
+
+.navbar-custom {
+  height: 60px;
+}
+
+.typing{
+  padding: 10px;
+  background-color: #e5e5ea;
+  margin: 10px 0 0;
+  position: fixed;
+  width:100%;
+  bottom: 0;
 }
 
 /*

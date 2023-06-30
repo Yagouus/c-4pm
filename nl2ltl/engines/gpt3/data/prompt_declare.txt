@@ -60,6 +60,10 @@ NL: Will IVAntibiotics eventually happen twice?
 PATTERN: existenceTwo
 SYMBOLS: IVAntibiotics
 
+NL: Is there any case in which IVLIquids happens twice?
+PATTERN: existenceTwo
+SYMBOLS: IVLiquids
+
 NL: When does AdmissionIC occur twice?
 PATTERN: existenceTwo
 SYMBOLS: AdmissionIC

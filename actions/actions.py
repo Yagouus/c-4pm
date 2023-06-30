@@ -206,6 +206,8 @@ class ActionNonConformantCheck(Action):
         :return: Nothing
         """
 
+        print("NON CONFORMANTSSSSSSS")
+
         # Run the conformance checking method
         from declare_client import conformance_check
         traces = conformance_check(opposite=True)
@@ -231,6 +233,11 @@ class ActionBehaviorSearch(Action):
         # Parse input data: Remove possible spaces in the connectors
         utterance = str(tracker.latest_message['text'])
         connectors = list(tracker.get_latest_entity_values("connector"))
+
+        if len(connectors) == 0:
+            dispatcher.utter_message(text=f"Please check you have written the name of the activities correctly.")
+            return []
+
         for connector in connectors:
             x = connector.replace(" ", "")
             utterance = utterance.replace(connector, x)
@@ -241,7 +248,7 @@ class ActionBehaviorSearch(Action):
         if res:
             formula, confidence = res
         else:
-            dispatcher.utter_message(text=(f"I'm not sure I understood the behavior you are looking for."
+            dispatcher.utter_message(text=(f"I'm not sure I understood the behavior you are looking for. "
                                            "Can you please reformulate your question?"))
             return []
 
@@ -282,5 +289,16 @@ class ActionBehaviorSearch(Action):
 
         return []
 
+class ActionActivitites(Action):
+    def name(self) -> Text:
+        return "action_activities"
 
+    def run(self,
+            dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
 
+        # Return the message
+        dispatcher.utter_message(text="Here is a list with all the activities in the process:")
+
+        return []

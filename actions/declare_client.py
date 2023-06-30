@@ -3,7 +3,7 @@ import textwrap
 import numpy as np
 import pm4py
 
-from src.Declare4Py.ProcessModels.LTLModel import LTLTemplate
+from src.Declare4Py.ProcessModels.LTLModel import LTLTemplate, LTLModel
 
 
 def dec_to_basic_nl(specification=""):
@@ -174,12 +174,26 @@ def conformance_check_ltl(formula, connectors):
         return []
 
 
-def behavior_check_ltl(ltlf, connectors):
-    pass
+def behavior_check_ltl(ltlf="", connectors=[]):
+    model = LTLModel()
+    model.parse_from_string("CRP & X(F(ER Triage && X(F(Admission NC))))")
+    print(f"{model.formula} is satisfiable? {model.check_satisfiability()}")
+
+    # Join both models
+
+    # Test the satisfiability
+
+    # Return result
 
 
-# model_discovery()
+
+
+
+model_discovery()
 # print(conformance_check())
 
 # conformance_check_ltl("(ExistenceTwo ReleaseA)", ["ReleaseA"])
+
+behavior_check_ltl()
+
 

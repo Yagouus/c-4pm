@@ -13,21 +13,19 @@ import os
 import warnings
 import logging
 
-import flask
-
 # Configuration fof the logger
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 logging.getLogger('werkzeug').setLevel(logging.ERROR)
 warnings.simplefilter(action='ignore', category=FutureWarning)
 
 # init app and add stylesheet
-app = Dash(__name__, external_stylesheets=[dbc.themes.MINTY])
+app = Dash(__name__, external_stylesheets=[dbc.themes.COSMO])
 server = app.server
 
 # define the model the chatbot will be using
-#model_path = "models/20230522-122709-vivid-shore.tar.gz"
-#model_path = 'models/20230615-144429-open-skyway.tar.gz'
-model_path = 'models/20230621-163856-nippy-hoop.tar.gz'
+# model_path = "models/20230522-122709-vivid-shore.tar.gz"
+# model_path = 'models/20230615-144429-open-skyway.tar.gz'
+model_path = 'models/20230630-105642-tractable-cheetah.tar.gz'
 
 # init the conversational agent
 agent = clitest.launch_bot(model_path, endpoints="endpoints.yml")
@@ -35,63 +33,121 @@ agent = clitest.launch_bot(model_path, endpoints="endpoints.yml")
 # init a list of the sessions conversation history
 conv_hist = []
 
+PLOTLY_LOGO = "assets/bot.png"
+
 # app ui
-app.layout = dbc.Container(children=[
+app.layout = html.Div(children=[
 
     # Title
-    html.Br(),
-    dbc.Row(dbc.Col(html.Div(html.H1('Welcome to C-4PM')))),
-    dbc.Row(dbc.Col(html.Div("""C-4PM: Conversational Interface 4 (Declarative) Process Mining."""))),
-    html.Br(),
+    # html.Br(),
+    # dbc.Row(dbc.Col(html.Div(html.H1('Welcome to C-4PM')))),
+    # dbc.Row(dbc.Col(html.Div("""C-4PM: Conversational Interface 4 (Declarative) Process Mining."""))),
+    # html.Br(),
 
     # Upload file div, do not allow multiple files
-    dcc.Upload(
-        id='upload-data',
-        className='div_hover',
-        children=html.Div([html.B('Drag'), ' and ', html.B('Drop'), ' or ', html.A(html.B('Select an Event Log'))]),
-        multiple=True
+    # dcc.Upload(
+    #   id='upload-data',
+    #    className='div_hover',
+    #    children=html.Div([html.B('Drag'), ' and ', html.B('Drop'), ' or ', html.A(html.B('Select an Event Log'))]),
+    #    multiple=True
+    # ),
+
+    # html.Br(),
+    # dbc.Row(dbc.Col(html.Div(html.H3("Let's chat!")))),
+
+    dbc.Navbar(
+        dbc.Container(
+            [
+                html.A(
+                    # Use row and col to control vertical alignment of logo / brand
+                    dbc.Row(
+                        [
+                            dbc.Col(html.Img(src=PLOTLY_LOGO, height="35px")),
+                            dbc.Col(dbc.NavbarBrand("C-4PM", className="ms-2")),
+                        ],
+                        align="center",
+                        className="g-0",
+                    ),
+                    href="https://plotly.com",
+                    style={"textDecoration": "none"},
+                ),
+            ]
+        ),
+        color="dark",
+        dark=True,
+        className="navbar-custom"
     ),
 
-    html.Br(),
-    dbc.Row(dbc.Col(html.Div(html.H3("Let's chat!")))),
+    dbc.Container([
 
-    dbc.Row([
-        dbc.Col([
-
-            # Chat window
-            dbc.Row([
-                html.Div(id='conversation', className="imessage"),
-                # style={'height': '300px', 'overflow': 'scroll', 'flex-direction': 'column-reverse'},
-
-                # Loading
-                dbc.Row([
-                    html.Br(),
-                    dbc.Col(html.P(dls.Pulse(html.Div(id="loading-output", style={'text-align': 'left'}),
-                                             width=35, color='#999999'), className='from-them margin-b_one'), width=3),
-                    html.Br(),
-                    html.Br(),
-                    html.Br(),
-                ]),
+        dbc.Modal([
+            dbc.ModalHeader(
+                dbc.ModalTitle("Welcome to C-4PM"),
+                close_button=True),
+            dbc.ModalBody([
+                html.H4("Demo usage ⚠️", className="alert-heading"),
+                html.P(
+                    "As C-4PM is still in active development, for offering a stable experience during this "
+                    "preliminary testing stages, the use of the tool is limited to the Sepsis use-case described "
+                    "in the paper. "
+                    "Both event log and process specification are given to the system by default, so the user can test "
+                    "the proposed reasoning tasks in a controlled environment."
+                ),
             ]),
+            dbc.ModalFooter([
+                html.P(
+                    "We apologize in advance for the inconvenience.",
+                ), ])
+        ], centered=True, is_open=True),
 
-            dbc.Row([
-                # Message window and button
-                dbc.Form([
+        dbc.Row([
+            dbc.Col([
+
+                # Chat window
+                dbc.Row([
+                    html.Div(id='conversation', className="imessage"),
+                    # style={'height': '300px', 'overflow': 'scroll', 'flex-direction': 'column-reverse'},
+
+                    # dcc.Loading(id="ls-loading-1", children=[html.Div(id="loading-output")],type="default"),
+
+                    # Loading
                     dbc.Row([
-                        dbc.Col(
-                            [dbc.Input(id='msg_input', value='', type='text', placeholder="Say something...",
-                                       debounce=True)
-                             ], width=10),
-                        dbc.Col(
-                            [dbc.Button('Send', id='send_button', type='submit', n_clicks=0, color="primary")
-                             ], className="d-grid gap-2", width=2)
-                    ])
-                ])
+                        html.Br(),
+                        dbc.Col(html.P(dls.Pulse(html.Div(id="loading-output", style={'text-align': 'left'}),
+                                                 width=35, color='#999999'), className='from-them margin-b_one'),
+                                width=3),
+                        html.Br(),
+                        html.Br(),
+                    ]),
+                ]),
+
+            ], width=12, lg=8)
+
+        ], justify="center", className="conversation"),
+
+        html.Br(),
+
+    ], fluid=True, className="p0"),
+
+    html.Div([
+        dbc.Container([
+            dbc.Form([
+                dbc.Row([
+                    dbc.Col([
+                        dbc.Row([
+                            dbc.Col(
+                                [dbc.Input(id='msg_input', value='', type='text', placeholder="Say something...",
+                                           debounce=True)
+                                 ], width=10),
+                            dbc.Col(
+                                [dbc.Button('Send', id='send_button', type='submit', n_clicks=0, color="info")
+                                 ], className="d-grid gap-2", width=2)
+                        ])
+                    ], width=12, lg=8)
+                ], justify="center")
             ])
-
-        ], width=8)
-
-    ], justify="center"),
+        ], fluid=True, className="p0"),
+    ], className="typing")
 
 ])
 
@@ -105,6 +161,7 @@ app.layout = dbc.Container(children=[
     Input(component_id='send_button', component_property='n_clicks'),
     State(component_id='msg_input', component_property='value'))
 # function to add new user interaction to conversation history
+
 def update_from(click, text):
     global conv_hist
 
@@ -121,7 +178,7 @@ def update_from(click, text):
     else:
         time.sleep(2)
         rspd = [dbc.Row([
-            dbc.Col(html.Img(src="assets/bot.png", style={'width': '40px'}), width=1),
+            #dbc.Col(html.Img(src="assets/bot.png", style={'width': '40px'}), width=1),
             dbc.Col(html.P("Hi! I'm C-4PM. How can I help you?", style={'text-align': 'left'},
                            className="from-them margin-b_one"), width=10)]
         )]
@@ -165,15 +222,15 @@ def update_conversation(click, text):
 
                     if idx == len(response) - 1:
                         rspd.append(dbc.Row([
-                            dbc.Col(html.Img(src="assets/bot.png", style={'width': '40px'}),
-                                    width=1),
+                            #dbc.Col(html.Img(src="assets/bot.png", style={'width': '40px'}),
+                            #        width=1),
                             dbc.Col(html.P(value, style={'text-align': 'left'}, className="from-them margin-b_one"),
                                     width=10)]
                         ))
                     else:
                         rspd.append(dbc.Row([
-                            dbc.Col(html.P(style={'width': '40px'}),
-                                    width=1),
+                            #dbc.Col(html.P(style={'width': '40px'}),
+                             #       width=1),
                             dbc.Col(html.P(value, style={'text-align': 'left'}, className="from-them margin-b_one"),
                                     width=10)]
                         ))
@@ -211,4 +268,4 @@ if __name__ == '__main__':
 
     # clitest.chat("models/20230522-122709-vivid-shore.tar.gz", endpoints="endpoints.yml")
 
-    app.run_server(debug=True)
+    app.run_server(debug=False, host='0.0.0.0')

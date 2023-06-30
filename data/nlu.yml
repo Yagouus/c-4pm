@@ -27,6 +27,35 @@ nlu:
       - am I talking to a human?
 
     ### DECLARE intents
+  - intent: upload
+    examples: |
+      - I want to upload a event log
+      - Can I provide an event log
+      - Analyze a log
+      - Can I give you a log?
+      - Is it possible to upload a log?
+      - I want to upload a log
+      
+
+  - intent: discovery
+    examples: |
+      - Can you discover the model of the process?
+      - Mine the model from the event log
+      - Discover the specification
+      - Extract the model of the process from the log
+      - Mine the model of the process
+
+  - intent: activities
+    examples: |
+      - List the activities
+      - List the events
+      - Which are the activities in the log?
+      - What activities are executed?
+      - Tell me the activities
+      - List the activities in the process
+      - What  are the possible events?
+      - What activities can be executed in the process?
+          
 
   - intent: convey_specification
     examples: |
@@ -53,6 +82,9 @@ nlu:
       - Give me some traces that do not conform to the model
       - How many traces don't conform to the specification?
       - Show traces that do not respect the specification
+      - Give me some non-conforming cases
+      - Can you give me some non conformant traces?
+      - Can you give me some non conforming traces?
 
   - intent: behavior_search
     examples: |
@@ -60,7 +92,7 @@ nlu:
       - Create a [ER Triage](connector) translation bot
       - Send patient to [ER Sepsis Triage](connector)
       - Give me all cases in which [Leucocytes](connector) is executed
-      - Is [CRP](connector) ever executed?
+      - Is [Return ER](connector) ever executed?
       - Take care of the patient with [IV Liquid](connector)
       - Will [IV Antibiotics](connector) eventually happen?
       - Is [Admission NC](connector) executed in any case?
@@ -76,7 +108,7 @@ nlu:
       - Take care of the patient with two [IV Liquid](connector)
       - Will [IV Antibiotics](connector) eventually happen twice?
       - Is [CRP](connector) executed two times in any case?
-      - Which cases have [Release A](connector) as a double activity?
+      - Which cases have [Release B](connector) as a double activity?
       - Does [ER Registration](connector) happen two times in any case?
       - When does [Admission IC](connector) occur twice?
       - Can you retrieve all the traces in which a [CRP](connector) is performed after [IV Liquid](connector)?
@@ -84,7 +116,8 @@ nlu:
       - Does [ER Registration](connector) happen after [Leucocytes](connector)?
       - Does [Release D](connector) happen at some point after [Admission IC](connector) occurs?
       - Tell me in which cases [IV Liquid](connector) never happens
-      - In which traces never happens [ER Triage](connector)?
+      - In which traces never happens [ER Sepsis Triage](connector)?
+      - Is there any case in which if [Lactic Acid](connector) occurs, [Return ER](connector) occurs at any point?
 
   - intent: behavior_check
     examples: |
@@ -95,6 +128,7 @@ nlu:
       - Is it allowed to perform activity [IV Liquids](connector) without previously performing activity [ER Triage](connector)? 
       - If [Admission NC](connector) has not happened yet, can activity [Release A](connector) happen?
       - Can activity [ER Triage](connector) occur after activity [Admission NC](connector)?
+      - Does the model allow [ER Triage] to happen after [IV Antibiotics]?
 
   - intent: query_check
     examples: |
@@ -110,8 +144,16 @@ nlu:
     examples: |
       - Can you generate a conforming trace for the corresponding model?
       - Can you give a possible trace for the corresponding model?
+      - Generate a log that conforms to the specification
+      - Create new traces
+      - Give me new traces based on the model
+
+  - intent: consistency_check
+    examples: |
       - Is there any possible trace that conforms to the model?
-      
+      - Does the model accept any behavior?
+      - Is the specification satisfiable?
+      - Is it possible that a trace is executed in the model?
 
 # Dictionaries for entities
 
