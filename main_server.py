@@ -164,7 +164,7 @@ def init_dashboard(server):
                                      ], width=9),
                                 dbc.Col(
                                     [dbc.Button(
-                                        dbc.Spinner(html.Div(id="loading-output"), type="grow", color="light",
+                                        dbc.Spinner(html.Div(id="loading-output"), color="light",
                                                     size="sm"),
                                         id='send_button', type='submit', n_clicks=0, color="info")
                                     ], className="d-grid gap-2", width=2)

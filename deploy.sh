@@ -11,4 +11,4 @@ rasa run actions &
 cd ..
 
 # Deploy dash app with rasa bot
-gunicorn main_server:server -b :8000 --timeout 240
+gunicorn wsgi:application -b :8008 --timeout 240
