@@ -63,6 +63,7 @@ app.layout = html.Div(children=[
                         [
                             dbc.Col(html.Img(src=PLOTLY_LOGO, height="35px")),
                             dbc.Col(dbc.NavbarBrand("C-4PM", className="ms-2")),
+                            dbc.Col()
                         ],
                         align="center",
                         className="g-0",
@@ -111,14 +112,14 @@ app.layout = html.Div(children=[
                     # dcc.Loading(id="ls-loading-1", children=[html.Div(id="loading-output")],type="default"),
 
                     # Loading
-                    dbc.Row([
-                        html.Br(),
-                        dbc.Col(html.P(dls.Pulse(html.Div(id="loading-output", style={'text-align': 'left'}),
-                                                 width=35, color='#999999'), className='from-them margin-b_one'),
-                                width=3),
-                        html.Br(),
-                        html.Br(),
-                    ]),
+                    # dbc.Row([
+                    #     html.Br(),
+                    #     dbc.Col(html.P(dls.Pulse(html.Div(id="loading-output", style={'text-align': 'left'}),
+                    #                              width=35, color='#999999'), className='from-them margin-b_one'),
+                    #             width=3),
+                    #     html.Br(),
+                    #     html.Br(),
+                    # ]),
                 ]),
 
             ], width=12, lg=8)
@@ -140,7 +141,9 @@ app.layout = html.Div(children=[
                                            debounce=True)
                                  ], width=9),
                             dbc.Col(
-                                [dbc.Button('Send', id='send_button', type='submit', n_clicks=0, color="info")
+                                [dbc.Button(
+                                    dbc.Spinner(html.Div(id="loading-output"), size="sm"),
+                                    id='send_button', type='submit', n_clicks=0, color="info", size="md")
                                  ], className="d-grid gap-2", width=2)
                         ])
                     ], width=12, lg=8)
@@ -195,7 +198,7 @@ def update_from(click, text):
                            className="from-them margin-b_one"), width=10)]
         )]
         conv_hist = rspd + conv_hist
-        return conv_hist, html.Div(), '', False
+        return conv_hist, html.Div('Send'), '', False
 
 
 # trigger bot response to user inputted message on submit button click
@@ -256,11 +259,11 @@ def update_conversation(click, text):
         # append interaction to conversation history
         conv_hist = agent_convo + conv_hist
 
-        time.sleep(2)
-        return conv_hist, html.Div(), False
+        # time.sleep(2)
+        return conv_hist, html.Div('Send'), False
 
     else:
-        return '', html.Div(), False
+        return '', html.Div('Send'), False
 
 
 # @app.callback(

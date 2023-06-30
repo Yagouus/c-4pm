@@ -85,6 +85,7 @@ def init_dashboard(server):
                             [
                                 dbc.Col(html.Img(src=PLOTLY_LOGO, height="35px")),
                                 dbc.Col(dbc.NavbarBrand("C-4PM", className="ms-2")),
+                                dbc.Col()
                             ],
                             align="center",
                             className="g-0",
@@ -133,14 +134,14 @@ def init_dashboard(server):
                         # dcc.Loading(id="ls-loading-1", children=[html.Div(id="loading-output")],type="default"),
 
                         # Loading
-                        dbc.Row([
-                            html.Br(),
-                            dbc.Col(html.P(dls.Pulse(html.Div(id="loading-output", style={'text-align': 'left'}),
-                                                     width=35, color='#999999'), className='from-them margin-b_one'),
-                                    width=3),
-                            html.Br(),
-                            html.Br(),
-                        ]),
+                        # dbc.Row([
+                        #     html.Br(),
+                        #     dbc.Col(html.P(dls.Pulse(html.Div(id="loading-output", style={'text-align': 'left'}),
+                        #                              width=35, color='#999999'), className='from-them margin-b_one'),
+                        #             width=3),
+                        #     html.Br(),
+                        #     html.Br(),
+                        # ]),
                     ]),
 
                 ], width=12, lg=8)
@@ -162,8 +163,11 @@ def init_dashboard(server):
                                                debounce=True)
                                      ], width=9),
                                 dbc.Col(
-                                    [dbc.Button('Send', id='send_button', type='submit', n_clicks=0, color="info")
-                                     ], className="d-grid gap-2", width=2)
+                                    [dbc.Button(
+                                        dbc.Spinner(html.Div(id="loading-output"), type="grow", color="light",
+                                                    size="sm"),
+                                        id='send_button', type='submit', n_clicks=0, color="info")
+                                    ], className="d-grid gap-2", width=2)
                             ])
                         ], width=12, lg=8)
                     ], justify="center")
@@ -216,7 +220,7 @@ def init_dashboard(server):
                                className="from-them margin-b_one"), width=10)]
             )]
             conv_hist = rspd + conv_hist
-            return conv_hist, html.Div(), '', False
+            return conv_hist, html.Div('Send'), '', False
 
     # trigger bot response to user inputted message on submit button click
     @app.callback(
@@ -276,11 +280,11 @@ def init_dashboard(server):
             # append interaction to conversation history
             conv_hist = agent_convo + conv_hist
 
-            time.sleep(2)
-            return conv_hist, html.Div(), False
+            time.sleep(1)
+            return conv_hist, html.Div('Send'), False
 
         else:
-            return '', html.Div(), False
+            return '', html.Div('Send'), False
 
     app.layout = layout
 
