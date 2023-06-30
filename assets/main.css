@@ -8,11 +8,6 @@ colors = {
     'text': '#7FDBFF'
 }*/
 
-html, body {
-    max-width: 100%;
-    overflow-x: hidden;
-}
-
 .div_hover:hover {
     background: #e8f5e9
 }
@@ -31,7 +26,8 @@ html, body {
 
 .conversation {
   padding: 5px;
-
+  overflow-x: hidden;
+  width: 100vw;
   /*border-radius: 25px;
   border: 3px solid #582eee;*/
 }
@@ -48,6 +44,7 @@ html, body {
   font-size: 1rem;
   margin: 0 auto 1rem;
   padding: 0.5rem 1.5rem;
+  overflow-x: hidden;
 }
 
 .imessage::-webkit-scrollbar{
@@ -93,7 +90,7 @@ p.from-me::after {
 }
 
 p[class^="from-"] {
-  margin: 0.2rem 0;
+  margin: 0.5rem 0;
   width: fit-content;
 }
 
@@ -109,10 +106,16 @@ p.from-me ~ p.from-me:last-child {
   margin-bottom: 0.5rem;
 }
 
+p.from-me {
+  margin-top: 0.7rem !important;
+  margin-bottom: 0.7rem !important;
+}
+
 p.from-them {
   align-items: flex-start;
   background-color: #e5e5ea;
   color: #000;
+  margin-bottom: 0.25rem !important;
 }
 
 p.from-them:before {

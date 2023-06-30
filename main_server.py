@@ -96,7 +96,8 @@ def init_dashboard(server):
             ),
             color="dark",
             dark=True,
-            className="navbar-custom"
+            className="navbar-custom",
+            fixed="top"
         ),
 
         dbc.Container([
@@ -159,7 +160,7 @@ def init_dashboard(server):
                                 dbc.Col(
                                     [dbc.Input(id='msg_input', value='', type='text', placeholder="Say something...",
                                                debounce=True)
-                                     ], width=10),
+                                     ], width=9),
                                 dbc.Col(
                                     [dbc.Button('Send', id='send_button', type='submit', n_clicks=0, color="info")
                                      ], className="d-grid gap-2", width=2)
