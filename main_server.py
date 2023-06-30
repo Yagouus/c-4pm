@@ -51,6 +51,7 @@ def init_dashboard(server):
 
     app = Dash(
         server=server,
+        url_base_pathname=config.url_base_pathname,
         external_stylesheets=[dbc.themes.COSMO],
         title="Template survey"
     )
