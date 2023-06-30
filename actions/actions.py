@@ -206,8 +206,6 @@ class ActionNonConformantCheck(Action):
         :return: Nothing
         """
 
-        print("NON CONFORMANTSSSSSSS")
-
         # Run the conformance checking method
         from declare_client import conformance_check
         traces = conformance_check(opposite=True)
@@ -289,6 +287,7 @@ class ActionBehaviorSearch(Action):
 
         return []
 
+
 class ActionActivitites(Action):
     def name(self) -> Text:
         return "action_activities"
@@ -298,7 +297,28 @@ class ActionActivitites(Action):
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
 
+        # Test declare model
+        test = ("""
+                Existence2[Admission NC]
+                Chain Response[Admission NC, Release B]
+                Chain Response[Admission NC, Release A]
+                Chain Precedence[IV Liquid, Admission NC]
+                Chain Response[ER Registration, ER Triage]
+                Chain Precedence[Release A, Return ER]
+                Chain Precedence[ER Sepsis Triage, IV Antibiotics]
+                Chain Response[ER Sepsis Triage, IV Antibiotics]
+                Chain Precedence[Admission IC, Admission NC]
+                Chain Precedence[IV Antibiotics, Admission NC]
+                Chain Precedence[Admission NC, Release B]
+                Chain Response[Admission IC, Admission NC]
+                Chain Response[LacticAcid, Leucocytes]
+                Chain Precedence[ER Registration, ER Triage]
+            """)
+
         # Return the message
         dispatcher.utter_message(text="Here is a list with all the activities in the process:")
 
         return []
+
+class ActionConsistencyCheck():
+    pass

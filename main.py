@@ -142,9 +142,10 @@ app.layout = html.Div(children=[
                                  ], width=9),
                             dbc.Col(
                                 [dbc.Button(
-                                    dbc.Spinner(html.Div(id="loading-output"), size="sm"),
-                                    id='send_button', type='submit', n_clicks=0, color="info", size="md")
-                                 ], className="d-grid gap-2", width=2)
+                                    dbc.Spinner(html.Div(id="loading-output"), color="light",
+                                                size="sm"),
+                                    id='send_button', type='submit', n_clicks=0, color="info")
+                                ], className="d-grid gap-2", width=2)
                         ])
                     ], width=12, lg=8)
                 ], justify="center")
@@ -153,7 +154,6 @@ app.layout = html.Div(children=[
     ], className="typing")
 
 ])
-
 
 # trigger bot response to user inputted message on submit button click
 @app.callback(
@@ -197,7 +197,7 @@ def update_from(click, text):
                            style={'text-align': 'left'},
                            className="from-them margin-b_one"), width=10)]
         )]
-        conv_hist = rspd + conv_hist
+        conv_hist = rspd
         return conv_hist, html.Div('Send'), '', False
 
 
@@ -259,7 +259,7 @@ def update_conversation(click, text):
         # append interaction to conversation history
         conv_hist = agent_convo + conv_hist
 
-        # time.sleep(2)
+        time.sleep(1)
         return conv_hist, html.Div('Send'), False
 
     else:

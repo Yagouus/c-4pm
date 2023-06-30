@@ -174,26 +174,141 @@ def conformance_check_ltl(formula, connectors):
         return []
 
 
-def behavior_check_ltl(ltlf="", connectors=[]):
-    model = LTLModel()
-    model.parse_from_string("CRP & X(F(ER Triage && X(F(Admission NC))))")
-    print(f"{model.formula} is satisfiable? {model.check_satisfiability()}")
+def behavior_check_ltl(specification=None, formula=None, connectors=[]):
 
-    # Join both models
+    from src.Declare4Py.D4PyEventLog import D4PyEventLog
 
-    # Test the satisfiability
+    # Load event log
+    event_log = D4PyEventLog()
+    event_log.parse_xes_log('../assets/Sepsis Cases.xes.gz')
+
+    # Detect and translate the type of template
+    template, *activities = formula.strip('()').split()
+
+    # If no activity has been properly detected by rasa, return empty list of traces
+    cs = [c.replace(' ', '') for c in connectors]
+    if not connectors or sorted(cs) != sorted(activities):
+        return []
+
+    # Convert NL2LTL syntax to Declare4Py syntax
+    template_mapping = {
+        'Existence': 'eventually_activity_a',
+        'ExistenceTwo': 'existence_two_activity_a',
+        'Absence': 'not_eventually_activity_a',
+        'RespondedExistence': 'responded_existence',
+        'Response': 'response',
+        'Precedence': 'precedence',
+        'ChainResponse': 'chain_response',
+        'NotCoExistence': 'chain_response'
+    }
+
+    # Translate NL2LTL to Declare4Py syntax
+    if template := template_mapping.get(template):
+        dec_template = LTLTemplate(template)
+        if template in ['eventually_activity_a', 'existence_two_activity_a', 'not_eventually_activity_a']:
+            model = dec_template.fill_template([activities[0]])
+        else:
+            model = dec_template.fill_template([activities[0]], [activities[1]])
+    else:
+        return None
+
+
+    nl_specification = dec2ltl(specification)
+    nl_specification.add_disjunction(model)
+    print(nl_specification.formula)
 
     # Return result
+    return nl_specification.check_satisfiability()
 
 
+def consistency_check(specification=None):
+
+    nl_specification = dec2ltl(specification)
+    print(nl_specification.formula)
+    return nl_specification.check_satisfiability()
 
 
+def dec2ltl(specification=None):
+    test = ("""
+                    Existence2[Admission NC]
+                    Chain Response[Admission NC, Release B]
+                    Chain Response[Admission NC, Release A]
+                    Chain Precedence[IV Liquid, Admission NC]
+                    Chain Response[ER Registration, ER Triage]
+                    Chain Precedence[Release A, Return ER]
+                    Chain Precedence[ER Sepsis Triage, IV Antibiotics]
+                    Chain Response[ER Sepsis Triage, IV Antibiotics]
+                    Chain Precedence[Admission IC, Admission NC]
+                    Chain Precedence[IV Antibiotics, Admission NC]
+                    Chain Precedence[Admission NC, Release B]
+                    Chain Response[Admission IC, Admission NC]
+                    Chain Response[LacticAcid, Leucocytes]
+                    Chain Precedence[ER Registration, ER Triage]
+                """)
 
-model_discovery()
+    if not specification:
+        specification = test
+
+    template_mapping = {
+        'Existence': 'eventually_activity_a',
+        'Existence2': 'existence_two_activity_a',
+        'Absence': 'not_eventually_activity_a',
+        'RespondedExistence': 'responded_existence',
+        'Response': 'response',
+        'Chain Precedence': 'chain_precedence',
+        'Chain Response': 'chain_response',
+        'NotCoExistence': 'chain_response'
+    }
+
+    nl_specification = None
+    fixed_specification = textwrap.dedent(specification)
+
+    lines = fixed_specification.splitlines()
+
+    # Iterate through the specification's constraints
+    for line in lines:
+
+        if line:
+
+            # Remove leading whitespaces
+            line = line.lstrip()
+
+            # Detect the type of template
+            template = line.split(sep='[')[0]
+
+            # Detect activities
+            target = line.split(sep='[')[1]
+
+            if len(target.split(sep=',')) > 1:
+                target_0 = target.split(sep=',')[0].strip()
+                target_1 = target.split(sep=',')[1].split(sep=']')[0].strip()
+                # print(template, target_0, target_1)
+            else:
+                target_0 = target.split(sep=']')[0].strip()
+                # print(template, target_0)
+
+            # Translate NL2LTL to Declare4Py syntax
+            if template := template_mapping.get(template):
+                dec_template = LTLTemplate(template)
+                if template in ['eventually_activity_a', 'existence_two_activity_a', 'not_eventually_activity_a']:
+                    t = dec_template.fill_template([target_0]).formula
+                else:
+                    t = dec_template.fill_template([target_0], [target_1]).formula
+
+            if nl_specification:
+                nl_specification.add_disjunction(t)
+            else:
+                nl_specification = LTLModel()
+                nl_specification.parse_from_string(t)
+        else:
+            nl_specification = nl_specification
+
+    return nl_specification
+
+
+# model_discovery()
 # print(conformance_check())
 
 # conformance_check_ltl("(ExistenceTwo ReleaseA)", ["ReleaseA"])
 
-behavior_check_ltl()
-
-
+#behavior_check_ltl()

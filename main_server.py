@@ -219,7 +219,7 @@ def init_dashboard(server):
                                style={'text-align': 'left'},
                                className="from-them margin-b_one"), width=10)]
             )]
-            conv_hist = rspd + conv_hist
+            conv_hist = rspd
             return conv_hist, html.Div('Send'), '', False
 
     # trigger bot response to user inputted message on submit button click
