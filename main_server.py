@@ -21,6 +21,8 @@ warnings.simplefilter(action='ignore', category=FutureWarning)
 # init app and add stylesheet
 app = Dash(__name__, external_stylesheets=[dbc.themes.COSMO])
 server = app.server
+app.scripts.config.serve_locally = True
+app.css.config.serve_locally = True
 
 # define the model the chatbot will be using
 # model_path = "models/20230522-122709-vivid-shore.tar.gz"
@@ -178,8 +180,20 @@ def update_from(click, text):
     else:
         time.sleep(2)
         rspd = [dbc.Row([
-            #dbc.Col(html.Img(src="assets/bot.png", style={'width': '40px'}), width=1),
+            # dbc.Col(html.Img(src="assets/bot.png", style={'width': '40px'}), width=1),
             dbc.Col(html.P("Hi! I'm C-4PM. How can I help you?", style={'text-align': 'left'},
+                           className="from-them margin-b_one"), width=10),
+            dbc.Col(html.P(["You can ask me multiple things, for example:",
+                            html.Br(),
+                            html.Br(),
+                            html.Ul([
+                                html.Li("Describe the process"),
+                                html.Li("List the activities in the process"),
+                                html.Li("Can you give me some conformant traces?"),
+                                html.Li("Is it possible that ER Triage occurs before IV Liquids?"),
+                                html.Li("In which cases ER Triage occurs right after ER Registration?")
+                            ])],
+                           style={'text-align': 'left'},
                            className="from-them margin-b_one"), width=10)]
         )]
         conv_hist = rspd + conv_hist
