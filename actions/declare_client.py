@@ -175,7 +175,6 @@ def conformance_check_ltl(formula, connectors):
 
 
 def behavior_check_ltl(specification=None, formula=None, connectors=[]):
-
     from src.Declare4Py.D4PyEventLog import D4PyEventLog
 
     # Load event log
@@ -212,21 +211,23 @@ def behavior_check_ltl(specification=None, formula=None, connectors=[]):
     else:
         return None
 
-
     nl_specification = dec2ltl(specification)
-    nl_specification.add_disjunction(model)
+    nl_specification.add_disjunction(model.formula)
+    sat = nl_specification.check_satisfiability()
     print(nl_specification.formula)
-
-    # Return result
-    return nl_specification.check_satisfiability()
+    print(sat)
+    return sat
 
 
 def consistency_check(specification=None):
-
     nl_specification = dec2ltl(specification)
+    sat = nl_specification.check_satisfiability()
     print(nl_specification.formula)
-    return nl_specification.check_satisfiability()
+    print(sat)
+    return sat
 
+
+# UTILS
 
 def dec2ltl(specification=None):
     test = ("""
@@ -266,7 +267,10 @@ def dec2ltl(specification=None):
     lines = fixed_specification.splitlines()
 
     # Iterate through the specification's constraints
-    for line in lines:
+    for idx, line in enumerate(lines):
+
+        if idx > 4:
+            break
 
         if line:
 
@@ -306,9 +310,5 @@ def dec2ltl(specification=None):
     return nl_specification
 
 
-# model_discovery()
-# print(conformance_check())
-
-# conformance_check_ltl("(ExistenceTwo ReleaseA)", ["ReleaseA"])
-
-#behavior_check_ltl()
+#consistency_check()
+behavior_check_ltl(formula="RespondedExistence AdmissionNC ERTriage", connectors=["Admission NC", "ER Triage"])
