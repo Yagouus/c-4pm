@@ -78,37 +78,39 @@ Duckling is used to parse things like emails, dates, temporal intervals and more
 
 ## Sample questions
 
-| Task                            | Question                                                                                                 | Answer |
-|---------------------------------|----------------------------------------------------------------------------------------------------------|--------|
-| Specification description in NL |                                                                                                          |        |
-| Consistency checking            |                                                                                                          |        |
-| Conformance checking            |                                                                                                          |        |   
-| Model checking                  |                                                                                                          |        |   
-| Restricted conformance checking | Find traces in which IV Antibiotics are given to the patient right after a lactic acid test is performed |        |   
-| Restricted conformance checking | Find traces in which IV Antibiotics occurs right after LacticAcid is performed                           |        |   
-| Restricted conformance checking | In which cases ER Triage occurs right after ER Registration?                                             |        |   
-
-In which cases ER Triage occurs right after ER Registration?
-
-Generalizacion capabilities: Direct "Find traces in which IV Antibiotics occurs right after LacticAcid is performed" and indirect "Find traces in which IV Antibiotics are given to the patient right after a lactic acid test is performed" queries return the same result. 
+| Task                            | Question                                                                       | Answer                                                          |
+|---------------------------------|--------------------------------------------------------------------------------|-----------------------------------------------------------------|
+| Specification description in NL | Can you describe the process?                                                  | Description of the process in NL                                |
+| List activities                 | List the activities in the process                                             | List of all possible activities                                 |
+| Consistency checking            | Does the model accept any behavior?                                            | Consistency checking boolean                                    |
+| Conformance checking            | Can you give me some conformant traces?                                        | Examples of conformant traces                                   |   
+| Model checking                  | Is it possible that ER Triage occurs before IV Liquids?                        | Boolean model checking and examples of that behavior in the log |
+| Restricted conformance checking | Find traces in which IV Antibiotics occurs right after LacticAcid is performed | List of traces in which that behavior happens                   |   
+| Restricted conformance checking | In which cases ER Triage occurs right after ER Registration?                   | List of traces in which that behavior happens                   |   
 
 
 ## Modifications to source libraries
 
 ### LTLf2DFA
 - Adapted GPT prompt and RASA NLU training data to these proposal's objectives.
-- Added support to the "absence" Declare template in the GPT `prompt`
+- Added support to the `absence` and `precendence` templates in the GPT `prompt`
 
 ### Declare4Py
 - Added support to the `absence` and `existence two` templates in `LTLModel.py`so the templates can be used in different reasoning tasks.
 
 ## Limits on this Demo
+- As C-4PM is still in active development, for offering a stable experience during this preliminary testing stages, 
+the use of the tool is limited to the Sepsis use-case described in the paper. 
+Both event log and process specification are given to the system by default, 
+so the user can test the proposed reasoning tasks in a controlled environment.
 - The parsing of natural language formulas to LTLf is limited to simple formulae. No conjunction or disjunction is yet 
 supported by the translator. But both conjunction, disjunction, implication, etc. are well supported by the tools
 used to perform the reasoning tasks.
 - The consistency checking and model checking tasks are limited in terms of formula size. Too big formulae make the
 satisfiability check too demanding and slow, which would make the use of the conversational interface unpleasant. 
 Optimizing this is planned as future work so bigger models can be used.
+- No session storage is used, so, if multiple users use the chatbot at the same time, some overlapping may occur. This
+is being currently fixed. In case this happens, a simple refresh of the page will start a new conversation.
 
 
 

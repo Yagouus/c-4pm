@@ -1,0 +1,4 @@
+#!/bin/bash
+cd /home/ubuntu/c-4pm
+source ./venv/bin/activate
+gunicorn wsgi:application -b :8000 --timeout 240

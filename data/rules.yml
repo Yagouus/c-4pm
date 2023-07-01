@@ -71,7 +71,7 @@ rules:
   - rule: Consistency check - Check if the model allows for any behavior
     steps:
       - intent: consistency_check
-      - action: utter_consistency_check
+      - action: action_consistency_check
 
   # Out of scope rule
   - rule: Ask the user to rephrase whenever they send a message with low NLU confidence

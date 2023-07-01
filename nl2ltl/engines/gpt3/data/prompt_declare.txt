@@ -76,6 +76,10 @@ NL: Is CRP executed two times in any case?
 PATTERN: existenceTwo
 SYMBOLS: CRP
 
+NL: Will IV Antibiotics eventually happen twice in a case?
+PATTERN: existenceTwo
+SYMBOLS: IVAntibiotics
+
 
 NL: Can you retrieve all the traces in which a CRP is performed after IVLiquid?
 PATTERN: response

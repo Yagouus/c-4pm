@@ -6,6 +6,7 @@ intents:
   - bot_challenge
   - upload
   - discovery
+  - activities
   - convey_specification
   - conformance_check
   - non_conformant_check
@@ -36,6 +37,8 @@ actions:
   - action_conformance_check
   - action_non_conformant_check
   - action_behavior_search
+  - action_activities
+  - action_consistency_check
 
 responses:
   utter_greet:

@@ -1,0 +1,12 @@
+[Unit]
+Description=Gunicorn instance to serve C-4pm
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+User=ubuntu
+WorkingDirectory=/home/ubuntu/c-4pm
+ExecStart=/usr/bin/c-4pm.script
+
+[Install]
+WantedBy=multi-user.target

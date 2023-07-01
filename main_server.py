@@ -1,4 +1,5 @@
 import time
+from pathlib import Path
 
 import clitest
 
@@ -27,7 +28,18 @@ warnings.simplefilter(action='ignore', category=FutureWarning)
 # define the model the chatbot will be using
 # model_path = "models/20230522-122709-vivid-shore.tar.gz"
 # model_path = 'models/20230615-144429-open-skyway.tar.gz'
-model_path = 'models/20230630-105642-tractable-cheetah.tar.gz'
+def _get_latest_model(path: Path):
+    """Get the Rasa latest model."""
+    if not path:
+        return None
+    list_of_files = glob.glob(os.path.join(path, "*.tar.gz"))
+    if len(list_of_files) == 0:
+        return None
+    return max(list_of_files, key=os.path.getctime)
+
+
+model_path = _get_latest_model(Path("models"))
+print(model_path)
 
 # init the conversational agent
 agent = clitest.launch_bot(model_path, endpoints="endpoints.yml")
@@ -214,7 +226,9 @@ def init_dashboard(server):
                                     html.Li("List the activities in the process"),
                                     html.Li("Can you give me some conformant traces?"),
                                     html.Li("Is it possible that ER Triage occurs before IV Liquids?"),
-                                    html.Li("In which cases ER Triage occurs right after ER Registration?")
+                                    html.Li("Can activity IV Antibiotics be performed before activity Admission NC?"),
+                                    html.Li("In which cases ER Triage occurs right after ER Registration?"),
+                                    html.Li("Will IV Antibiotics eventually happen twice?")
                                 ])],
                                style={'text-align': 'left'},
                                className="from-them margin-b_one"), width=10)]

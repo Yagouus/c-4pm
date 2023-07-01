@@ -46,12 +46,12 @@ class ActionBehaviorCheck(Action):
         utterance = str(tracker.latest_message['text'])
         connectors = list(tracker.get_latest_entity_values("connector"))
 
+        print(connectors)
+
         # Remove possible spaces in the connectors
         for connector in connectors:
             x = connector.replace(" ", "")
             utterance = utterance.replace(connector, x)
-
-        # Do behavior check
 
         # NL2LTL and get formula and confidence
         from nl2ltl_client import run
@@ -70,14 +70,26 @@ class ActionBehaviorCheck(Action):
         print(formula)
         print(formula.to_english())
 
+        # Do behavior check
+        import declare_client
+        fact = declare_client.behavior_check_ltl(formula=str(formula), connectors=connectors)
+
+        # If the behavior is not admissible, return immediately
+        if not fact:
+            dispatcher.utter_message(
+                text=f"The specification of the process does not allow for that behavior.".capitalize())
+            return []
+
         # Conformance checking with ltl
         from declare_client import conformance_check_ltl
         traces = conformance_check_ltl(str(formula), connectors)
 
         if len(traces) > 0:
-            result_text = f"Here are some cases in which, {formula.to_english()}".capitalize()
+            result_text = f"The specification allows for that behavior. " \
+                          f"Here are some cases in which, {formula.to_english()}"
         else:
-            dispatcher.utter_message(text="There are no cases in which that happens.")
+            dispatcher.utter_message(text="The specification allows for that behavior. "
+                                          "However, there are no cases in which that happens.")
             return []
 
         # Convert traces to text
@@ -288,7 +300,8 @@ class ActionBehaviorSearch(Action):
         return []
 
 
-class ActionActivitites(Action):
+class ActionActivities(Action):
+
     def name(self) -> Text:
         return "action_activities"
 
@@ -296,29 +309,32 @@ class ActionActivitites(Action):
             dispatcher: CollectingDispatcher,
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        import declare_client
+        activities = declare_client.list_activities()
 
-        # Test declare model
-        test = ("""
-                Existence2[Admission NC]
-                Chain Response[Admission NC, Release B]
-                Chain Response[Admission NC, Release A]
-                Chain Precedence[IV Liquid, Admission NC]
-                Chain Response[ER Registration, ER Triage]
-                Chain Precedence[Release A, Return ER]
-                Chain Precedence[ER Sepsis Triage, IV Antibiotics]
-                Chain Response[ER Sepsis Triage, IV Antibiotics]
-                Chain Precedence[Admission IC, Admission NC]
-                Chain Precedence[IV Antibiotics, Admission NC]
-                Chain Precedence[Admission NC, Release B]
-                Chain Response[Admission IC, Admission NC]
-                Chain Response[LacticAcid, Leucocytes]
-                Chain Precedence[ER Registration, ER Triage]
-            """)
+        examples = "\n\n".join(t.translate(str.maketrans("", "", "[]'")) for t in activities)
+        message = f"In total, there are {len(activities)} possible activities. Here they are: \n\n{examples}"
 
         # Return the message
-        dispatcher.utter_message(text="Here is a list with all the activities in the process:")
+        dispatcher.utter_message(text=message)
 
         return []
 
-class ActionConsistencyCheck():
-    pass
+
+class ActionConsistencyCheck(Action):
+    def name(self) -> Text:
+        return "action_consistency_check"
+
+    def run(self,
+            dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+
+        import declare_client
+
+        if declare_client.consistency_check():
+            dispatcher.utter_message(text="Yes, the specification is consistent and allows for behavior.")
+        else:
+            dispatcher.utter_message(text="The specification is inconsistent, please, review it.")
+
+        return []

@@ -144,7 +144,7 @@ def conformance_check_ltl(formula, connectors):
         'Absence': 'not_eventually_activity_a',
         'RespondedExistence': 'responded_existence',
         'Response': 'response',
-        'Precedence': 'precedence',
+        'Precedence': 'eventually_a_then_b',
         'ChainResponse': 'chain_response',
         'NotCoExistence': 'chain_response'
     }
@@ -154,6 +154,8 @@ def conformance_check_ltl(formula, connectors):
         dec_template = LTLTemplate(template)
         if template in ['eventually_activity_a', 'existence_two_activity_a', 'not_eventually_activity_a']:
             model = dec_template.fill_template([activities[0]])
+        elif template in ['eventually_a_then_b']:
+            model = dec_template.fill_template([activities[0], activities[1]])
         else:
             model = dec_template.fill_template([activities[0]], [activities[1]])
     else:
@@ -184,6 +186,10 @@ def behavior_check_ltl(specification=None, formula=None, connectors=[]):
     # Detect and translate the type of template
     template, *activities = formula.strip('()').split()
 
+    print(template)
+    print(connectors)
+    print(activities)
+
     # If no activity has been properly detected by rasa, return empty list of traces
     cs = [c.replace(' ', '') for c in connectors]
     if not connectors or sorted(cs) != sorted(activities):
@@ -196,7 +202,7 @@ def behavior_check_ltl(specification=None, formula=None, connectors=[]):
         'Absence': 'not_eventually_activity_a',
         'RespondedExistence': 'responded_existence',
         'Response': 'response',
-        'Precedence': 'precedence',
+        'Precedence': 'eventually_a_then_b',
         'ChainResponse': 'chain_response',
         'NotCoExistence': 'chain_response'
     }
@@ -206,6 +212,8 @@ def behavior_check_ltl(specification=None, formula=None, connectors=[]):
         dec_template = LTLTemplate(template)
         if template in ['eventually_activity_a', 'existence_two_activity_a', 'not_eventually_activity_a']:
             model = dec_template.fill_template([activities[0]])
+        elif template in ['eventually_a_then_b']:
+            model = dec_template.fill_template([activities[0], activities[1]])
         else:
             model = dec_template.fill_template([activities[0]], [activities[1]])
     else:
@@ -225,6 +233,17 @@ def consistency_check(specification=None):
     print(nl_specification.formula)
     print(sat)
     return sat
+
+def list_activities():
+    from src.Declare4Py.D4PyEventLog import D4PyEventLog
+    from src.Declare4Py.ProcessModels.DeclareModel import DeclareModel
+
+    event_log = D4PyEventLog(case_name="case:concept:name")
+    event_log.parse_xes_log('../assets/Sepsis Cases.xes.gz')
+
+    declare_model = DeclareModel().parse_from_file('../assets/model.decl')
+
+    return declare_model.get_model_activities()
 
 
 # UTILS
@@ -256,6 +275,7 @@ def dec2ltl(specification=None):
         'Absence': 'not_eventually_activity_a',
         'RespondedExistence': 'responded_existence',
         'Response': 'response',
+        'Precedence': 'eventually_a_then_b',
         'Chain Precedence': 'chain_precedence',
         'Chain Response': 'chain_response',
         'NotCoExistence': 'chain_response'
@@ -296,6 +316,8 @@ def dec2ltl(specification=None):
                 dec_template = LTLTemplate(template)
                 if template in ['eventually_activity_a', 'existence_two_activity_a', 'not_eventually_activity_a']:
                     t = dec_template.fill_template([target_0]).formula
+                elif template in ['eventually_a_then_b']:
+                    t = dec_template.fill_template([target_0, target_1]).formula
                 else:
                     t = dec_template.fill_template([target_0], [target_1]).formula
 
@@ -311,4 +333,4 @@ def dec2ltl(specification=None):
 
 
 #consistency_check()
-behavior_check_ltl(formula="RespondedExistence AdmissionNC ERTriage", connectors=["Admission NC", "ER Triage"])
+#behavior_check_ltl(formula="RespondedExistence AdmissionNC ERTriage", connectors=["Admission NC", "ER Triage"])
