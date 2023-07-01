@@ -4,7 +4,7 @@ Wants=network-online.target
 After=network-online.target
 
 [Service]
-User=ubuntu
+User=citius
 WorkingDirectory=/home/citius/c-4pm
 ExecStart=/usr/bin/c-4pm.script
 
