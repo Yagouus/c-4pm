@@ -1,5 +1,5 @@
 from os import getcwd
 
 basedir = getcwd()
-base_pathname = '/aos2text'
-url_base_pathname = '/aos2text/'
+base_pathname = '/c-4pm'
+url_base_pathname = '/c-4pm/'
