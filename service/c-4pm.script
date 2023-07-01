@@ -1,4 +1,7 @@
 #!/bin/bash
-cd /home/ubuntu/c-4pm
+cd /home/ubuntu/c-4pm || exit
 source ./venv/bin/activate
+cd actions || exit
+rasa run actions &
+cd ..
 gunicorn wsgi:application -b :8000 --timeout 240
