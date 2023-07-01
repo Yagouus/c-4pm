@@ -134,6 +134,7 @@ nlu:
       - Can activity [ER Triage](connector) occur after activity [Admission NC](connector)?
       - Does the model allow [ER Triage](connector) to happen after [IV Antibiotics](connector)?
       - Is it possible that [ER Triage](connector) occurs before [IV Liquids](connector)?
+      - Can activity [IV Antibiotics](connector) be performed in a case where [Admission NC](connector) is performed?
 
   - intent: query_check
     examples: |

@@ -22,7 +22,7 @@ evaluation on a healthcare process.
 ## Interactive and video demo
 - An **interactive demo** of the tool can be tested at: http://tec.citius.usc.es/aos2text 
 (if the demo seems not to be working, please [get in touch](mailto:yago.fontenla.seco@usc.es))
-- A **video demonstration** of the tool can be found in the following link: 
+- A **video demonstration** of the tool can be found in the [youtube](https://youtu.be/A5gF3q1bQWQ)
 
 ## Installation
 
@@ -70,11 +70,19 @@ as an online accessible demo:
 **Running C-4PM locally**
 
 To run the conversational agent you need to run:
-- A Rasa actions server. This can be done with by running the command `rasa run actions` in the `actions` folder inside the project root folder `cd actions`.
-- A Docker container with [Duckling](https://hub.docker.com/r/rasa/duckling) running. 
-Duckling is used to parse things like emails, dates, temporal intervals and more.
+- Docker running so Lydia can run appropriately in the background (note, each time Lydia is used it will create a new container, delete all of them when you finish
+running C-4pm to save some space).
+- Remember to activate your virtual environment.
+- The Rasa actions server. This can be done with by running the command `rasa run actions` in the `actions` folder inside the project root folder `cd actions`.
+- Go back to the main project's directory and run `main.py` file.
+- Go in your browser to `http://localhost:8080/` and enjoy :).
 
 **Deploying C-4PM on a server**
+- First you need to copy the files in the `service` directory to their corresponding folders:
+  - `sudo cp service/c-4pm.service /etc/systemd/system/`
+  - `sudo cp service/c-4pm.script /usr/bin/`
+- Then give execution permit `sudo chmod +x /usr/bin/c-4pm.script` `chmod +x /etc/systemd/system/c-4pm.service`
+- Finally, run the service with `sudo systemctl restart c-4pm.service` (if it is running and you update the files, with restart it will launch again).
 
 ## Sample questions
 
