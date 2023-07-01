@@ -1,5 +1,5 @@
 #!/bin/bash
-cd /home/ubuntu/c-4pm || exit
+cd /home/citius/c-4pm || exit
 source ./venv/bin/activate
 cd actions || exit
 rasa run actions &
