@@ -20,8 +20,7 @@ conversation-driven modular pipeline. The feasibility of the tool was assessed t
 evaluation on a healthcare process.
 
 ## Interactive and video demo
-- An **interactive demo** of the tool can be tested [here](https://tec.citius.usc.es/c-4pm/) .
-(if the demo seems not to be working, please [get in touch](mailto:yago.fontenla.seco@usc.es)).
+- An **interactive demo** of the tool can be tested [here](https://tec.citius.usc.es/c-4pm/) (if the demo seems not to be working, please [get in touch](mailto:yago.fontenla.seco@usc.es)).
 - A **video demonstration** of the tool can be found in this [youtube link](https://youtu.be/A5gF3q1bQWQ).
 
 ## Installation
