@@ -120,5 +120,26 @@ Optimizing this is planned as future work so bigger models can be used.
 - No session storage is used, so, if multiple users use the chatbot at the same time, some overlapping may occur. This
 is being currently fixed. In case this happens, a simple refresh of the page will start a new conversation.
 
+## Citing
+
+> **_NOTE:_**  Incomplete, will be updated after the conference proceedings are published.
+
+```
+@inproceedings{Fontenla-Seco23,
+  author    = {Yago Fontenla-Seco and
+               Sarah Winkler and
+               Alessandro Gianola and
+               Marco Montali and
+               Manuel Lama and
+               Alberto Bugarín-Diz},
+  title     = {The Droid You’re Looking For: C-4PM, a Conversational Agent for Declarative Process Mining},
+  booktitle = {{BPM} (PhD/Demos)},
+  series    = {{CEUR} Workshop Proceedings},
+  volume    = {},
+  pages     = {},
+  publisher = {CEUR-WS.org},
+  year      = {2023}
+}
+```
 
 
