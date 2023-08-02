@@ -44,7 +44,6 @@ The event log and Declare specification are understood as given, so no discovery
         <td></td>
     </tr>
     <tr>
-        
         <td>Explain the process specification</td>
         <td>Description of the process in NL</td>
         <td></td>
