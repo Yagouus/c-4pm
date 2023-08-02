@@ -1,14 +1,15 @@
+# 🤖 C-4PM: A Conversational agent for declarative Process Mining
+
 ![Python](https://img.shields.io/badge/python-3.10-blue.svg)
 ![Repo Size](https://img.shields.io/github/repo-size/Sulstice/global-chem)
 [![PyPI version](https://badge.fury.io/py/global-chem.svg)](https://badge.fury.io/py/global-chem)
 [![License: MIT](https://img.shields.io/badge/License-MIT-purple.svg)](https://opensource.org/licenses/MIT)
-# 🤖 C-4PM: A Conversational agent for declarative Process Mining
 
 C-4PM is a conversational interface for Declarative Process Mining. 
 It allows users to interact with a declarative process specification and its corresponding event log
 to perform multiple reasoning tasks.
 
-## Abstract
+## 📖 Abstract
 
 The effective presentation of process models to non-expert users in a way that allows them to understand
 and query these models is a well-known research challenge. Conversational interfaces, with their low
@@ -19,7 +20,7 @@ specifications. C-4PM facilitates tasks such as consistency, conformance, and mo
 conversation-driven modular pipeline. The feasibility of the tool was assessed through a preliminary
 evaluation on a healthcare process.
 
-## Usage
+## 💬 Usage
 
 ### Interactive and video demo
 - An **interactive demo** of the tool can be tested [here](https://tec.citius.usc.es/c-4pm/) (if the demo seems not to be working, please [get in touch](mailto:yago.fontenla.seco@usc.es)).
@@ -71,7 +72,6 @@ The event log and Declare specification are understood as given, so no discovery
     <tr>
         <td>What are the cases that conform to the model?</td>
         <td>Examples of conformant traces</td>
-        <td></td>
     </tr>
     <tr>
         <td rowspan=2>Non-conformance checking</td>
@@ -102,9 +102,10 @@ The event log and Declare specification are understood as given, so no discovery
     </tr>
 </table>
 
-## Installation
+## 🛠️ Installation
 
-> **_NOTE:_**  Creating a virtual environment is highly recommended. For best compatibility this 
+> **Warning**  
+> Creating a virtual environment is highly recommended. For best compatibility this 
 > should be done using Python 3.10 as `python3.10 -m venv ./venv`. If you don't have Python 3.10 installed,
 > you can do it (in MacOS) with `brew install python@3.10`
 
@@ -137,7 +138,7 @@ To use the model you've just trained you need to modify variable `model_path` in
 
 **Customizing NL2LTL**
 
-> **_NOTE:_**   NL2LTL can be used with a RASA engine or GPT. In this particular case, the GPT engine is used.
+> **NOTE:**   NL2LTL can be used with a RASA engine or GPT. In this particular case, the GPT engine is used.
 > However, if you want to use the RASA engine, for training a customized RASA language model with your own data, 
 > you can do this by running the command 
 > `rasa train --config data/config.yml --domain data/domain.yml --data data/nlu_training.yml` 
@@ -155,7 +156,7 @@ running C-4pm to save some space).
 - Remember to activate your virtual environment.
 - Run the Rasa actions server. This can be done with the command `rasa run actions` in the `actions` folder inside the project root folder `cd actions`.
 - Go back to the main project's directory and run `main.py` file.
-- Go into your browser to `http://localhost:8080/` and enjoy :).
+- Go into your browser to `http://localhost:8080/` and enjoy 🤓.
 
 **Deploying C-4PM on a server**
 
@@ -172,7 +173,7 @@ To deploy C-4PM as a service, the service configuration files are provided in th
 If you get any auth errors during the process, try using `sudo`.
 
 
-## Modifications to source libraries
+## ⚙️ Modifications to source libraries
 
 ### LTLf2DFA
 - Adapted GPT prompt and RASA NLU training data to these proposal's objectives.
@@ -181,7 +182,7 @@ If you get any auth errors during the process, try using `sudo`.
 ### Declare4Py
 - Added support to the `absence` and `existence two` templates in `LTLModel.py`so the templates can be used in different reasoning tasks.
 
-## Limits on this Demo
+## ⚠️ Limits on this Demo
 - As C-4PM is still in active development, for offering a stable experience during this preliminary testing stages, 
 the use of the tool is limited to the Sepsis use-case described in the paper. 
 Both event log and process specification are given to the system by default, 
@@ -195,7 +196,7 @@ Optimizing this is planned as future work so bigger models can be used.
 - No session storage is used, so, if multiple users use the chatbot at the same time, some overlapping may occur. This
 is being currently fixed. In case this happens, a simple refresh of the page will start a new conversation.
 
-## Citing C-4PM
+## ✍🏼 Citing C-4PM
 
 > **_NOTE:_**  Incomplete, will be updated after the conference proceedings are published.
 
