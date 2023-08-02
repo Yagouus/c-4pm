@@ -198,7 +198,8 @@ is being currently fixed. In case this happens, a simple refresh of the page wil
 
 ## ✍🏼 Citing C-4PM
 
-> **Warning**  Incomplete, will be updated after the conference proceedings are published.
+> **Warning**  
+> Incomplete, will be updated after the conference proceedings are published.
 
 ```
 @inproceedings{Fontenla-Seco23,
