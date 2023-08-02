@@ -2,7 +2,7 @@
 ![Repo Size](https://img.shields.io/github/repo-size/Sulstice/global-chem)
 [![PyPI version](https://badge.fury.io/py/global-chem.svg)](https://badge.fury.io/py/global-chem)
 [![License: MIT](https://img.shields.io/badge/License-MIT-purple.svg)](https://opensource.org/licenses/MIT)
-# C-4PM: A Conversational agent for declarative Process Mining
+# 🤖 C-4PM: A Conversational agent for declarative Process Mining
 
 C-4PM is a conversational interface for Declarative Process Mining. 
 It allows users to interact with a declarative process specification and its corresponding event log
@@ -30,23 +30,92 @@ evaluation on a healthcare process.
 The following table presents the main task types supported by C-4PM with some exemplary queries for each of them taking as a base the [Sepsis event log](https://data.4tu.nl/articles/dataset/Sepsis_Cases_-_Event_Log/12707639).
 The event log and Declare specification are understood as given, so no discovery is necessary.
 
-| Task                            | Question                                                                       | Answer                                                          |
-|---------------------------------|--------------------------------------------------------------------------------|-----------------------------------------------------------------|
-| Specification description in NL | Can you describe the process?                                                  | Description of the process in NL                                |
-|                                 | Explain the process specification                                              | Description of the process in NL                                |
-| List activities                 | List the activities in the process                                             | List of all possible activities                                 |
-|                                 | What activities can be executed in the process?                                | List of all possible activities                                 |
-| Consistency checking            | Does the model accept any behavior?                                            | Consistency checking boolean                                    |
-|                                 | Is there any possible trace that conforms to the model?                        | Consistency checking boolean                                    |
-| Conformance checking            | Can you give me some conformant traces?                                        | Examples of conformant traces                                   |   
-|                                 | What are the cases that conform to the model?                                  | Examples of conformant traces                                   |
-| Non-conformance checking        | How many traces don't conform to the specification?                            | Number and examples of non-conformant traces                    |   
-|                                 | Are there any non conformant traces?                                           | Number and examples of non-conformant traces                    |
-| Model checking                  | Is it possible that ER Triage occurs before IV Liquids?                        | Boolean model checking and examples of that behavior in the log |
-|                                 | If Admission NC has not happened yet, can activity Release A happen?           | Boolean model checking and examples of that behavior in the log |
-| Restricted conformance checking | Find traces in which IV Antibiotics occurs right after LacticAcid is performed | Examples of traces in which that behavior happens               |   
-|                                 | In which cases ER Triage occurs right after ER Registration?                   | Examples of traces in which that behavior happens               |   
-
+<table>
+    <tr>
+        <td>Task</td>
+        <td>Question</td>
+        <td>Answer</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td rowspan=2>Specification description in NL</td>
+        <td>Can you describe the process?</td>
+        <td>Description of the process in NL</td>
+        <td></td>
+    </tr>
+    <tr>
+        
+        <td>Explain the process specification</td>
+        <td>Description of the process in NL</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td rowspan=2>List activities</td>
+        <td>List the activities in the process</td>
+        <td>List of all possible activities</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>What activities can be executed in the process?</td>
+        <td>List of all possible activities</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td rowspan=2>Consistency checking</td>
+        <td>Does the model accept any behavior?</td>
+        <td>Consistency checking boolean</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>Is there any possible trace that conforms to the model?</td>
+        <td>Consistency checking boolean</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td rowspan=2>Conformance checking</td>
+        <td>Can you give me some conformant traces?</td>
+        <td>Examples of conformant traces</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>What are the cases that conform to the model?</td>
+        <td>Examples of conformant traces</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td rowspan=2>Non-conformance checking</td>
+        <td>How many traces don&#39;t conform to the specification?</td>
+        <td>Number and examples of non-conformant traces</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>Are there any non conformant traces?</td>
+        <td>Number and examples of non-conformant traces</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td rowspan=2>Model checking</td>
+        <td>Is it possible that ER Triage occurs before IV Liquids?</td>
+        <td>Boolean model checking and examples of that behavior in the log</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>If Admission NC has not happened yet, can activity Release A happen?</td>
+        <td>Boolean model checking and examples of that behavior in the log</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td rowspan=2>Restricted conformance checking</td>
+        <td>Find traces in which IV Antibiotics occurs right after LacticAcid is performed</td>
+        <td>Examples of traces in which that behavior happens</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>In which cases ER Triage occurs right after ER Registration?</td>
+        <td>Examples of traces in which that behavior happens</td>
+        <td></td>
+    </tr>
+</table>
 
 ## Installation
 
