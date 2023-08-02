@@ -19,9 +19,34 @@ specifications. C-4PM facilitates tasks such as consistency, conformance, and mo
 conversation-driven modular pipeline. The feasibility of the tool was assessed through a preliminary
 evaluation on a healthcare process.
 
-## Interactive and video demo
+## Usage
+
+### Interactive and video demo
 - An **interactive demo** of the tool can be tested [here](https://tec.citius.usc.es/c-4pm/) (if the demo seems not to be working, please [get in touch](mailto:yago.fontenla.seco@usc.es)).
 - A **video demonstration** of the tool can be found in this [youtube link](https://youtu.be/A5gF3q1bQWQ).
+
+### Supported tasks and sample questions
+
+The following table presents the main task types supported by C-4PM with some exemplary queries for each of them taking as a base the [Sepsis event log](https://data.4tu.nl/articles/dataset/Sepsis_Cases_-_Event_Log/12707639).
+The event log and Declare specification are understood as given, so no discovery is necessary.
+
+| Task                            | Question                                                                       | Answer                                                          |
+|---------------------------------|--------------------------------------------------------------------------------|-----------------------------------------------------------------|
+| Specification description in NL | Can you describe the process?                                                  | Description of the process in NL                                |
+|                                 | Explain the process specification                                              | Description of the process in NL                                |
+| List activities                 | List the activities in the process                                             | List of all possible activities                                 |
+|                                 | What activities can be executed in the process?                                | List of all possible activities                                 |
+| Consistency checking            | Does the model accept any behavior?                                            | Consistency checking boolean                                    |
+|                                 | Is there any possible trace that conforms to the model?                        | Consistency checking boolean                                    |
+| Conformance checking            | Can you give me some conformant traces?                                        | Examples of conformant traces                                   |   
+|                                 | What are the cases that conform to the model?                                  | Examples of conformant traces                                   |
+| Non-conformance checking        | How many traces don't conform to the specification?                            | Number and examples of non-conformant traces                    |   
+|                                 | Are there any non conformant traces?                                           | Number and examples of non-conformant traces                    |
+| Model checking                  | Is it possible that ER Triage occurs before IV Liquids?                        | Boolean model checking and examples of that behavior in the log |
+|                                 | If Admission NC has not happened yet, can activity Release A happen?           | Boolean model checking and examples of that behavior in the log |
+| Restricted conformance checking | Find traces in which IV Antibiotics occurs right after LacticAcid is performed | Examples of traces in which that behavior happens               |   
+|                                 | In which cases ER Triage occurs right after ER Registration?                   | Examples of traces in which that behavior happens               |   
+
 
 ## Installation
 
@@ -54,7 +79,9 @@ Once trained, the model will be in the `models/` directory.
 
 To use the model you've just trained you need to modify variable `model_path` in `main.py` or 
 `main_server.py` with the corresponding name of your model e.g.:
-`model_path = 'models/20230630-105642-tractable-cheetah.tar.gz`.
+`model_path = 'models/model-name.tar.gz'`.
+
+**Customizing NL2LTL**
 
 > **_NOTE:_**   NL2LTL can be used with a RASA engine or GPT. In this particular case, the GPT engine is used.
 > However, if you want to use the RASA engine, for training a customized RASA language model with your own data, 
@@ -62,38 +89,33 @@ To use the model you've just trained you need to modify variable `model_path` in
 > `rasa train --config data/config.yml --domain data/domain.yml --data data/nlu_training.yml` 
 >in the directory `nl2ltl/engines/rasa`. More information can be found in the [NL2LTL repository](https://github.com/IBM/nl2ltl)
 
-### Running
-The conversational agent can run in to modes, if you want to run it in a local machine, or you want to deploy it 
-as an online accessible demo:
+### Running C-4PM
+The conversational agent can be run locally, or you may want to deploy it on an online server:
 
 **Running C-4PM locally**
 
-To run the conversational agent you need to run:
-- Docker running so Lydia can run appropriately in the background (note, each time Lydia is used it will create a new container, delete all of them when you finish
+To run C-4PM locally you need to:
+
+- Run Docker so Lydia will appropriately run in the background (each time Lydia is invoked it will create a new container, delete them when you finish
 running C-4pm to save some space).
 - Remember to activate your virtual environment.
-- The Rasa actions server. This can be done with by running the command `rasa run actions` in the `actions` folder inside the project root folder `cd actions`.
+- Run the Rasa actions server. This can be done with the command `rasa run actions` in the `actions` folder inside the project root folder `cd actions`.
 - Go back to the main project's directory and run `main.py` file.
-- Go in your browser to `http://localhost:8080/` and enjoy :).
+- Go into your browser to `http://localhost:8080/` and enjoy :).
 
 **Deploying C-4PM on a server**
-- First you need to copy the files in the `service` directory to their corresponding folders:
-  - `sudo cp service/c-4pm.service /etc/systemd/system/`
-  - `sudo cp service/c-4pm.script /usr/bin/`
-- Then give execution permit `sudo chmod +x /usr/bin/c-4pm.script` `chmod +x /etc/systemd/system/c-4pm.service`
-- Finally, run the service with `sudo systemctl restart c-4pm.service` (if it is running and you update the files, with restart it will launch again).
 
-## Sample questions
+To deploy C-4PM as a service, the service configuration files are provided in the `service` folder. Then, you need to:
 
-| Task                            | Question                                                                       | Answer                                                          |
-|---------------------------------|--------------------------------------------------------------------------------|-----------------------------------------------------------------|
-| Specification description in NL | Can you describe the process?                                                  | Description of the process in NL                                |
-| List activities                 | List the activities in the process                                             | List of all possible activities                                 |
-| Consistency checking            | Does the model accept any behavior?                                            | Consistency checking boolean                                    |
-| Conformance checking            | Can you give me some conformant traces?                                        | Examples of conformant traces                                   |   
-| Model checking                  | Is it possible that ER Triage occurs before IV Liquids?                        | Boolean model checking and examples of that behavior in the log |
-| Restricted conformance checking | Find traces in which IV Antibiotics occurs right after LacticAcid is performed | List of traces in which that behavior happens                   |   
-| Restricted conformance checking | In which cases ER Triage occurs right after ER Registration?                   | List of traces in which that behavior happens                   |   
+- Copy the files in the `service` directory to their corresponding folders (given you are using Linux/Mac):
+  - `cp service/c-4pm.service /etc/systemd/system/`
+  - `cp service/c-4pm.script /usr/bin/`
+- Give execution permit to both files: 
+  - `chmod +x /usr/bin/c-4pm.script`
+  - `chmod +x /etc/systemd/system/c-4pm.service` 
+- Finally, run the service with `systemctl restart c-4pm.service` (if it is already running and you update the files this will restart it).
+
+If you get any auth errors during the process, try using `sudo`.
 
 
 ## Modifications to source libraries
@@ -119,7 +141,7 @@ Optimizing this is planned as future work so bigger models can be used.
 - No session storage is used, so, if multiple users use the chatbot at the same time, some overlapping may occur. This
 is being currently fixed. In case this happens, a simple refresh of the page will start a new conversation.
 
-## Citing
+## Citing C-4PM
 
 > **_NOTE:_**  Incomplete, will be updated after the conference proceedings are published.
 

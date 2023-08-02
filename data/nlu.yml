@@ -78,6 +78,8 @@ nlu:
       - Conformant traces
       - Show traces conforming to the model
       - Can you give me some conformant traces?
+      - Illustrate the traces that conform to the model
+      - Explain the cases that are accepted by the process
 
   - intent: non_conformant_check
     examples: |
