@@ -35,46 +35,38 @@ The event log and Declare specification are understood as given, so no discovery
         <td>Task</td>
         <td>Question</td>
         <td>Answer</td>
-        <td></td>
     </tr>
     <tr>
         <td rowspan=2>Specification description in NL</td>
         <td>Can you describe the process?</td>
         <td>Description of the process in NL</td>
-        <td></td>
     </tr>
     <tr>
         <td>Explain the process specification</td>
         <td>Description of the process in NL</td>
-        <td></td>
     </tr>
     <tr>
         <td rowspan=2>List activities</td>
         <td>List the activities in the process</td>
         <td>List of all possible activities</td>
-        <td></td>
     </tr>
     <tr>
         <td>What activities can be executed in the process?</td>
         <td>List of all possible activities</td>
-        <td></td>
     </tr>
     <tr>
         <td rowspan=2>Consistency checking</td>
         <td>Does the model accept any behavior?</td>
         <td>Consistency checking boolean</td>
-        <td></td>
     </tr>
     <tr>
         <td>Is there any possible trace that conforms to the model?</td>
         <td>Consistency checking boolean</td>
-        <td></td>
     </tr>
     <tr>
         <td rowspan=2>Conformance checking</td>
         <td>Can you give me some conformant traces?</td>
         <td>Examples of conformant traces</td>
-        <td></td>
     </tr>
     <tr>
         <td>What are the cases that conform to the model?</td>
@@ -85,34 +77,28 @@ The event log and Declare specification are understood as given, so no discovery
         <td rowspan=2>Non-conformance checking</td>
         <td>How many traces don&#39;t conform to the specification?</td>
         <td>Number and examples of non-conformant traces</td>
-        <td></td>
     </tr>
     <tr>
         <td>Are there any non conformant traces?</td>
         <td>Number and examples of non-conformant traces</td>
-        <td></td>
     </tr>
     <tr>
         <td rowspan=2>Model checking</td>
         <td>Is it possible that ER Triage occurs before IV Liquids?</td>
         <td>Boolean model checking and examples of that behavior in the log</td>
-        <td></td>
     </tr>
     <tr>
         <td>If Admission NC has not happened yet, can activity Release A happen?</td>
         <td>Boolean model checking and examples of that behavior in the log</td>
-        <td></td>
     </tr>
     <tr>
         <td rowspan=2>Restricted conformance checking</td>
         <td>Find traces in which IV Antibiotics occurs right after LacticAcid is performed</td>
         <td>Examples of traces in which that behavior happens</td>
-        <td></td>
     </tr>
     <tr>
         <td>In which cases ER Triage occurs right after ER Registration?</td>
         <td>Examples of traces in which that behavior happens</td>
-        <td></td>
     </tr>
 </table>
 
