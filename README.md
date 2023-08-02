@@ -144,10 +144,19 @@ To use the model you've just trained you need to modify variable `model_path` in
 > `rasa train --config data/config.yml --domain data/domain.yml --data data/nlu_training.yml` 
 >in the directory `nl2ltl/engines/rasa`. More information can be found in the [NL2LTL repository](https://github.com/IBM/nl2ltl)
 
-### Running C-4PM
+### Modifications to source libraries
+
+**NL2LTL**
+- Adapted GPT prompt and RASA NLU training data to fit this proposal's objectives.
+- Added support to the `absence` and `precendence` templates in the GPT `prompt`
+
+**Declare4Py**
+- Added support to the `absence` and `existence two` templates in `LTLModel.py`so the templates can be used in different reasoning tasks.
+
+## 🚀 Running C-4PM
 The conversational agent can be run locally, or you may want to deploy it on an online server:
 
-**Running C-4PM locally**
+### Running C-4PM locally
 
 To run C-4PM locally you need to:
 
@@ -158,7 +167,7 @@ running C-4pm to save some space).
 - Go back to the main project's directory and run `main.py` file.
 - Go into your browser to `http://localhost:8080/` and enjoy 🤓.
 
-**Deploying C-4PM on a server**
+### Deploying C-4PM on a server
 
 To deploy C-4PM as a service, the service configuration files are provided in the `service` folder. Then, you need to:
 
@@ -172,15 +181,6 @@ To deploy C-4PM as a service, the service configuration files are provided in th
 
 If you get any auth errors during the process, try using `sudo`.
 
-
-## ⚙️ Modifications to source libraries
-
-### LTLf2DFA
-- Adapted GPT prompt and RASA NLU training data to these proposal's objectives.
-- Added support to the `absence` and `precendence` templates in the GPT `prompt`
-
-### Declare4Py
-- Added support to the `absence` and `existence two` templates in `LTLModel.py`so the templates can be used in different reasoning tasks.
 
 ## ⚠️ Limits on this Demo
 - As C-4PM is still in active development, for offering a stable experience during this preliminary testing stages, 
@@ -198,7 +198,7 @@ is being currently fixed. In case this happens, a simple refresh of the page wil
 
 ## ✍🏼 Citing C-4PM
 
-> **_NOTE:_**  Incomplete, will be updated after the conference proceedings are published.
+> **Warning**  Incomplete, will be updated after the conference proceedings are published.
 
 ```
 @inproceedings{Fontenla-Seco23,
