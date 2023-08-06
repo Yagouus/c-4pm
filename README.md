@@ -219,4 +219,7 @@ is being currently fixed. In case this happens, a simple refresh of the page wil
 }
 ```
 
+### Acknowledgement
+
+This research was funded by the Spanish Ministry for Science, Innovation and Universities (grants TIN2017-84796-C2-1-R, PID2020-112623GB-I00, and PDC2021-121072-C21) and the Galician Ministry of Education, University and Professional Training (grants ED431C2018/29 and ED431G2019/04). All grants were co-funded by the European Regional Development Fund (ERDF/FEDER program).
 
