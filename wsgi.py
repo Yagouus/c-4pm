@@ -1,6 +1,7 @@
 
 import logging
-from init import init_app
+
+from server.init import init_app
 
 application = init_app()
 
