@@ -234,6 +234,7 @@ def consistency_check(specification=None):
     print(sat)
     return sat
 
+
 def list_activities():
     from src.Declare4Py.D4PyEventLog import D4PyEventLog
     from src.Declare4Py.ProcessModels.DeclareModel import DeclareModel
@@ -331,6 +332,5 @@ def dec2ltl(specification=None):
 
     return nl_specification
 
-
-#consistency_check()
-#behavior_check_ltl(formula="RespondedExistence AdmissionNC ERTriage", connectors=["Admission NC", "ER Triage"])
+# consistency_check()
+# behavior_check_ltl(formula="RespondedExistence AdmissionNC ERTriage", connectors=["Admission NC", "ER Triage"])

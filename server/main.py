@@ -1,7 +1,7 @@
-import main
+import layout
 from dash import Dash
 import dash_bootstrap_components as dbc
-import config
+from server import config
 from callbacks import all_callbacks
 
 
@@ -13,6 +13,6 @@ def init_dashboard(server):
         title="C-4PM"
     )
 
-    dash_app.layout = main.make_layout()
+    dash_app.layout = layout.make_layout()
     all_callbacks(dash_app)
     return dash_app.server

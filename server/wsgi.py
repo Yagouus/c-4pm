@@ -1,5 +1,4 @@
-
-from init import init_app
+from server.init import init_app
 import logging
 
 application = init_app()

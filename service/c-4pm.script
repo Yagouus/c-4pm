@@ -1,7 +1,13 @@
 #!/bin/bash
+
+# Activate virtual environment
 cd /home/citius/c-4pm || exit
 source ./venv/bin/activate
+
+# Move to action server folder and deploy
 cd actions || exit
 rasa run actions &
-cd ..
+
+# Move to server folder and deploy
+cd ../server || exit
 gunicorn wsgi:application -b :8000 --timeout 240

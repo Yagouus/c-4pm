@@ -1,22 +1,21 @@
 import time
 from pathlib import Path
 
-import app
 import rasa_connector
 
 from dash import Dash, html, Output, Input, State, dash_table
 import dash_bootstrap_components as dbc
 
+# init a list of the sessions conversation history
+conv_hist = []
+
 
 def all_callbacks(dash_app):
-    # init the conversational agent
+
+    # Initialize the conversational agent
     model_path = rasa_connector.get_latest_model(Path("models"))
     agent = rasa_connector.launch_bot(model_path, endpoints="endpoints.yml")
 
-    # init a list of the sessions conversation history
-    conv_hist = []
-
-    # trigger bot response to user inputted message on submit button click
     @dash_app.callback(
         Output(component_id='conversation', component_property='children'),
         Output(component_id="loading-output", component_property="children"),
