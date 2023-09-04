@@ -10,6 +10,7 @@ def init_dashboard(server):
         server=server,
         url_base_pathname=config.url_base_pathname,
         external_stylesheets=[dbc.themes.COSMO],
+        assets_folder="../assets",
         title="C-4PM"
     )
 
