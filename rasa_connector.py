@@ -1,6 +1,9 @@
 import asyncio
+import glob
+import os
 import pprint as pretty_print
 import typing
+from pathlib import Path
 from typing import Any, Dict, Optional, Text
 
 from rasa.shared.exceptions import RasaException
@@ -109,3 +112,14 @@ def _display_bot_response(response: Dict) -> None:
         if response_type == "image":
             image = Image(url=value)
             display(image)
+
+
+def get_latest_model(path: Path = Path("models")) -> Optional[str]:
+    """Get the Rasa latest model."""
+    model_files = glob.glob(f"{path}/*.tar.gz")
+
+    if not model_files:
+        return None
+
+    return max(model_files, key=os.path.getctime)
+
