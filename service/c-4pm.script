@@ -9,5 +9,5 @@ cd actions || exit
 rasa run actions &
 
 # Move to server folder and deploy
-cd ../server || exit
+cd ..
 gunicorn wsgi:application -b :8000 --timeout 240
