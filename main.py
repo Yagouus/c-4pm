@@ -1,6 +1,7 @@
 from dash import Dash, html
 import dash_bootstrap_components as dbc
-from callbacks import all_callbacks
+
+import callbacks_store
 from layout import make_layout
 
 
@@ -13,7 +14,7 @@ def init_app():
     )
 
     dash_app.layout = make_layout()
-    all_callbacks(dash_app)
+    callbacks_store.all_callbacks(dash_app)
     return dash_app
 
 

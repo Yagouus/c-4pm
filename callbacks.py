@@ -1,6 +1,8 @@
 import time
 from pathlib import Path
 
+import dash
+
 import rasa_connector
 
 from dash import Dash, html, Output, Input, State, dash_table
@@ -11,10 +13,42 @@ conv_hist = []
 
 
 def all_callbacks(dash_app):
-
     # Initialize the conversational agent
     model_path = rasa_connector.get_latest_model(Path("models"))
     agent = rasa_connector.launch_bot(model_path, endpoints="endpoints.yml")
+
+    @dash_app.callback(
+        Output(component_id='store-messages', component_property='data'),
+        [Input(component_id='send_button', component_property='n_clicks')],
+        [State(component_id='msg_input', component_property='value'),
+         State(component_id='store-messages', component_property='data')]
+    )
+    def store_message(n_clicks, message, store_data):
+        if n_clicks is None or message == '':
+            return dash.no_update
+
+        store_data['sent'].append(message)
+        store_data['received'].append("Received:" + message)  # You can update this based on the real received message
+
+        print(store_data['sent'])
+        print(store_data['received'])
+
+        return store_data
+
+    @dash_app.callback(
+        [Output('display-sent-message', 'children'),
+         Output('display-received-message', 'children')],
+        [Input('store-messages', 'data')]
+    )
+    def update_display(store_data):
+        if not store_data['sent'] or not store_data['received']:
+            return dash.no_update, dash.no_update
+
+        # Join the list of messages into a string
+        sent_messages = 'Sent Messages: ' + ', '.join(store_data['sent'])
+        received_messages = 'Received Messages: ' + ', '.join(store_data['received'])
+
+        return sent_messages, received_messages
 
     @dash_app.callback(
         Output(component_id='conversation', component_property='children'),
@@ -23,11 +57,11 @@ def all_callbacks(dash_app):
         Output(component_id='send_button', component_property='disabled'),
         Input(component_id='send_button', component_property='n_clicks'),
         State(component_id='msg_input', component_property='value'))
-    def update_from(click, text):
+    def update_from(n_clicks, text):
         global conv_hist
 
         # dont update on app load
-        if click > 0 and text != '':
+        if n_clicks > 0 and text != '':
 
             # user message aligned left
             rcvd = [html.P(text, style={'text-align': 'right'}, className="from-me")]
@@ -39,7 +73,6 @@ def all_callbacks(dash_app):
         else:
             time.sleep(2)
             rspd = [dbc.Row([
-                # dbc.Col(html.Img(src="assets/bot.png", style={'width': '40px'}), width=1),
                 dbc.Col(html.P("Hi! I'm C-4PM. How can I help you?", style={'text-align': 'left'},
                                className="from-them margin-b_one"), width=10),
                 dbc.Col(html.P(["You can ask me multiple things, for example:",
@@ -75,18 +108,10 @@ def all_callbacks(dash_app):
         # dont update on app load
         if click > 0 and text != '':
 
-            print(text)
-
             # call bot with user inputted text
-            # response = [{"text": "Response"}]
             response = rasa_connector.talk(agent, text)
 
-            # user message aligned left
-            # rcvd = [html.P(text, style={'text-align': 'right'})]
-
             rspd = []
-
-            print(response)
 
             for idx, r in enumerate(response):
 
@@ -96,39 +121,21 @@ def all_callbacks(dash_app):
 
                         if idx == len(response) - 1:
                             rspd.append(dbc.Row([
-                                # dbc.Col(html.Img(src="assets/bot.png", style={'width': '40px'}),
-                                #        width=1),
                                 dbc.Col(html.P(value, style={'text-align': 'left'}, className="from-them margin-b_one"),
                                         width=10)]
                             ))
                         else:
                             rspd.append(dbc.Row([
-                                # dbc.Col(html.P(style={'width': '40px'}),
-                                #       width=1),
                                 dbc.Col(html.P(value, style={'text-align': 'left'}, className="from-them margin-b_one"),
                                         width=10)]
                             ))
-
-                    # if response_type == "image":
-                    #    image = Image(url=value)
-                    #   display(image)
 
             agent_convo = rspd[::-1]
 
             # append interaction to conversation history
             conv_hist = agent_convo + conv_hist
 
-            time.sleep(1)
             return conv_hist, html.Div('Send'), False
 
         else:
             return '', html.Div('Send'), False
-
-    # @app.callback(
-    #     Output('send_button', 'disabled'),
-    #     Input('msg_input', 'value'))
-    # def set_button_enabled_state(on_off):
-    #     if on_off != '':
-    #         return False
-    #     else:
-    #         return True
