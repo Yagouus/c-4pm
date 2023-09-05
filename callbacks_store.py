@@ -22,11 +22,12 @@ def all_callbacks(dash_app):
     @dash_app.callback(
         Output('session-id', 'data'),
         Output('client_identifier', 'children'),
-        Input('send-button', 'n_clicks')
+        [Input('init', 'children')],
     )
-    def initialize_session(n_clicks):
-        id = str(uuid.uuid4())
-        return {'id': id}, id
+    def initialize_session(_):
+        identifier = str(uuid.uuid4())
+        print(identifier)
+        return {'id': identifier}, str(identifier)
 
     @dash_app.callback(
         [Output('conversation', 'children'),
@@ -73,7 +74,7 @@ def all_callbacks(dash_app):
          Output('conversation-store', 'data', allow_duplicate=True)],
         [Input('send_button', 'n_clicks')],
         [State('msg_input', 'value'),
-         State('session-id', 'value'),
+         State('session-id', 'data'),
          State('conversation-store', 'data')],
         prevent_initial_call=True
     )

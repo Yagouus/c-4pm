@@ -31,6 +31,8 @@ def make_layout():
                            " IMPORTANT! There is no parallelization of C-4PM for multiple users implemented yet, "
                            "so we ask you for patience if you experience some delay between your question"
                            " and receiving and answer."),
+                    html.P("Your user id is: "),
+                    html.P(id='client_identifier'),
                 ]),
                 dbc.ModalFooter([html.P("We apologize in advance for the inconvenience.")])
             ], centered=True, is_open=True),
@@ -67,6 +69,8 @@ def make_layout():
                 ])
             ], fluid=True, className="p0"),
         ], className="typing"),
+
+        html.Div(id='init', style={'display': 'none'}),
 
         # Create a storage for the conversation
         dcc.Store(id='conversation-store', data={'history': []}),
