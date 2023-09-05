@@ -1,16 +1,32 @@
 import time
-from pathlib import Path
+import uuid
 
 import dash
+import requests
 from dash import html, Output, Input, State
 import dash_bootstrap_components as dbc
 
-import rasa_connector
+
+def query_rasa(text, session_id):
+    url = "http://localhost:5005/webhooks/rest/webhook"
+    payload = {
+        "sender": session_id,
+        "message": text
+    }
+    response = requests.post(url, json=payload)
+    return response.json()
 
 
 def all_callbacks(dash_app):
-    model_path = rasa_connector.get_latest_model(Path("models"))
-    agent = rasa_connector.launch_bot(model_path, endpoints="endpoints.yml")
+    # Callback to initialize session ID
+    @dash_app.callback(
+        Output('session-id', 'data'),
+        Output('client_identifier', 'children'),
+        Input('send-button', 'n_clicks')
+    )
+    def initialize_session(n_clicks):
+        id = str(uuid.uuid4())
+        return {'id': id}, id
 
     @dash_app.callback(
         [Output('conversation', 'children'),
@@ -57,18 +73,21 @@ def all_callbacks(dash_app):
          Output('conversation-store', 'data', allow_duplicate=True)],
         [Input('send_button', 'n_clicks')],
         [State('msg_input', 'value'),
+         State('session-id', 'value'),
          State('conversation-store', 'data')],
         prevent_initial_call=True
     )
-    def update_conversation(click, text, store_data):
+    def update_conversation(click, text, session_data, store_data):
 
         time.sleep(1)
 
         if click is None or text == '':
             return dash.no_update, dash.no_update, False, dash.no_update
 
-        # call bot with user inputted text
-        response = rasa_connector.talk(agent, text)
+        session_id = session_data.get('id') if session_data else str(uuid.uuid4())
+
+        # Query Rasa and get the response
+        response = query_rasa(text, session_id)
 
         rspd = [
             dbc.Row([

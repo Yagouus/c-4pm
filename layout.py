@@ -70,5 +70,6 @@ def make_layout():
 
         # Create a storage for the conversation
         dcc.Store(id='conversation-store', data={'history': []}),
+        dcc.Store(id='session-id', storage_type='session'),  # Store for session ID
 
     ])
