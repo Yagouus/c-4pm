@@ -171,7 +171,8 @@ and launch the virtual environment `source ./venv/bin/activate`.
 
 ### Deploying C-4PM on a server
 
-To deploy C-4PM on a server, the service configuration files are provided in the `service` folder.
+To deploy C-4PM on a server, the service configuration files are provided in the `service` folder. Specific code for making
+the app work in a server is needed, so server-version files of the main file and dash callbacks are provided in the `server` folder.
 Then, you need to:
 
 - Copy the files in the `service` directory to their corresponding folders (given you are using Linux/Mac):
@@ -183,6 +184,12 @@ Then, you need to:
 - Finally, run the service with `systemctl restart c-4pm.service` (if it is already running and you update the files this will restart it).
 
 If you get any auth errors during the process, try using `sudo`.
+
+> **Warning**  
+> As no Rasa models are provided in the repo, you'll need to train a model when you try to deploy it on a server. 
+> So remember to activate the virtual environment `source ./venv/bin/activate` and run `rasa train` once you pull this
+> repository to your server.
+
 
 
 ## ⚠️ Limits on this Demo
