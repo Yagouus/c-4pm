@@ -8,7 +8,7 @@ import dash_bootstrap_components as dbc
 
 
 def query_rasa(text, session_id):
-    url = "http://localhost:5005/webhooks/rest/webhook"
+    url = "http://0.0.0.0:5005/webhooks/rest/webhook"
     payload = {
         "sender": session_id,
         "message": text
