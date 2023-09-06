@@ -164,10 +164,11 @@ To run C-4PM locally you need to:
 running C-4pm to save some space).
 2. Activate your virtual environment. Place yourself on the C-4pm directory `cd /home/citius/c-4pm`
 and launch the virtual environment `source ./venv/bin/activate`.
-3. Run the Rasa Actions server: Place yourself in the `actions` folder inside the project root folder with `cd actions` and run the command `rasa run actions`.
-4. Run Rasa exposing the REST api: Go back go the main projects directory (`cd ..`) and run the command `rasa run --enable-api`
-5. Run `python main.py` file.
-6. Go into your browser to `http://localhost:8080/` and enjoy 🤓.
+3. Train a Rasa NLU model if you've not done it before. This is done with the `rasa train` command. More info [here](#training-and-using-your-own-model).
+4. Run the Rasa Actions server: Place yourself in the `actions` folder inside the project root folder with `cd actions` and run the command `rasa run actions`.
+5. Run Rasa exposing the REST api: Go back go the main projects directory (`cd ..`) and run the command `rasa run --enable-api`
+6. Run `python main.py` file.
+7. Go into your browser to [`http://localhost:8080/`](http://localhost:8080/) and enjoy 🤓.
 
 ### Deploying C-4PM on a server
 
