@@ -124,6 +124,8 @@ nlu:
       - In which traces never happens [ER Sepsis Triage](connector)?
       - Is there any case in which if [Lactic Acid](connector) occurs, [Return ER](connector) occurs at any point?
       - Find traces in which [IV Antibiotics](connector) are given to the patient right after a [lactic acid](connector) test is performed
+      - Will they give [antibiotics](connector) to a patient twice?
+      - Is it possible they give [antibiotics](connector) to a patient two times?
 
   - intent: behavior_check
     examples: |

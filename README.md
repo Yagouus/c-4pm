@@ -223,8 +223,8 @@ is being currently fixed. In case this happens, a simple refresh of the page wil
   title     = {The Droid You’re Looking For: C-4PM, a Conversational Agent for Declarative Process Mining},
   booktitle = {{BPM} (PhD/Demos)},
   series    = {{CEUR} Workshop Proceedings},
-  volume    = {},
-  pages     = {},
+  volume    = {3469},
+  pages     = {112-116},
   publisher = {CEUR-WS.org},
   year      = {2023}
 }
