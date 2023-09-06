@@ -10,7 +10,7 @@ cd actions || exit
 rasa run actions &
 cd ..
 
-rasa run --enable-api
+rasa run --enable-api &
 
 # Deploy dash app with rasa bot
 gunicorn wsgi:application -b :8008 --timeout 240
