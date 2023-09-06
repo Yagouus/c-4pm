@@ -160,16 +160,19 @@ The conversational agent can be run locally, or you may want to deploy it on an 
 
 To run C-4PM locally you need to:
 
-- Run Docker so Lydia will appropriately run in the background (each time Lydia is invoked it will create a new container, delete them when you finish
+1. Run Docker so Lydia will appropriately run in the background (each time Lydia is invoked it will create a new container, delete them when you finish
 running C-4pm to save some space).
-- Remember to activate your virtual environment.
-- Run the Rasa actions server. This can be done with the command `rasa run actions` in the `actions` folder inside the project root folder `cd actions`.
-- Go back to the main project's directory and run `main.py` file.
-- Go into your browser to `http://localhost:8080/` and enjoy 🤓.
+2. Activate your virtual environment. Place yourself on the C-4pm directory `cd /home/citius/c-4pm`
+and launch the virtual environment `source ./venv/bin/activate`.
+3. Run the Rasa Actions server: Place yourself in the `actions` folder inside the project root folder with `cd actions` and run the command `rasa run actions`.
+4. Run Rasa exposing the REST api: Go back go the main projects directory (`cd ..`) and run the command `rasa run --enable-api`
+5. Run `python main.py` file.
+6. Go into your browser to `http://localhost:8080/` and enjoy 🤓.
 
 ### Deploying C-4PM on a server
 
-To deploy C-4PM as a service, the service configuration files are provided in the `service` folder. Then, you need to:
+To deploy C-4PM on a server, the service configuration files are provided in the `service` folder.
+Then, you need to:
 
 - Copy the files in the `service` directory to their corresponding folders (given you are using Linux/Mac):
   - `cp service/c-4pm.service /etc/systemd/system/`
