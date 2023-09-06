@@ -187,3 +187,149 @@ nlu:
       - Release C
       - Release D
       - Release E
+
+  nlu:
+    - synonym: ER Registration
+      examples: |
+        - ER Registration
+        - Emergency Room Sign-In
+        - ER Check-In
+        - Emergency Room Registration
+        - Emergency Admission
+        - Hospital ER Admission
+        - Urgent Care Registration
+        - ER Admittance
+        - ER Entry
+        - Emergency Room Entry
+
+    - synonym: Leucocytes
+      examples: |
+        - Leucocytes
+        - White Blood Cells
+        - WBCs
+        - Leukocytes
+        - White Cells
+        - WBC Count
+
+    - synonym: CRP
+      examples: |
+        - CRP
+        - C-Reactive Protein
+        - CRP Test
+        - C Reactive Protein Test
+        - Inflammation Marker
+
+    - synonym: LacticAcid
+      examples: |
+        - LacticAcid
+        - Lactate
+        - Lactic Acid Test
+        - Blood Lactate
+        - Lactic Acid Level
+
+    - synonym: ER Triage
+      examples: |
+        - ER Triage
+        - Emergency Room Assessment
+        - ER Initial Assessment
+        - ER Sorting
+        - Emergency Triage
+
+    - synonym: ER Sepsis Triage
+      examples: |
+        - ER Sepsis Triage
+        - Sepsis Assessment in ER
+        - Emergency Room Sepsis Assessment
+        - ER Sepsis Evaluation
+        - ER Sepsis Sorting
+
+    - synonym: IV Liquid
+      examples: |
+        - IV Liquid
+        - Intravenous Fluid
+        - IV Fluid
+        - IV Drip
+        - IV Solution
+
+    - synonym: IV Antibiotics
+      examples: |
+        - IV Antibiotics
+        - Intravenous Antibiotics
+        - IV ABX
+        - Antibiotic Drip
+        - IV Antibacterial
+
+    - synonym: Admission NC
+      examples: |
+        - Admission NC
+        - Normal Care Admission
+        - NC Hospital Admission
+        - Regular Care Admission
+        - Standard Care Admission
+
+    - synonym: Release A
+      examples: |
+        - Release A
+        - Release Type A
+        - A-Type Release
+        - Type A Discharge
+        - Release Category A
+
+    - synonym: Return ER
+      examples: |
+        - Return ER
+        - ER Revisit
+        - Emergency Room Return
+        - ER Readmission
+        - Return to Emergency Room
+
+    - synonym: Admission IC
+      examples: |
+        - Admission IC
+        - Intensive Care Admission
+        - ICU Admission
+        - IC Hospital Admission
+        - Critical Care Admission
+
+    - synonym: Release B
+      examples: |
+        - Release B
+        - Release Type B
+        - B-Type Release
+        - Type B Discharge
+        - Release Category B
+
+    - synonym: Release C
+      examples: |
+        - Release C
+        - Release Type C
+        - C-Type Release
+        - Type C Discharge
+        - Release Category C
+
+    - synonym: Release D
+      examples: |
+        - Release D
+        - Release Type D
+        - D-Type Release
+        - Type D Discharge
+        - Release Category D
+
+    - synonym: Release E
+      examples: |
+        - Release E
+        - Release Type E
+        - E-Type Release
+        - Type E Discharge
+        - Release Category E
+  
+
+
+
+
+
+
+
+
+
+
