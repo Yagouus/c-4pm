@@ -8,7 +8,7 @@ source ./venv/bin/activate
 cd actions || exit
 rasa run actions &
 
-# Move to server folder and deploy rasa
+# Move to server folder, re-train and deploy rasa
 cd ..
 rasa run --enable-api &
 
