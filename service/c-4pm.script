@@ -10,7 +10,7 @@ rasa run actions &
 
 # Move to server folder and deploy rasa
 cd ..
-rasa run --enable-api
+rasa run --enable-api &
 
 # Launch dash as a webapp
 gunicorn wsgi:application -b :8000 --timeout 240
