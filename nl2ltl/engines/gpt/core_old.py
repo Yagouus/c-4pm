@@ -19,7 +19,7 @@ from pylogics.syntax.base import Formula
 
 from nl2ltl.engines.base import Engine
 from nl2ltl.engines.gpt3 import ENGINE_ROOT
-from nl2ltl.engines.gpt3.output import GPT3Output, parse_gpt3_output, parse_gpt3_result
+from nl2ltl.engines.gpt3.output_old import GPT3Output, parse_gpt3_output, parse_gpt3_result
 from nl2ltl.filters.base import Filter
 
 load_dotenv('../.env')

@@ -4,9 +4,22 @@ import numpy as np
 import pm4py
 
 from src.Declare4Py.ProcessModels.LTLModel import LTLTemplate, LTLModel
+from src.Declare4Py.D4PyEventLog import D4PyEventLog
+
+template_mapping = {
+    'Existence': 'eventually_activity_a',
+    'ExistenceTwo': 'existence_two_activity_a',
+    'Absence': 'not_eventually_activity_a',
+    'RespondedExistence': 'responded_existence',
+    'Response': 'response',
+    'Precedence': 'eventually_a_then_b',
+    'ChainResponse': 'chain_response',
+    'NotCoExistence': 'chain_response'
+}
 
 
 def dec_to_basic_nl(specification=""):
+
     nl_specification = ""
     fixed_specification = textwrap.dedent(specification)
 
@@ -72,6 +85,22 @@ def dec_to_basic_nl(specification=""):
                     nl_specification += f"Either activity {target_0} or {target_1} can happen, but not both."
 
     return nl_specification
+
+
+def template_translator(template, activities):
+
+    if template := template_mapping.get(template):
+        dec_template = LTLTemplate(template)
+        if template in ['eventually_activity_a', 'existence_two_activity_a', 'not_eventually_activity_a']:
+            model = dec_template.fill_template([activities[0]])
+        elif template in ['eventually_a_then_b']:
+            model = dec_template.fill_template([activities[0], activities[1]])
+        else:
+            model = dec_template.fill_template([activities[0]], [activities[1]])
+    else:
+        return None
+
+    return model
 
 
 def model_discovery():
@@ -177,7 +206,6 @@ def conformance_check_ltl(formula, connectors):
 
 
 def behavior_check_ltl(specification=None, formula=None, connectors=[]):
-    from src.Declare4Py.D4PyEventLog import D4PyEventLog
 
     # Load event log
     event_log = D4PyEventLog()
@@ -186,45 +214,28 @@ def behavior_check_ltl(specification=None, formula=None, connectors=[]):
     # Detect and translate the type of template
     template, *activities = formula.strip('()').split()
 
-    print(template)
-    print(connectors)
-    print(activities)
+    print("Identified Declare template:", template)
+    print("Connectors identified by Rasa:", connectors)
+    print("Connectors identified by NL2LTL:", activities)
 
-    # If no activity has been properly detected by rasa, return empty list of traces
+    # If no activity has been properly detected by rasa, return empty ist of traces
     cs = [c.replace(' ', '') for c in connectors]
     if not connectors or sorted(cs) != sorted(activities):
-        return []
-
-    # Convert NL2LTL syntax to Declare4Py syntax
-    template_mapping = {
-        'Existence': 'eventually_activity_a',
-        'ExistenceTwo': 'existence_two_activity_a',
-        'Absence': 'not_eventually_activity_a',
-        'RespondedExistence': 'responded_existence',
-        'Response': 'response',
-        'Precedence': 'eventually_a_then_b',
-        'ChainResponse': 'chain_response',
-        'NotCoExistence': 'chain_response'
-    }
-
-    # Translate NL2LTL to Declare4Py syntax
-    if template := template_mapping.get(template):
-        dec_template = LTLTemplate(template)
-        if template in ['eventually_activity_a', 'existence_two_activity_a', 'not_eventually_activity_a']:
-            model = dec_template.fill_template([activities[0]])
-        elif template in ['eventually_a_then_b']:
-            model = dec_template.fill_template([activities[0], activities[1]])
-        else:
-            model = dec_template.fill_template([activities[0]], [activities[1]])
-    else:
         return None
 
-    nl_specification = dec2ltl(specification)
-    nl_specification.add_disjunction(model.formula)
-    sat = nl_specification.check_satisfiability()
-    print(nl_specification.formula)
-    print(sat)
-    return sat
+    # Convert NL2LTL syntax to Declare4Py syntax
+    model = template_translator(template, activities)
+
+    if model:
+        nl_specification = dec2ltl(specification)
+        nl_specification.add_disjunction(model.formula)
+        sat = nl_specification.check_satisfiability()
+        print("Formula:", nl_specification.formula)
+        print("Satisfiability of the formula:", sat)
+        return sat
+    else:
+        print("Could not translate to a template")
+        return False
 
 
 def consistency_check(specification=None):
@@ -269,18 +280,6 @@ def dec2ltl(specification=None):
 
     if not specification:
         specification = test
-
-    template_mapping = {
-        'Existence': 'eventually_activity_a',
-        'Existence2': 'existence_two_activity_a',
-        'Absence': 'not_eventually_activity_a',
-        'RespondedExistence': 'responded_existence',
-        'Response': 'response',
-        'Precedence': 'eventually_a_then_b',
-        'Chain Precedence': 'chain_precedence',
-        'Chain Response': 'chain_response',
-        'NotCoExistence': 'chain_response'
-    }
 
     nl_specification = None
     fixed_specification = textwrap.dedent(specification)
@@ -332,5 +331,3 @@ def dec2ltl(specification=None):
 
     return nl_specification
 
-# consistency_check()
-# behavior_check_ltl(formula="RespondedExistence AdmissionNC ERTriage", connectors=["Admission NC", "ER Triage"])

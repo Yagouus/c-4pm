@@ -325,6 +325,7 @@ nlu:
       - ER Admittance
       - ER Entry
       - Emergency Room Entry
+      - Registration
 
   - synonym: Leucocytes
     examples: |
@@ -382,6 +383,7 @@ nlu:
       - IV ABX
       - Antibiotic Drip
       - IV Antibacterial
+      - Antibiotics
 
   - synonym: Admission NC
     examples: |

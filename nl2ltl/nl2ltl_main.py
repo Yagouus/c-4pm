@@ -1,6 +1,6 @@
 from nl2ltl import translate
 from nl2ltl.engines.rasa.core import RasaEngine
-from nl2ltl.engines.gpt3.core import GPT3Engine
+from nl2ltl.engines.gpt3.core_old import GPT3Engine
 from nl2ltl.filters.simple_filters import BasicFilter
 from nl2ltl.engines.utils import pretty
 from nl2ltl.engines.utils import _top_result

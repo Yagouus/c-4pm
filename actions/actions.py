@@ -36,7 +36,7 @@ class ActionBehaviorCheck(Action):
         utterance = str(tracker.latest_message['text'])
         connectors = list(tracker.get_latest_entity_values("connector"))
 
-        print(connectors)
+        #print("Connectors identified by Rasa:", connectors)
 
         # Remove possible spaces in the connectors
         for connector in connectors:
@@ -57,22 +57,30 @@ class ActionBehaviorCheck(Action):
             dispatcher.utter_message(text="There are no cases in which that happens.")
             return []
 
-        print(formula)
-        print(formula.to_english())
+        #print(formula)
+        #print(formula.to_english())
 
         # Do behavior check
         import declare_client
         fact = declare_client.behavior_check_ltl(formula=str(formula), connectors=connectors)
 
-        # If the behavior is not admissible, return immediately
-        if not fact:
-            dispatcher.utter_message(
-                text=f"The specification of the process does not allow for that behavior.".capitalize())
+        if fact is None:
+            dispatcher.utter_message(text="Can you reformulate? I may have miss some activity")
             return []
+
+        # If the behavior is not admissible, return immediately
+        #if not fact:
+        #    dispatcher.utter_message(
+        #        text=f"The specification of the process does not allow for that behavior.".capitalize())
+        #    return []
 
         # Conformance checking with ltl
         from declare_client import conformance_check_ltl
         traces = conformance_check_ltl(str(formula), connectors)
+
+        if traces is None:
+            dispatcher.utter_message(text="Can you reformulate? I may have miss some activity")
+            return []
 
         if len(traces) > 0:
             result_text = f"The specification allows for that behavior. " \
