@@ -38,23 +38,17 @@ class ActionBehaviorCheck(Action):
         utterance = str(tracker.latest_message['text'])
         connectors = list(tracker.get_latest_entity_values("connector"))
 
-        # print("Connectors identified by Rasa:", connectors)
-
-        # Remove possible spaces in the connectors
-       # for connector in connectors:
-       #     x = connector.replace(" ", "")
-       #     utterance = utterance.replace(connector, x)
-
-        # NL2LTL and get formula and confidence
-        if res := nl2ltl_client.run(utterance):
-            formula, confidence = res
-        else:
+        # Run NL2LTL and get formula and confidence
+        res = nl2ltl_client.run(utterance)
+        if not res:
             dispatcher.utter_message(
                 text="I'm not sure about the behaviour you are asking, can you please reformulate your question?.")
             return []
 
-        # Do behavior check, check if the behavior is accepted by the model
-        if declare_client.behavior_check_ltl(formula=str(formula), connectors=connectors) is None or False:
+        formula, confidence = res
+
+        # Behavior and conformance checks
+        if not declare_client.behavior_check_ltl(formula=str(formula), connectors=connectors):
             dispatcher.utter_message(
                 text="I think I may have missed the name of some activity. Can you reformulate your question?")
             return []
@@ -66,15 +60,16 @@ class ActionBehaviorCheck(Action):
                 text="I think I may have missed the name of some activity. Can you reformulate your question?")
             return []
 
-        if len(traces) > 0:
-            result_text = f"The specification allows for that behavior. ".capitalize() +\
-                          f"Here are some cases in which, {formula.to_english()}".capitalize()
+        # Generate response text based on traces
+        if traces:
+            result_text = (f"The specification allows for that behavior. "
+                           f"Here are some cases in which, {formula.to_english()}").capitalize()
         else:
-            dispatcher.utter_message(text="The specification allows for that behavior. "
-                                          "However, there are no cases in which that happens.")
+            dispatcher.utter_message(
+                text="The specification allows for that behavior. However, there are no cases in which that happens.")
             return []
 
-        # Convert traces to text
+        # Convert traces to text and randomly select 4
         variants = list({str(t) for t in traces})
         text = "\n\n".join(t.translate(str.maketrans("", "", "[]'")) for t in random.choices(variants, k=4))
 
