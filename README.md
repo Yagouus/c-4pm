@@ -204,8 +204,8 @@ used to perform the reasoning tasks.
 - The consistency checking and model checking tasks are limited in terms of formula size. Too big formulae make the
 satisfiability check too demanding and slow, which would make the use of the conversational interface unpleasant. 
 Optimizing this is planned as future work so bigger models can be used.
-- No session storage is used, so, if multiple users use the chatbot at the same time, some overlapping may occur. This
-is being currently fixed. In case this happens, a simple refresh of the page will start a new conversation.
+- Even session storage is used, if multiple users use the chatbot at the same time, due to only one action server
+running, some overlapping may occur. In case this happens, a simple refresh of the page will start a new conversation.
 
 ## ✍🏼 Citing C-4PM
 

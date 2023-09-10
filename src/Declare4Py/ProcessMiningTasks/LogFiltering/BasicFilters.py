@@ -1,8 +1,8 @@
 from src.Declare4Py.D4PyEventLog import D4PyEventLog
 
 import pm4py
-from pm4py.objects.log.obj import EventLog, Trace
-from typing import Union, Set, List, Tuple, Dict
+from pm4py.objects.log.obj import EventLog
+from typing import Union, Set, List
 import packaging
 from packaging import version
 

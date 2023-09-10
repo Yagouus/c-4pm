@@ -54,7 +54,9 @@ def all_callbacks(dash_app):
                                     html.Li("Is it possible that ER Triage occurs before IV Liquids?"),
                                     html.Li("Can activity IV Antibiotics be performed before activity Admission NC?"),
                                     html.Li("In which cases ER Triage occurs right after ER Registration?"),
-                                    html.Li("Will IV Antibiotics eventually happen twice?")
+                                    html.Li("Will IV Antibiotics eventually happen twice?"),
+                                    html.Li("Give me all cases in which activity ERTriage occurs immediately after "
+                                            "activity AdmissionNC is performed")
                                 ])],
                                style={'text-align': 'left'}, className="from-them margin-b_one"), width=10)]
             )]

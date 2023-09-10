@@ -1,8 +1,9 @@
 Translate natural language sentences into patterns.
 
-ALLOWED_PATTERNS: existence, existenceTwo, response, chainResponse, respondedExistence, absence
+ALLOWED_PATTERNS: existence, existenceTwo, absence, respondedExistence, response, precedence, chainResponse, notCoExistence,
 ALLOWED_SYMBOLS: ERRegistration, Leucocytes, CRP, LacticAcid, ERTriage, ER Sepsis Triage, IVLiquid, IVAntibiotics, AdmissionNC, ReleaseA, ReturnER, AdmissionIC, ReleaseB, ReleaseC, ReleaseD, ReleaseE
 
+# Existence Examples
 NL: In which cases ERRegistration happens?
 PATTERN: existence
 SYMBOLS: ERRegistration
@@ -31,28 +32,34 @@ NL: Are there any cases in which activity ERTriage occurs?
 PATTERN: existence
 SYMBOLS: ERTriage
 
-NL: Populate a Salesforce campaign
+NL: Is AdmissionNC ever executed?
 PATTERN: existence
-SYMBOLS: Salesforce
+SYMBOLS: AdmissionNC
 
-NL: Extract Salesforce lead details
+NL: Does ReleaseC occur at any point?
 PATTERN: existence
-SYMBOLS: Salesforce
+SYMBOLS: ReleaseC
 
-NL: Invite Sales employees
+NL: Are there cases where ReturnER happens?
 PATTERN: existence
-SYMBOLS: Sales
+SYMBOLS: ReturnER
 
-NL: Invite Sales employees to an Eventbrite event
+NL: Is ReleaseE ever executed?
 PATTERN: existence
-SYMBOLS: Eventbrite
+SYMBOLS: ReleaseE
 
-NL: Use Slack to notify of unprocessed Kronos leave requests
+NL: When does ReleaseB take place?
 PATTERN: existence
-SYMBOLS: Slack
+SYMBOLS: ReleaseB
+
+NL: Does LacticAcid happen in any case?
+PATTERN: existence
+SYMBOLS: LacticAcid
 
 
-NL: extract ReleaseA lead details at least twice
+
+
+NL: Give me traces in which ReleaseA happens at least twice
 PATTERN: existenceTwo
 SYMBOLS: ReleaseA
 
@@ -80,6 +87,101 @@ NL: Will IV Antibiotics eventually happen twice in a case?
 PATTERN: existenceTwo
 SYMBOLS: IVAntibiotics
 
+NL: Are there any cases in which ReturnER occurs twice?
+PATTERN: existenceTwo
+SYMBOLS: ReturnER
+
+NL: Does AdmissionNC happen twice in any case?
+PATTERN: existenceTwo
+SYMBOLS: AdmissionNC
+
+NL: Is ReleaseC executed two times in any case?
+PATTERN: existenceTwo
+SYMBOLS: ReleaseC
+
+NL: Does ReleaseB occur twice in a single case?
+PATTERN: existenceTwo
+SYMBOLS: ReleaseB
+
+
+# Absence Examples
+NL: In which cases is ReleaseD not executed?
+PATTERN: absence
+SYMBOLS: ReleaseD
+
+NL: Find traces where AdmissionIC never happens.
+PATTERN: absence
+SYMBOLS: AdmissionIC
+
+NL: Are there any cases where CRP doesn't occur?
+PATTERN: absence
+SYMBOLS: CRP
+
+NL: Does LacticAcid ever not happen?
+PATTERN: absence
+SYMBOLS: LacticAcid
+
+NL: ReleaseA does not occur
+PATTERN: absence
+SYMBOLS: ReleaseA
+
+NL: Give me cases in which IVLiquid never happens
+PATTERN: absence
+SYMBOLS: IVLiquid
+
+NL: Are there any cases in which ReleaseA never takes place?
+PATTERN: absence
+SYMBOLS: ReleaseA
+
+NL: When does IVAntibiotics never happen?
+PATTERN: absence
+SYMBOLS: IVAntibiotics
+
+NL: Are there any traces where ReleaseC is absent?
+PATTERN: absence
+SYMBOLS: ReleaseC
+
+NL: When does ReleaseE never happen?
+PATTERN: absence
+SYMBOLS: ReleaseE
+
+
+
+
+NL: In which cases where ReleaseB occurs, IVAntibiotics is also executed?
+PATTERN: respondedExistence
+SYMBOLS: ReleaseB, IVAntibiotics
+
+NL: When AdmissionNC happens, does IVLiquids occur before of after it?
+PATTERN: respondedExistence
+SYMBOLS: AdmissionNC, IVLiquids
+
+NL: Is there any case in which if LacticAcid occurs, ReturnER occurs at any point?
+PATTERN: respondedExistence
+SYMBOLS: LacticAcid, ReturnER
+
+NL: Does ERTriage occur either before or after AdmissionIC at any point in the process?
+PATTERN: respondedExistence
+SYMBOLS: ERTriage, AdmissionNC
+
+NL: Does ERTriage happen in any case in which AdmissionNC occurs?
+PATTERN: respondedExistence
+SYMBOLS: AdmissionNC, ERTriage
+
+NL: Whenever AdmissionIC occurs, does ReleaseB also take place?
+PATTERN: respondedExistence
+SYMBOLS: AdmissionIC, ReleaseB
+
+NL: In which cases where ReturnER occurs, ReleaseC is also executed?
+PATTERN: respondedExistence
+SYMBOLS: ReturnER, ReleaseC
+
+NL: If ReleaseB happens, does ReleaseC also happen?
+PATTERN: respondedExistence
+SYMBOLS: ReleaseB, ReleaseC
+
+
+
 
 NL: Can you retrieve all the traces in which a CRP is performed after IVLiquid?
 PATTERN: response
@@ -87,7 +189,7 @@ SYMBOLS: IVLiquid, CRP
 
 NL: Give me all cases in which activity ERTriage is performed after activity AdmissionNC
 PATTERN: response
-SYMBOLS: Acoustic Campaign, Salesforce
+SYMBOLS: ERTriage, AdmissionNC
 
 NL: Does at ReleaseD happen at some point after AdmissionIC occurs?
 PATTERN: response
@@ -113,6 +215,46 @@ NL: Give me traces in which after Admission NC occurs Leucocytes is performed
 PATTERN: response
 SYMBOLS: AdmissionNC, ERTriage
 
+NL: Does ReleaseC happen eventually after ReturnER in any case?
+PATTERN: response
+SYMBOLS: ReturnER, ReleaseC
+
+NL: Give me traces in which AdmissionIC occurs and then ReleaseE happens.
+PATTERN: response
+SYMBOLS: AdmissionIC, ReleaseE
+
+
+
+# Precedence Examples
+NL: Find traces where ReleaseD occurs before ReleaseE.
+PATTERN: precedence
+SYMBOLS: ReleaseD, ReleaseE
+
+NL: In which cases does LacticAcid occur before ER Sepsis Triage?
+PATTERN: precedence
+SYMBOLS: LacticAcid, ER Sepsis Triage
+
+NL: Are there any traces where ReleaseB is performed before ReleaseA?
+PATTERN: precedence
+SYMBOLS: ReleaseB, ReleaseA
+
+NL: Is ERRegistration performed before AdmissionNC in any case?
+PATTERN: precedence
+SYMBOLS: ERRegistration, AdmissionNC
+
+NL: Are they traces in which IVLiquid occurs before ERRegistration?
+PATTERN: precedence
+SYMBOLS: IVLiquid, ERRegistration
+
+NL: Give me traces in which Admission NC occurs before Leucocytes is performed
+PATTERN: precedence
+SYMBOLS: AdmissionNC, Leucocytes
+
+NL: Find traces in which LacticAcid happens before Leucocytes.
+PATTERN: precedence
+SYMBOLS: LacticAcid, Leucocytes
+
+
 
 NL: Find traces in which IVAntibiotics occurs right after ERRegistration is performed
 PATTERN: chainResponse
@@ -128,7 +270,7 @@ SYMBOLS: AdmissionNC, ERTriage
 
 NL: Give me all cases in which activity ERTriage occurs immediately after activity AdmissionNC is performed
 PATTERN: chainResponse
-SYMBOLS: AdmissionNC, ERTriage
+SYMBOLS: ERTriage, AdmissionNC
 
 NL: Does in any case ReleaseD happen right after AdmissionIC?
 PATTERN: chainResponse
@@ -138,68 +280,37 @@ NL: Give me the traces in which after ERTriage occurs IVAntibiotics is immediate
 PATTERN: chainResponse
 SYMBOLS: ERTriage, IVAntibiotics
 
-NL: Send me a Slack notification straight after a new Asana task is created
+NL: Does ReleaseE happen immediately after AdmissionIC in any case?
 PATTERN: chainResponse
-SYMBOLS: Slack, Asana
+SYMBOLS: AdmissionIC, ReleaseE
 
-NL: immediately create a case in Salesforce after a new incident is created in ServiceNow
+NL: Are there any cases in which activity ReleaseB occurs right after activity AdmissionNC?
 PATTERN: chainResponse
-SYMBOLS: Salesforce, ServiceNow
-
-NL: Open a ticket on ServiceNow after receiving an identified issue in Slack
-PATTERN: chainResponse
-SYMBOLS: ServiceNow, Slack
-
-NL: send me a Slack right after receiving an Hotmail
-PATTERN: chainResponse
-SYMBOLS: Slack, Hotmail
-
-NL: Sync Salesforce data right after a Gmail contact is being updated
-PATTERN: chainResponse
-SYMBOLS: Salesforce, Gmail
+SYMBOLS: AdmissionNC, ReleaseB
 
 
-NL: Create a new Trello card for a new Salesforce campaign
-PATTERN: respondedExistence
-SYMBOLS: Trello, Salesforce
-
-NL: In which cases where ReleaseB occurs, IVAntibiotics is also executed?
-PATTERN: respondedExistence
-SYMBOLS: ReleaseB, IVAntibiotics
-
-NL: When AdmissionNC happens, does IVLiquids occur before of after it?
-PATTERN: respondedExistence
-SYMBOLS: AdmissionNC, IVLiquids
-
-NL: Is there any case in which if LacticAcid occurs, ReturnER occurs at any point?
-PATTERN: respondedExistence
-SYMBOLS: LacticAcid, ReturnER
-
-NL: Does ERTriage occur either before or after AdmissionIC at any point in the process?
-PATTERN: respondedExistence
-SYMBOLS: ERTriage, AdmissionNC
-
-NL: Does ERTriage happen in any case in which AdmissionNC occurs?
-PATTERN: respondedExistence
-SYMBOLS: AdmissionNC, ERTriage
 
 
-NL: ReleaseA does not occur
-PATTERN: absence
-SYMBOLS: ReleaseA
-
-NL: Give me cases in which IVLiquid never happens
-PATTERN: absence
-SYMBOLS: IVLiquid
-
-NL: Are there any cases in which ReleaseA never takes place?
-PATTERN: absence
-SYMBOLS: ReleaseA
-
-NL: When does IVAntibiotics never happen?
-PATTERN: absence
-SYMBOLS: IVAntibiotics
-
-NL: Is it allowed to perform activity IV Liquids without previously performing activity ER Triage?
-PATTERN: notRespondedExistence
+NL: Find traces in which if ERTriage is present, IVLiquids is not
+PATTERN: notCoExistence
 SYMBOLS: ERTriage, IVLiquids
+
+NL: In traces where ReleaseC is present, does ReturnER not occur?
+PATTERN: notCoExistence
+SYMBOLS: ReleaseC, ReturnER
+
+NL: Are there traces in which IVAntibiotics occurs but ReleaseE doesn't?
+PATTERN: notCoExistence
+SYMBOLS: IVAntibiotics, ReleaseE
+
+NL: In cases where AdmissionIC is present, is ER Sepsis Triage absent?
+PATTERN: notCoExistence
+SYMBOLS: AdmissionIC, ER Sepsis Triage
+
+NL: Find traces where Leucocytes happens but CRP does not.
+PATTERN: notCoExistence
+SYMBOLS: Leucocytes, CRP
+
+NL: If ReleaseB is executed, does that mean ReturnER never occurs?
+PATTERN: notCoExistence
+SYMBOLS: ReleaseB, ReturnER

@@ -3,23 +3,15 @@ import textwrap
 import numpy as np
 import pm4py
 
-from src.Declare4Py.ProcessModels.LTLModel import LTLTemplate, LTLModel
 from src.Declare4Py.D4PyEventLog import D4PyEventLog
-
-template_mapping = {
-    'Existence': 'eventually_activity_a',
-    'ExistenceTwo': 'existence_two_activity_a',
-    'Absence': 'not_eventually_activity_a',
-    'RespondedExistence': 'responded_existence',
-    'Response': 'response',
-    'Precedence': 'eventually_a_then_b',
-    'ChainResponse': 'chain_response',
-    'NotCoExistence': 'chain_response'
-}
+from src.Declare4Py.ProcessMiningTasks.ConformanceChecking.MPDeclareResultsBrowser import MPDeclareResultsBrowser
+from src.Declare4Py.ProcessModels.LTLModel import LTLTemplate, LTLModel
+from src.Declare4Py.ProcessMiningTasks.ConformanceChecking.LTLAnalyzer import LTLAnalyzer
+from src.Declare4Py.ProcessModels.DeclareModel import DeclareModel
+from src.Declare4Py.ProcessMiningTasks.ConformanceChecking.MPDeclareAnalyzer import MPDeclareAnalyzer
 
 
 def dec_to_basic_nl(specification=""):
-
     nl_specification = ""
     fixed_specification = textwrap.dedent(specification)
 
@@ -87,22 +79,6 @@ def dec_to_basic_nl(specification=""):
     return nl_specification
 
 
-def template_translator(template, activities):
-
-    if template := template_mapping.get(template):
-        dec_template = LTLTemplate(template)
-        if template in ['eventually_activity_a', 'existence_two_activity_a', 'not_eventually_activity_a']:
-            model = dec_template.fill_template([activities[0]])
-        elif template in ['eventually_a_then_b']:
-            model = dec_template.fill_template([activities[0], activities[1]])
-        else:
-            model = dec_template.fill_template([activities[0]], [activities[1]])
-    else:
-        return None
-
-    return model
-
-
 def model_discovery():
     from src.Declare4Py.ProcessModels.DeclareModel import DeclareModel
     from src.Declare4Py.ProcessMiningTasks.Discovery.DeclareMiner import DeclareMiner
@@ -120,23 +96,20 @@ def model_discovery():
 
 
 def conformance_check(threshold=0.8, opposite=False):
-    from src.Declare4Py.D4PyEventLog import D4PyEventLog
-    from src.Declare4Py.ProcessModels.DeclareModel import DeclareModel
-
+    # Retrieve and parse log
     event_log = D4PyEventLog(case_name="case:concept:name")
     event_log.parse_xes_log('../assets/Sepsis Cases.xes.gz')
 
+    # Retrieve the process specification
     declare_model = DeclareModel().parse_from_file('../assets/model.decl')
 
-    from src.Declare4Py.ProcessMiningTasks.ConformanceChecking.MPDeclareAnalyzer import MPDeclareAnalyzer
-    from src.Declare4Py.ProcessMiningTasks.ConformanceChecking.MPDeclareResultsBrowser import MPDeclareResultsBrowser
-
+    # Perform conformance checking
     basic_checker = MPDeclareAnalyzer(log=event_log, declare_model=declare_model, consider_vacuity=True)
     conf_check_res: MPDeclareResultsBrowser = basic_checker.run()
 
     traces = []
 
-    # Truth values for the second trace
+    # Filter traces with a conformance value above the threshold
     for idx in range(event_log.get_length()):
         conf = conf_check_res.get_metric(trace_id=idx, metric="state")
         perc = np.sum(conf) / len(conf)
@@ -151,14 +124,14 @@ def conformance_check(threshold=0.8, opposite=False):
 
 
 def conformance_check_ltl(formula, connectors):
-    from src.Declare4Py.D4PyEventLog import D4PyEventLog
-    from src.Declare4Py.ProcessMiningTasks.ConformanceChecking.LTLAnalyzer import LTLAnalyzer
+    """ Performs conformance checking with behavior input by the user.
+    Input gets converted to LTL and a conformance checker is run over the event log"""
 
-    # Load event log
+    # Retrieve and parse log
     event_log = D4PyEventLog()
     event_log.parse_xes_log('../assets/Sepsis Cases.xes.gz')
 
-    # Detect and translate the type of template
+    # Detect and translate the type of template input by the user
     template, *activities = formula.strip('()').split()
 
     # If no activity has been properly detected by rasa, return empty list of traces
@@ -166,47 +139,30 @@ def conformance_check_ltl(formula, connectors):
     if not connectors or sorted(cs) != sorted(activities):
         return []
 
-    # Convert NL2LTL syntax to Declare4Py syntax
-    template_mapping = {
-        'Existence': 'eventually_activity_a',
-        'ExistenceTwo': 'existence_two_activity_a',
-        'Absence': 'not_eventually_activity_a',
-        'RespondedExistence': 'responded_existence',
-        'Response': 'response',
-        'Precedence': 'eventually_a_then_b',
-        'ChainResponse': 'chain_response',
-        'NotCoExistence': 'chain_response'
-    }
+    # Translate the user input from NL2LTL syntax to Declare4Py syntax
+    model = nl2lltl2dec(template, activities)
+    print("Model:", model.formula)
 
-    # Translate NL2LTL to Declare4Py syntax
-    if template := template_mapping.get(template):
-        dec_template = LTLTemplate(template)
-        if template in ['eventually_activity_a', 'existence_two_activity_a', 'not_eventually_activity_a']:
-            model = dec_template.fill_template([activities[0]])
-        elif template in ['eventually_a_then_b']:
-            model = dec_template.fill_template([activities[0], activities[1]])
+    if model:
+
+        # Perform conformance checking
+        analyzer = LTLAnalyzer(event_log, model)
+        df = analyzer.run()
+
+        # Recover accepted cases from the log and filter those containing all activities in the constraint
+        if accepted_cases := df.loc[df['accepted'], 'case:concept:name'].tolist():
+            traces = pm4py.filter_trace_attribute_values(event_log.get_log(), 'concept:name', accepted_cases,
+                                                         case_id_key='concept:name')
+            for a in connectors:
+                traces = pm4py.filter_event_attribute_values(traces, 'concept:name', {a}, case_id_key='concept:name')
+            return pm4py.project_on_event_attribute(traces, 'concept:name')
         else:
-            model = dec_template.fill_template([activities[0]], [activities[1]])
+            return []
     else:
         return None
 
-    # Perform conformance checking
-    analyzer = LTLAnalyzer(event_log, model)
-    df = analyzer.run()
-
-    # Recover accepted cases from the log and filter those containing all activities in the constraint
-    if accepted_cases := df.loc[df['accepted'], 'case:concept:name'].tolist():
-        traces = pm4py.filter_trace_attribute_values(event_log.get_log(), 'concept:name', accepted_cases,
-                                                     case_id_key='concept:name')
-        for a in connectors:
-            traces = pm4py.filter_event_attribute_values(traces, 'concept:name', {a}, case_id_key='concept:name')
-        return pm4py.project_on_event_attribute(traces, 'concept:name')
-    else:
-        return []
-
 
 def behavior_check_ltl(specification=None, formula=None, connectors=[]):
-
     # Load event log
     event_log = D4PyEventLog()
     event_log.parse_xes_log('../assets/Sepsis Cases.xes.gz')
@@ -214,35 +170,37 @@ def behavior_check_ltl(specification=None, formula=None, connectors=[]):
     # Detect and translate the type of template
     template, *activities = formula.strip('()').split()
 
-    print("Identified Declare template:", template)
-    print("Connectors identified by Rasa:", connectors)
-    print("Connectors identified by NL2LTL:", activities)
+    print("Template detected by NL2LTL:", template)
+    print("Connectors detected by RASA:", connectors)
+    print("Activities detected by NL2LTL:", activities)
 
-    # If no activity has been properly detected by rasa, return empty ist of traces
+    # If no activity has been properly detected by rasa, return empty list of traces
     cs = [c.replace(' ', '') for c in connectors]
     if not connectors or sorted(cs) != sorted(activities):
-        return None
+        return []
 
-    # Convert NL2LTL syntax to Declare4Py syntax
-    model = template_translator(template, activities)
+    model = nl2lltl2dec(template, activities)
 
     if model:
         nl_specification = dec2ltl(specification)
         nl_specification.add_disjunction(model.formula)
         sat = nl_specification.check_satisfiability()
-        print("Formula:", nl_specification.formula)
-        print("Satisfiability of the formula:", sat)
+        print("Model + formula:", nl_specification.formula)
+        print("Is the model + input behavior satisfiable? -> ", sat)
         return sat
     else:
-        print("Could not translate to a template")
-        return False
+        return None
 
 
 def consistency_check(specification=None):
+    """ Translate the DECLARE process specification into ltl so it can be used with the Lydia checker
+     and performs consistency checking using Lydia"""
+
     nl_specification = dec2ltl(specification)
     sat = nl_specification.check_satisfiability()
-    print(nl_specification.formula)
-    print(sat)
+
+    print("Model:", nl_specification.formula)
+    print("Is the model + input behavior satisfiable? -> ", sat)
     return sat
 
 
@@ -259,8 +217,9 @@ def list_activities():
 
 
 # UTILS
-
 def dec2ltl(specification=None):
+    """ Translates a DECLARE specification into a LTL specification so it can be used for
+    consistency checking with Lydia """
     test = ("""
                     Existence2[Admission NC]
                     Chain Response[Admission NC, Release B]
@@ -280,6 +239,18 @@ def dec2ltl(specification=None):
 
     if not specification:
         specification = test
+
+    template_mapping = {
+        'Existence': 'eventually_activity_a',
+        'Existence2': 'existence_two_activity_a',
+        'Absence': 'not_eventually_activity_a',
+        'RespondedExistence': 'responded_existence',
+        'Response': 'response',
+        'Precedence': 'eventually_a_then_b',
+        'Chain Precedence': 'chain_precedence',
+        'Chain Response': 'chain_response',
+        'NotCoExistence': 'chain_response'
+    }
 
     nl_specification = None
     fixed_specification = textwrap.dedent(specification)
@@ -324,6 +295,7 @@ def dec2ltl(specification=None):
             if nl_specification:
                 nl_specification.add_disjunction(t)
             else:
+
                 nl_specification = LTLModel()
                 nl_specification.parse_from_string(t)
         else:
@@ -331,3 +303,32 @@ def dec2ltl(specification=None):
 
     return nl_specification
 
+
+def nl2lltl2dec(template, activities):
+    """ Convert NL2LTL syntax to Declare4Py syntax. All templates supported by NL2LTL are included """
+    template_mapping = {
+        'Existence': 'eventually_activity_a',
+        'ExistenceTwo': 'existence_two_activity_a',
+        'Absence': 'not_eventually_activity_a',
+        'RespondedExistence': 'responded_existence',
+        'Response': 'response',
+        'Precedence': 'eventually_a_then_b',
+        'ChainResponse': 'chain_response',
+        'NotCoExistence': 'chain_response'
+    }
+
+    # Translate NL2LTL to Declare4Py syntax
+    if template := template_mapping.get(template):
+        dec_template = LTLTemplate(template)
+        if template in ['eventually_activity_a', 'existence_two_activity_a', 'not_eventually_activity_a']:
+            model = dec_template.fill_template([activities[0]])
+        elif template in ['eventually_a_then_b']:
+            model = dec_template.fill_template([activities[0], activities[1]])
+        elif template in ['responded_existence']:
+            model = dec_template.fill_template([activities[1]], [activities[0]])
+        else:
+            model = dec_template.fill_template([activities[0]], [activities[1]])
+    else:
+        return None
+
+    return model

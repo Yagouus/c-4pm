@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import multiprocessing
-import pdb
 
 from pm4py.objects.log.obj import Trace
 from pythomata.impl.symbolic import SymbolicDFA

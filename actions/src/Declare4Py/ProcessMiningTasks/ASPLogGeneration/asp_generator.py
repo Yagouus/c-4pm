@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import collections
-import json
 import logging
 import math
 import re
@@ -19,9 +18,9 @@ from src.Declare4Py.D4PyEventLog import D4PyEventLog
 from src.Declare4Py.ProcessMiningTasks.ASPLogGeneration.ASPTranslator.asp_translator import ASPModel
 from src.Declare4Py.ProcessMiningTasks.ASPLogGeneration.ASPUtils.asp_encoding import ASPEncoding
 from src.Declare4Py.ProcessMiningTasks.ASPLogGeneration.ASPUtils.asp_result_parser import ASPResultTraceModel
-from src.Declare4Py.ProcessMiningTasks.ASPLogGeneration.ASPUtils.asp_template import ASPTemplate
+from src.Declare4Py.ProcessMiningTasks.ASPLogGeneration.ASPUtils import ASPTemplate
 from src.Declare4Py.ProcessMiningTasks.ASPLogGeneration.ASPUtils.distribution import Distributor
-from src.Declare4Py.ProcessMiningTasks.log_generator import LogGenerator
+from src.Declare4Py import LogGenerator
 from src.Declare4Py.ProcessModels.AbstractModel import ProcessModel
 from src.Declare4Py.ProcessModels.DeclareModel import DeclareModel, DeclareParsedDataModel, \
     DeclareModelConstraintTemplate, DeclareModelAttributeType, DeclareModelAttr

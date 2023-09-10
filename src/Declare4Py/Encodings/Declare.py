@@ -1,11 +1,9 @@
-import pdb
-
 from src.Declare4Py.D4PyEventLog import D4PyEventLog
 from sklearn.base import TransformerMixin, BaseEstimator
 import pandas as pd
 import numpy as np
 from time import time
-from typing import Union, List
+from typing import Union
 from pandas import DataFrame, Index
 from src.Declare4Py.ProcessModels.DeclareModel import DeclareModel
 from src.Declare4Py.ProcessModels.DeclareModel import DeclareModelTemplate
