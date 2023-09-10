@@ -149,6 +149,10 @@ def conformance_check_ltl(formula, connectors):
     print(model_activities)
     print(nl2ltl_activities)
 
+    # Compare lists
+    if not all(activity in model_activities for activity in nl2ltl_activities):
+        return None
+
     # Translate the user input from NL2LTL syntax to Declare4Py syntax
     if model := nl2lltl2dec(template, nl2ltl_activities):
 
@@ -173,6 +177,7 @@ def conformance_check_ltl(formula, connectors):
 
 
 def behavior_check_ltl(specification=None, formula=None, connectors=[]):
+
     # Load event log
     event_log = D4PyEventLog()
     event_log.parse_xes_log('../assets/Sepsis Cases.xes.gz')
@@ -196,13 +201,8 @@ def behavior_check_ltl(specification=None, formula=None, connectors=[]):
     print(nl2ltl_activities)
 
     # Compare lists
-    #if not all(activity in model_activities for activity in nl2ltl_activities):
-    #    return None
-
-    # If no activity has been properly detected by rasa, return empty list of traces
-    #cs = [c.replace(' ', '') for c in connectors]
-    #if not connectors or sorted(cs) != sorted(activities):
-    #    return []
+    if not all(activity in model_activities for activity in nl2ltl_activities):
+        return None
 
     # Translate from NL2LTL syntax to Declare syntax
     if model := nl2lltl2dec(template, nl2ltl_activities):

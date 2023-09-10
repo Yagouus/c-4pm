@@ -51,7 +51,7 @@ def all_callbacks(dash_app):
                                     html.Li("List the activities in the process"),
                                     html.Li("Does the model accept any behavior?"),
                                     html.Li("Can you give me some conformant traces?"),
-                                    html.Li("Is it possible that ER Triage occurs before IV Liquids?"),
+                                    html.Li("Is it possible that ER Triage occurs before IV Liquid?"),
                                     html.Li("Can activity IV Antibiotics be performed before activity Admission NC?"),
                                     html.Li("In which cases ER Triage occurs right after ER Registration?"),
                                     html.Li("Will IV Antibiotics eventually happen twice?"),

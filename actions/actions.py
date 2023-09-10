@@ -56,14 +56,14 @@ class ActionBehaviorCheck(Action):
         # Do behavior check, check if the behavior is accepted by the model
         if declare_client.behavior_check_ltl(formula=str(formula), connectors=connectors) is None or False:
             dispatcher.utter_message(
-                text="I didn't understand the behavior you're looking for. Can you reformulate your question?")
+                text="I think I may have missed the name of some activity. Can you reformulate your question?")
             return []
 
         # Conformance checking with ltl
         traces = declare_client.conformance_check_ltl(str(formula), connectors)
         if traces is None:
             dispatcher.utter_message(
-                text="I didn't understand the behavior you're looking for. Can you reformulate your question?")
+                text="I think I may have missed the name of some activity. Can you reformulate your question?")
             return []
 
         if len(traces) > 0:
