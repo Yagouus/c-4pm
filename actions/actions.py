@@ -4,6 +4,8 @@ from typing import Any, Text, Dict, List
 
 from rasa_sdk import Action, Tracker
 from rasa_sdk.executor import CollectingDispatcher
+import nl2ltl_client
+import declare_client
 
 import warnings
 
@@ -32,79 +34,57 @@ class ActionBehaviorCheck(Action):
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
 
-        # Run NL2LTLf
+        # Parse input data: Remove possible spaces in the connectors
         utterance = str(tracker.latest_message['text'])
         connectors = list(tracker.get_latest_entity_values("connector"))
 
-        #print("Connectors identified by Rasa:", connectors)
+        # print("Connectors identified by Rasa:", connectors)
 
         # Remove possible spaces in the connectors
-        for connector in connectors:
-            x = connector.replace(" ", "")
-            utterance = utterance.replace(connector, x)
+       # for connector in connectors:
+       #     x = connector.replace(" ", "")
+       #     utterance = utterance.replace(connector, x)
 
         # NL2LTL and get formula and confidence
-        from nl2ltl_client import run
-        formula, confidence = run(utterance)
-
-        # Check confidence in result
-        if confidence < 0.7:
+        if res := nl2ltl_client.run(utterance):
+            formula, confidence = res
+        else:
             dispatcher.utter_message(
                 text="I'm not sure about the behaviour you are asking, can you please reformulate your question?.")
             return []
 
-        if formula is None:
-            dispatcher.utter_message(text="There are no cases in which that happens.")
+        # Do behavior check, check if the behavior is accepted by the model
+        if declare_client.behavior_check_ltl(formula=str(formula), connectors=connectors) is None or False:
+            dispatcher.utter_message(
+                text="I didn't understand the behavior you're looking for. Can you reformulate your question?")
             return []
-
-        #print(formula)
-        #print(formula.to_english())
-
-        # Do behavior check
-        import declare_client
-        fact = declare_client.behavior_check_ltl(formula=str(formula), connectors=connectors)
-
-        if fact is None:
-            dispatcher.utter_message(text="Can you reformulate? I may have miss some activity")
-            return []
-
-        # If the behavior is not admissible, return immediately
-        #if not fact:
-        #    dispatcher.utter_message(
-        #        text=f"The specification of the process does not allow for that behavior.".capitalize())
-        #    return []
 
         # Conformance checking with ltl
-        from declare_client import conformance_check_ltl
-        traces = conformance_check_ltl(str(formula), connectors)
-
+        traces = declare_client.conformance_check_ltl(str(formula), connectors)
         if traces is None:
-            dispatcher.utter_message(text="Can you reformulate? I may have miss some activity")
+            dispatcher.utter_message(
+                text="I didn't understand the behavior you're looking for. Can you reformulate your question?")
             return []
 
         if len(traces) > 0:
-            result_text = f"The specification allows for that behavior. " \
-                          f"Here are some cases in which, {formula.to_english()}"
+            result_text = f"The specification allows for that behavior. ".capitalize() +\
+                          f"Here are some cases in which, {formula.to_english()}".capitalize()
         else:
             dispatcher.utter_message(text="The specification allows for that behavior. "
                                           "However, there are no cases in which that happens.")
             return []
 
         # Convert traces to text
-        text = ""
-        for idx, t in enumerate(traces):
-            text += "" + str(t).replace("'", "").replace("[", "").replace("]", "") + "\n\n"
-            if idx >= 5:
-                break
+        variants = list({str(t) for t in traces})
+        text = "\n\n".join(t.translate(str.maketrans("", "", "[]'")) for t in random.choices(variants, k=4))
 
-        # Add spaces back to the string
-        for connector in connectors:
-            x = connector.replace(" ", "").lower()
-            result_text = result_text.replace(x, connector)
+       # Add spaces back to the string
+       # for connector in connectors:
+       #     x = connector.replace(" ", "").lower()
+       #     result_text = result_text.replace(x, connector)
 
         # Return the message
-        dispatcher.utter_message(
-            text=f'{result_text} \n\n {text}')
+        dispatcher.utter_message(text=f'{result_text} \n\n {text}')
 
         return []
 
@@ -230,6 +210,8 @@ class ActionNonConformantCheck(Action):
 
 
 class ActionBehaviorSearch(Action):
+    """ Conformance checking of input behavior input by the user"""
+
     def name(self) -> Text:
         return "action_behavior_search"
 
@@ -242,41 +224,17 @@ class ActionBehaviorSearch(Action):
         utterance = str(tracker.latest_message['text'])
         connectors = list(tracker.get_latest_entity_values("connector"))
 
-        if len(connectors) == 0:
-            dispatcher.utter_message(text=f"Please check you have written the name of the activities correctly.")
-            return []
-
-        for connector in connectors:
-            x = connector.replace(" ", "")
-            utterance = utterance.replace(connector, x)
-
         # NL2LTL and get formula and confidence
-        from nl2ltl_client import run
-        res = run(utterance)
-        if res:
+        if res := nl2ltl_client.run(utterance):
             formula, confidence = res
         else:
             dispatcher.utter_message(text=(f"I'm not sure I understood the behavior you are looking for. "
                                            "Can you please reformulate your question?"))
             return []
 
-            # Check confidence in result if Rasa and GPT do not agree or GPT could not parse a formula
-        # Check that NL2ltl and rasa agree on number of activities detected
-        activities = [a.replace(')', '') for a in str(formula).split()[1:]]
-
-        print("Formula:", formula)
-        print("Connectors:", connectors)
-        print("Activities GPT:", activities)
-
-        if len(connectors) != len(activities) or formula is None:
-            dispatcher.utter_message(text=(f"Are you sure {str(activities).strip('[]')} occur/s in the process? "
-                                           "Please check you have written the name of the activities correctly."))
-            return []
-
-        # Conformance checking with ltl
-        # Notify the user if there ar no conformant traces
-        from declare_client import conformance_check_ltl
-        if traces := conformance_check_ltl(str(formula), connectors):
+        # Conformance checking with LTL. Notify the user if there ar no conformant traces
+        traces = declare_client.conformance_check_ltl(str(formula), connectors)
+        if traces:
             message = (f"In total, there are {len(traces)} traces in which, {formula.to_english()}".capitalize() +
                        f"\n\nHere are some examples: \n\n")
         else:
@@ -284,9 +242,9 @@ class ActionBehaviorSearch(Action):
             return []
 
         # Add spaces back to the string
-        for connector in connectors:
-            x = connector.replace(" ", "").lower()
-            message = message.replace(x, connector)
+        # for connector in connectors:
+        #    x = connector.replace(" ", "").lower()
+        #    message = message.replace(x, connector)
 
         # Convert traces to text
         variants = list({str(t) for t in traces})

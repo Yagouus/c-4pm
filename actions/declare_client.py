@@ -9,6 +9,9 @@ from src.Declare4Py.ProcessModels.LTLModel import LTLTemplate, LTLModel
 from src.Declare4Py.ProcessMiningTasks.ConformanceChecking.LTLAnalyzer import LTLAnalyzer
 from src.Declare4Py.ProcessModels.DeclareModel import DeclareModel
 from src.Declare4Py.ProcessMiningTasks.ConformanceChecking.MPDeclareAnalyzer import MPDeclareAnalyzer
+from src.Declare4Py.ProcessModels.DeclareModel import DeclareModel
+from src.Declare4Py.ProcessMiningTasks.Discovery.DeclareMiner import DeclareMiner
+from src.Declare4Py.D4PyEventLog import D4PyEventLog
 
 
 def dec_to_basic_nl(specification=""):
@@ -43,47 +46,42 @@ def dec_to_basic_nl(specification=""):
             # Classify template
             match template:
                 case 'Existence1':
-                    nl_specification += f"Eventually, {target_0} will happen."
+                    nl_specification += f"eventually, {target_0} happens."
                 case 'Existence2':
-                    nl_specification += f"{target_0} will happen at least twice."
+                    nl_specification += f"{target_0} happens at least twice."
                 case 'Absence':
-                    nl_specification += f"{target_0} will never happen."
+                    nl_specification += f"{target_0} never happens."
                 case 'Absence2':
-                    nl_specification += f"{target_0} will never happen twice."
+                    nl_specification += f"{target_0} never happens twice."
                 case 'Choice':
-                    nl_specification += f"Activity {target_0} or activity {target_1} will eventually happen. "
+                    nl_specification += f"activity {target_0} or activity {target_1} eventually happen. "
                 case 'Exclusive Choice':
                     nl_specification += (
-                        f"Activity {target_0} or activity {target_1} will eventually happen, but not together. ")
+                        f"activity {target_0} or activity {target_1} eventually happen, but not together. ")
                 case 'Responded Existence':
-                    nl_specification += (f"If {target_0} happens at least once then {target_1} has to happen or "
+                    nl_specification += (f"if {target_0} happens at least once then {target_1} happens later or "
                                          f"happened before {target_0}.")
                 case 'Response':
                     nl_specification += (
-                        f"Whenever activity {target_0} happens, activity {target_1} has to happen "
-                        f"eventually afterward.")
+                        f"whenever activity {target_0} happens, activity {target_1} happens eventually afterward.")
                 case 'Chain Response':
                     nl_specification += (
-                        f"Every time activity {target_0} happens, it must be directly followed by activity "
+                        f"every time activity {target_0} happens, it is directly followed by activity "
                         f"{target_1} (activity {target_1} can also follow other activities).")
                 case 'Precedence':
                     nl_specification += (
-                        f"Whenever activity {target_1} happens, activity {target_0} has to have happened "
+                        f"whenever activity {target_1} happens, activity {target_0} has happened "
                         f"before it.")
                 case 'Chain Precedence':
                     nl_specification += (
-                        f"Whenever activity {target_1} happens, it must be directly preceded by activity {target_0}.")
+                        f"whenever activity {target_1} happens, it is directly preceded by activity {target_0}.")
                 case 'Not CoExistence':
-                    nl_specification += f"Either activity {target_0} or {target_1} can happen, but not both."
+                    nl_specification += f"either activity {target_0} or {target_1} happen, but not both."
 
     return nl_specification
 
 
 def model_discovery():
-    from src.Declare4Py.ProcessModels.DeclareModel import DeclareModel
-    from src.Declare4Py.ProcessMiningTasks.Discovery.DeclareMiner import DeclareMiner
-    from src.Declare4Py.D4PyEventLog import D4PyEventLog
-
     # log_path = os.path.join("../../../", "tests", "test_logs", "Sepsis Cases.xes.gz")
     event_log = D4PyEventLog(case_name="case:concept:name")
     event_log.parse_xes_log('../assets/Sepsis Cases.xes.gz')
@@ -131,19 +129,31 @@ def conformance_check_ltl(formula, connectors):
     event_log = D4PyEventLog()
     event_log.parse_xes_log('../assets/Sepsis Cases.xes.gz')
 
-    # Detect and translate the type of template input by the user
-    template, *activities = formula.strip('()').split()
+    # Detect and translate the type of template
+    template, *nl2ltl_activities = formula.strip('()').split()
 
-    # If no activity has been properly detected by rasa, return empty list of traces
-    cs = [c.replace(' ', '') for c in connectors]
-    if not connectors or sorted(cs) != sorted(activities):
-        return []
+    print("Template detected by NL2LTL:", template)
+    print("Connectors detected by RASA:", connectors)
+    print("Activities detected by NL2LTL:", nl2ltl_activities)
+
+    # Add phase of mapping to the closest activity name possible
+
+    # Check that the activities detected by RASA are in the process
+    declare_model = DeclareModel().parse_from_file('../assets/model.decl')
+    model_activities = declare_model.get_model_activities()
+
+    # Normalize names in lists
+    nl2ltl_activities = [x.lower().replace(" ", "") for x in nl2ltl_activities]
+    model_activities = [x.lower().replace(" ", "") for x in model_activities]
+
+    print(model_activities)
+    print(nl2ltl_activities)
 
     # Translate the user input from NL2LTL syntax to Declare4Py syntax
-    model = nl2lltl2dec(template, activities)
-    print("Model:", model.formula)
+    if model := nl2lltl2dec(template, nl2ltl_activities):
 
-    if model:
+        # Show model
+        print("Model:", model.formula)
 
         # Perform conformance checking
         analyzer = LTLAnalyzer(event_log, model)
@@ -168,25 +178,43 @@ def behavior_check_ltl(specification=None, formula=None, connectors=[]):
     event_log.parse_xes_log('../assets/Sepsis Cases.xes.gz')
 
     # Detect and translate the type of template
-    template, *activities = formula.strip('()').split()
+    template, *nl2ltl_activities = formula.strip('()').split()
 
     print("Template detected by NL2LTL:", template)
     print("Connectors detected by RASA:", connectors)
-    print("Activities detected by NL2LTL:", activities)
+    print("Activities detected by NL2LTL:", nl2ltl_activities)
+
+    # Check that the activities detected by RASA are in the process
+    declare_model = DeclareModel().parse_from_file('../assets/model.decl')
+    model_activities = declare_model.get_model_activities()
+
+    # Normalize names in lists
+    nl2ltl_activities = [x.lower().replace(" ", "") for x in nl2ltl_activities]
+    model_activities = [x.lower().replace(" ", "") for x in model_activities]
+
+    print(model_activities)
+    print(nl2ltl_activities)
+
+    # Compare lists
+    #if not all(activity in model_activities for activity in nl2ltl_activities):
+    #    return None
 
     # If no activity has been properly detected by rasa, return empty list of traces
-    cs = [c.replace(' ', '') for c in connectors]
-    if not connectors or sorted(cs) != sorted(activities):
-        return []
+    #cs = [c.replace(' ', '') for c in connectors]
+    #if not connectors or sorted(cs) != sorted(activities):
+    #    return []
 
-    model = nl2lltl2dec(template, activities)
+    # Translate from NL2LTL syntax to Declare syntax
+    if model := nl2lltl2dec(template, nl2ltl_activities):
 
-    if model:
+        # Translate to Lydia syntax and perform sat test
         nl_specification = dec2ltl(specification)
         nl_specification.add_disjunction(model.formula)
         sat = nl_specification.check_satisfiability()
+
         print("Model + formula:", nl_specification.formula)
         print("Is the model + input behavior satisfiable? -> ", sat)
+
         return sat
     else:
         return None
