@@ -30,7 +30,6 @@ actions:
   - utter_convey_spec
   - utter_discovery
   - utter_upload
-  - action_hello_world
   - action_behavior_check
   - action_query_check
   - action_convey_specification
@@ -83,14 +82,10 @@ responses:
       I'm sorry, I didn't quite understand that. Could you rephrase?
   utter_discovery:
     - text: |
-        I'm sorry, for this demo the specification is already discovered
+        I'm sorry, for this demo the process specification is provided!
   utter_upload:
     - text: |
-        Sadly, I cannot allow you to upload a log. The demo is restricted to the Sepsis log
-  utter_consistency_check:
-    - text: |
-        Sorry, I cannot do this yet.
-
+        Sadly, I cannot allow you to upload a log. The demo is restricted to the analysis of the Sepsis log.
 
 entities:
   - email
