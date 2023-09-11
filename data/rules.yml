@@ -79,3 +79,12 @@ rules:
     - intent: nlu_fallback
     - action: utter_please_rephrase
 
+  #thesis project  
+  # This rule triggers the custom action 'action_count_conformant_traces' when the user asks to count conformant traces.
+  # It listens for the 'count_conformant_traces' intent and then executes the corresponding action.
+  - rule: Count conformant traces
+    steps:
+    - intent: count_conformant_traces
+    - action: action_count_conformant_traces
+
+

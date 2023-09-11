@@ -1,5 +1,6 @@
 .idea/
 venv/
+myenv/
 .git-citius/
 **/__pycache__
 .rasa/
@@ -8,6 +9,6 @@ nl2ltl/.rasa/
 nl2ltl/engines/rasa/.rasa/
 nl2ltl/engines/rasa/models
 tests/
-declare4py_tests
+declare4py_testscd 
 .env
 notebooks/

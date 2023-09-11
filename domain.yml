@@ -15,6 +15,9 @@ intents:
   - query_check
   - generate_conformant
   - consistency_check
+  #thesis project
+  # handle requests for counting conformant traces
+  - count_conformant_traces 
 
 
 actions:
@@ -39,6 +42,9 @@ actions:
   - action_behavior_search
   - action_activities
   - action_consistency_check
+  #thesis project
+  # action to count conformant traces 
+  - action_count_conformant_traces
 
 responses:
   utter_greet:
@@ -65,6 +71,10 @@ responses:
   utter_conformance_check:
     - text: |
         Here you have all conformance {target}:
+  #thesis project  
+  # response template for the custom action to count conformant traces     
+  utter_count_conformance_check:
+    - text: "This is the number of conformant traces {target}:"   
   utter_behavior_search:
     - text: |
         Here are the {target} you are looking for. Redirecting to NL2LTL ->:

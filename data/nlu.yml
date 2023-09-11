@@ -57,7 +57,7 @@ nlu:
       - What activities can be executed in the process?
       - List all the activities in the process
       - Tell me the possible activities of the process
-          
+
 
   - intent: convey_specification
     examples: |
@@ -185,3 +185,19 @@ nlu:
       - Release C
       - Release D
       - Release E
+
+  #thesis project
+  # This intent captures the user's request to count the number of conformant traces in the log.
+  # It includes various phrasings that a user might use to ask for this information.
+  - intent: count_conformant_traces
+    examples: |
+      - How many conformant traces can be found in the log?   
+      - How many conformant traces are there?
+      - Count the number of conformant traces
+      - Tell me the number of conformant traces
+      - What's the count of conformant traces?
+      - How many traces conform to the model?
+      - Give me the number of conformant traces
+      - Can you count the conformant traces for me?
+      - What is the total number of conformant traces?
+      - How many traces are conformant to the model?

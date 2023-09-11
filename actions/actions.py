@@ -191,8 +191,35 @@ class ActionConformanceCheck(Action):
         dispatcher.utter_message(text=message)
 
         return []
+    
 
+#thesis project 
+# This class defines a custom action to count the number of conformant traces in an event log.
+# It uses the 'conformance_check' function from the 'declare_client' library to obtain the traces,
+# counts the number of these traces, and then sends this count back to the user.
+class ActionCountConformantTraces(Action):
 
+    # Define the name of the custom action
+    def name(self) -> Text:
+        return "action_count_conformant_traces"
+    # The main function that will be executed when this action is triggered
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+
+         # Import the 'conformance_check' function from 'declare_client' to perform conformance checking and get traces
+        from declare_client import conformance_check
+        traces = conformance_check()
+
+        # Count the number of conformant traces and prepare the message to be sent to the user
+        num_conformant_traces = len(traces)
+        message = f"The number of conformant traces is {num_conformant_traces}."
+
+        # Dispatch the message to the user
+        dispatcher.utter_message(text=message)
+
+        return []
+    
 class ActionNonConformantCheck(Action):
     def name(self) -> Text:
         return "action_non_conformant_check"
@@ -328,3 +355,4 @@ class ActionConsistencyCheck(Action):
             dispatcher.utter_message(text="The specification is inconsistent, please, review it.")
 
         return []
+
