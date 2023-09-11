@@ -1,6 +1,6 @@
 Translate natural language sentences into patterns.
 
-ALLOWED_PATTERNS: existence, existenceTwo, absence, respondedExistence, response, precedence, chainResponse, notCoExistence,
+ALLOWED_PATTERNS: existence, existenceTwo, absence, respondedExistence, response, precedence, chainResponse, notCoExistence
 ALLOWED_SYMBOLS: ERRegistration, Leucocytes, CRP, LacticAcid, ERTriage, ER Sepsis Triage, IVLiquid, IVAntibiotics, AdmissionNC, ReleaseA, ReturnER, AdmissionIC, ReleaseB, ReleaseC, ReleaseD, ReleaseE
 
 # Existence Examples

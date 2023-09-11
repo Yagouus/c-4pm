@@ -7,8 +7,7 @@ from dash import html, Output, Input, State
 import dash_bootstrap_components as dbc
 
 
-def query_rasa(text, session_id):
-    url = "http://localhost:5005/webhooks/rest/webhook"
+def query_rasa(text, session_id, url="http://localhost:5005/webhooks/rest/webhook"):
     payload = {
         "sender": session_id,
         "message": text
@@ -17,8 +16,7 @@ def query_rasa(text, session_id):
     return response.json()
 
 
-def all_callbacks(dash_app):
-    # Callback to initialize session ID
+def all_callbacks(dash_app, url="http://localhost:5005/webhooks/rest/webhook"):
     @dash_app.callback(
         Output('session-id', 'data'),
         Output('client_identifier', 'children'),
@@ -43,7 +41,6 @@ def all_callbacks(dash_app):
     def update_from(n_clicks, text, store_data):
 
         if n_clicks is None or n_clicks < 1:
-
             store_data['history'] = [dbc.Row([
                 dbc.Col(html.P("Hi! I'm C-4PM. How can I help you?", style={'text-align': 'left'},
                                className="from-them margin-b_one"), width=10),

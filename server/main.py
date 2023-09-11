@@ -2,7 +2,7 @@ import layout
 from dash import Dash
 import dash_bootstrap_components as dbc
 from server import config
-from server.callbacks_store_server import all_callbacks
+from callbacks_store import all_callbacks
 
 
 def init_dashboard(server):
@@ -15,5 +15,5 @@ def init_dashboard(server):
     )
 
     dash_app.layout = layout.make_layout()
-    all_callbacks(dash_app)
+    all_callbacks(dash_app=dash_app, url="http://172.16.240.98:5005/webhooks/rest/webhoo")
     return dash_app.server

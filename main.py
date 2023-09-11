@@ -14,7 +14,7 @@ def init_app():
     )
 
     dash_app.layout = make_layout()
-    callbacks_store.all_callbacks(dash_app)
+    callbacks_store.all_callbacks(dash_app=dash_app, url="http://localhost:5005/webhooks/rest/webhook")
     return dash_app
 
 
