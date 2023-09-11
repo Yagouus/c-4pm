@@ -29,6 +29,7 @@ def all_callbacks(dash_app):
         print(identifier)
         return {'id': identifier}, str(identifier)
 
+
     @dash_app.callback(
         [Output('conversation', 'children'),
          Output('loading-output', 'children'),
@@ -41,7 +42,8 @@ def all_callbacks(dash_app):
     )
     def update_from(n_clicks, text, store_data):
 
-        if n_clicks is None or text == '':
+        if n_clicks is None or n_clicks < 1:
+
             store_data['history'] = [dbc.Row([
                 dbc.Col(html.P("Hi! I'm C-4PM. How can I help you?", style={'text-align': 'left'},
                                className="from-them margin-b_one"), width=10),
@@ -63,6 +65,9 @@ def all_callbacks(dash_app):
 
             return store_data['history'], dash.no_update, dash.no_update, False, store_data
 
+        elif text == '':
+            return store_data['history'], dash.no_update, dash.no_update, False, store_data
+
         # user message aligned right
         rcvd = [html.P(text, style={'text-align': 'right'}, className="from-me")]
         store_data['history'] = rcvd + store_data['history']
@@ -82,10 +87,10 @@ def all_callbacks(dash_app):
     )
     def update_conversation(click, text, session_data, store_data):
 
-        time.sleep(1)
-
         if click is None or text == '':
             return dash.no_update, dash.no_update, False, dash.no_update
+
+        time.sleep(0.5)
 
         session_id = session_data.get('id') if session_data else str(uuid.uuid4())
 

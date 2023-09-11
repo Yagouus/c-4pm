@@ -20,4 +20,4 @@ def init_app():
 
 if __name__ == '__main__':
     app = init_app()
-    app.run_server(debug=False, port=8080, dev_tools_hot_reload=False)
+    app.run_server(debug=True, port=8080, dev_tools_hot_reload=False)
