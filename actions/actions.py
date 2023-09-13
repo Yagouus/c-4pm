@@ -3,6 +3,7 @@ import random
 from typing import Any, Text, Dict, List
 
 from rasa_sdk import Action, Tracker
+from rasa_sdk.events import SlotSet
 from rasa_sdk.executor import CollectingDispatcher
 import nl2ltl_client
 import declare_client
@@ -10,6 +11,39 @@ import declare_client
 import warnings
 
 warnings.filterwarnings("ignore")
+
+
+def repeated_activity(tracker, action_name):
+    # Get the list of executed actions from the tracker
+    # Initialize count variable
+    count_executed = 0
+
+    # Iterate through the list of events in reverse (latest events first)
+    for event in reversed(tracker.events):
+        if event.get("event") == 'action':
+            if event.get("name") == action_name:
+                count_executed += 1
+
+    random_repetition_phrases = ["As I told you before. ", "Similarly as before. ", "Let me explain you again. "]
+
+    if count_executed > 0:
+        return random.choice(random_repetition_phrases)
+    else:
+        return ""
+
+
+class ActionSaveUserMessage(Action):
+    def name(self) -> Text:
+        return "action_save_user_message"
+
+    def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        # Get the latest recognized intent name
+        latest_intent_name = tracker.latest_message['intent'].get('name')
+
+        # Check if the intent is the one you are interested in
+        if latest_intent_name == 'behavior_check':
+            user_message = tracker.latest_message.get('text')
+            return [SlotSet("ltl", user_message)]
 
 
 class ActionBehaviorCheck(Action):
@@ -50,20 +84,21 @@ class ActionBehaviorCheck(Action):
         # Generate response text based on traces
         if traces:
             result_text = (f"The specification allows for that behavior. "
-                           f"Here are some cases in which, {formula.to_english()}").capitalize()
+                           f"Furthermore, there are some cases in which, {formula.to_english()}")
         else:
             dispatcher.utter_message(
                 text="The specification allows for that behavior. However, there are no cases in which that happens.")
             return []
 
         # Convert traces to text and randomly select 4
-        variants = list({str(t) for t in traces})
-        text = "\n\n".join(t.translate(str.maketrans("", "", "[]'")) for t in random.choices(variants, k=4))
+        text = ""
+        # variants = list({str(t) for t in traces})
+        # text = "\n\n".join(t.translate(str.maketrans("", "", "[]'")) for t in random.choices(variants, k=4))
 
-       # Add spaces back to the string
-       # for connector in connectors:
-       #     x = connector.replace(" ", "").lower()
-       #     result_text = result_text.replace(x, connector)
+        # Add spaces back to the string
+        for connector in connectors:
+            x = connector.replace(" ", "").lower()
+            result_text = result_text.replace(x, connector)
 
         # Return the message
         dispatcher.utter_message(text=f'{result_text} \n\n {text}')
@@ -214,6 +249,8 @@ class ActionBehaviorSearch(Action):
                                            "Can you please reformulate your question?"))
             return []
 
+        print("Parsed formula:", formula)
+
         # Conformance checking with LTL. Notify the user if there ar no conformant traces
         traces = declare_client.conformance_check_ltl(str(formula), connectors)
         if traces:
@@ -224,9 +261,9 @@ class ActionBehaviorSearch(Action):
             return []
 
         # Add spaces back to the string
-        # for connector in connectors:
-        #    x = connector.replace(" ", "").lower()
-        #    message = message.replace(x, connector)
+        for connector in connectors:
+            x = connector.replace(" ", "").lower()
+            message = message.replace(x, connector)
 
         # Convert traces to text
         variants = list({str(t) for t in traces})
@@ -236,6 +273,60 @@ class ActionBehaviorSearch(Action):
         dispatcher.utter_message(text=message + text)
 
         return []
+
+
+class ActionImplicitBehaviorSearch(Action):
+    """ Conformance checking of input behavior input by the user"""
+
+    def name(self) -> Text:
+        return "action_implicit_behavior_search"
+
+    def run(self,
+            dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+
+        # Parse input data: Remove possible spaces in the connectors
+        utterance = tracker.get_slot('ltl')
+
+        if utterance is None:
+            dispatcher.utter_message(text=f"What behaviour do you want me to look for?")
+            return []
+
+        print(utterance)
+
+        connectors = list(tracker.get_latest_entity_values("connector"))
+
+        # NL2LTL and get formula and confidence
+        if res := nl2ltl_client.run(utterance):
+            formula, confidence = res
+        else:
+            dispatcher.utter_message(text=(f"I'm not sure I understood the behavior you are looking for. "
+                                           "Can you please reformulate your question?"))
+            return []
+
+        # Conformance checking with LTL. Notify the user if there ar no conformant traces
+        traces = declare_client.conformance_check_ltl(str(formula), connectors)
+        if traces:
+            message = (f"In total, there are {len(traces)} traces in which, {formula.to_english()}".capitalize() +
+                       f"\n\nHere are some examples: \n\n")
+        else:
+            dispatcher.utter_message(text="There are no cases in which that happens.")
+            return []
+
+        # Add spaces back to the string
+        for connector in connectors:
+            x = connector.replace(" ", "").lower()
+            message = message.replace(x, connector)
+
+        # Convert traces to text
+        variants = list({str(t) for t in traces})
+        text = "\n\n".join(t.translate(str.maketrans("", "", "[]'")) for t in random.choices(variants, k=4))
+
+        # Return the message
+        dispatcher.utter_message(text=message + text)
+
+        return [SlotSet("ltl", None)]
 
 
 class ActionActivities(Action):
@@ -250,8 +341,10 @@ class ActionActivities(Action):
         import declare_client
         activities = declare_client.list_activities()
 
+        message = repeated_activity(tracker, "action_activities")
+
         examples = "\n\n".join(t.translate(str.maketrans("", "", "[]'")) for t in activities)
-        message = f"In total, there are {len(activities)} possible activities. Here they are: \n\n{examples}"
+        message += f"In total, there are {len(activities)} possible activities. Here they are: \n\n{examples}"
 
         # Return the message
         dispatcher.utter_message(text=message)
@@ -270,9 +363,12 @@ class ActionConsistencyCheck(Action):
 
         import declare_client
 
-        if declare_client.consistency_check():
-            dispatcher.utter_message(text="Yes, the specification is consistent and allows for behavior.")
-        else:
-            dispatcher.utter_message(text="The specification is inconsistent, please, review it.")
+        message = repeated_activity(tracker, "action_consistency_check")
 
+        if declare_client.consistency_check():
+            message += "Yes, the specification is consistent and allows for behavior."
+        else:
+            message += "The specification is inconsistent, please, review it."
+
+        dispatcher.utter_message(message)
         return []

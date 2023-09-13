@@ -151,6 +151,7 @@ def conformance_check_ltl(formula, connectors):
 
     # Compare lists
     if not all(activity in model_activities for activity in nl2ltl_activities):
+        print("NOT MATCHING")
         return None
 
     # Translate the user input from NL2LTL syntax to Declare4Py syntax

@@ -42,6 +42,17 @@ nlu:
       - am I talking to a bot?
       - am I talking to a human?
 
+  - intent: out_of_scope
+    examples: |
+      - I want to order food
+      - What is 2 + 2?
+      - Who's the US President?
+      - This does not work
+      - Esto no funciona
+      - Yago, sabemos que esto no funciona
+      - Está todo harcodeado
+      - Is it going to rain today?
+
     ### DECLARE intents
   - intent: upload
     examples: |
@@ -209,6 +220,15 @@ nlu:
       - In which cases [ER Readmission](connector) is followed by [Intravenous Antibiotics](connector)?
       - Tell me in which cases [Release Type A](connector) is executed before [Release Type B](connector)
 
+  - intent: implicit_behavior_search
+    examples: |
+      - Can you give me some traces where this happens?
+      - Is there any case in which this behavior happens?
+      - Give me traces where this occurs
+      - Find instances in where this takes place
+      - Count the number of times this occurs
+      - Give me traces in which this happens
+
   - intent: behavior_check
     examples: |
       - Is it possible to perform activity [CRP](connector) before performing activity [ER Triage](connector)?
@@ -292,6 +312,7 @@ nlu:
       - Does the model enable or restrict certain kinds of behaviors?
       - Can we be sure that the model is free of inconsistencies?
       - Is it possible for any trace to be compatible with the model?
+      - Is the process specification satisfiable?
 
 # Dictionaries for entities
   - lookup: connector

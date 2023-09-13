@@ -11,6 +11,7 @@ intents:
   - conformance_check
   - non_conformant_check
   - behavior_search
+  - implicit_behavior_search
   - behavior_check
   - query_check
   - generate_conformant
@@ -23,19 +24,18 @@ actions:
   - utter_iamabot
   - utter_behavior_check
   - utter_query_check
-  - utter_conformance_check
-  - utter_behavior_search
   - utter_generate_conformant
-  - utter_compliance
   - utter_convey_spec
   - utter_discovery
   - utter_upload
+  - action_save_user_message
   - action_behavior_check
   - action_query_check
   - action_convey_specification
   - action_conformance_check
   - action_non_conformant_check
   - action_behavior_search
+  - action_implicit_behavior_search
   - action_activities
   - action_consistency_check
 
@@ -55,25 +55,18 @@ responses:
   utter_iamabot:
     - text: |
         I'm C-4PM a conversational assistant ready to help you.
+  utter_out_of_scope:
+    - text: Sorry, I can't handle that request.
   utter_behavior_check:
     - text: |
         Let me check if this behavior is possible...
   utter_query_check:
     - text: |
-        Let me run the query...
-  utter_conformance_check:
-    - text: |
-        Here you have all conformance {target}:
-  utter_behavior_search:
-    - text: |
-        Here are the {target} you are looking for. Redirecting to NL2LTL ->:
+        Sorry, query checking is still under development...
   utter_generate_conformant:
     - text: |
         Behavior generation is not yet implemented in Declare4Py. As soon as this is available I will be able to do
         this for you
-  utter_compliance:
-    - text: |
-        Checking how the attribute holds to the expectations...
   utter_convey_spec:
     - text: |
         Here you have a description of the model in natural language:
@@ -97,24 +90,13 @@ entities:
   - to
   - connector
 
-#slots:
-#  email:
-#    type: text
-#    influence_conversation: false
-#    mappings:
-#      - type: from_entity
-#        entity: email
-#        # This condition ensures that this slot is only filled with the newsletter_form is actually active
-#        # So it cannot be retrieved at any other point of the conversation
-#        conditions:
-#          - active_loop: newsletter_form
-#            requested_slot: email
-
-#  ltl:
-#    type: text
-#    influence_conversation: false
-#    mappings:
-#      - type: from_text
+slots:
+  ltl:
+      type: text
+      influence_conversation: false
+      mappings:
+        - type: custom
+          action: action_save_user_message
 #
 #  target:
 #    type: text

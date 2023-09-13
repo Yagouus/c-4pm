@@ -46,16 +46,33 @@ def all_callbacks(dash_app, url="http://localhost:5005/webhooks/rest/webhook"):
                                className="from-them margin-b_one"), width=10),
                 dbc.Col(html.P(["You can ask me multiple things, for example:", html.Br(), html.Br(),
                                 html.Ul([
-                                    html.Li("Describe the process"),
-                                    html.Li("List the activities in the process"),
-                                    html.Li("Does the model accept any behavior?"),
-                                    html.Li("Can you give me some conformant traces?"),
-                                    html.Li("Is it possible that ER Triage occurs before IV Liquid?"),
-                                    html.Li("Can activity IV Antibiotics be performed before activity Admission NC?"),
-                                    html.Li("In which cases ER Triage occurs right after ER Registration?"),
-                                    html.Li("Will IV Antibiotics eventually happen twice?"),
-                                    html.Li("Give me all cases in which activity ERTriage occurs immediately after "
-                                            "activity AdmissionNC is performed")
+                                    (html.B("Process Description")),
+                                    html.Li(html.I("Describe the process")),
+                                    html.Li(html.I("Explain me the process")),
+                                    html.Br(),
+                                    (html.B("Consulting the activities in the process")),
+                                    html.Li(html.I("List the activities in the process")),
+                                    html.Li(html.I("Which activities are found in the process?")),
+                                    html.Br(),
+                                    (html.B("Consistency checking")),
+                                    html.Li(html.I("Does the model accept any behavior?")),
+                                    html.Li(html.I("Is the process specification satisfiable?")),
+                                    html.Br(),
+                                    (html.B("Search for traces (from the log) that conform (or not) to the model")),
+                                    html.Li(html.I("Can you give me some conformant traces?")),
+                                    html.Li(html.I("What are the cases that conform to the model?")),
+                                    html.Li(html.I("How many traces don't conform to the specification?")),
+                                    html.Br(),
+                                    (html.B("Consistency checking with custom LTL")),
+                                    html.Li(html.I("Is it possible that ER Triage occurs before IV Liquid?")),
+                                    html.Li(html.I("Can activity IV Antibiotics be performed before activity Admission NC?")),
+                                    html.Li(html.I("Is it possible that activity ERTriage occurs immediately after activity AdmissionNC is performed?")),
+                                    html.Br(),
+                                    (html.B("Conformance checking with custom LTL")),
+                                    html.Li(html.I("In which cases ER Triage occurs right after ER Registration?")),
+                                    html.Li(html.I("Will IV Antibiotics eventually happen twice?")),
+                                    html.Li(html.I("Give me all cases in which activity ERTriage occurs immediately after "
+                                            "activity AdmissionNC is performed"))
                                 ])],
                                style={'text-align': 'left'}, className="from-them margin-b_one"), width=10)]
             )]

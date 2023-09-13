@@ -74,9 +74,17 @@ rules:
       - intent: consistency_check
       - action: action_consistency_check
 
-  # Out of scope rule
+  # Exceptional rules
+
+  # Fallback rule
   - rule: Ask the user to rephrase whenever they send a message with low NLU confidence
     steps:
     - intent: nlu_fallback
     - action: utter_please_rephrase
+
+  # Out of scope rule
+  - rule: out-of-scope
+    steps:
+      - intent: out_of_scope
+      - action: utter_out_of_scope
 
