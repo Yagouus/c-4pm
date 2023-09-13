@@ -340,7 +340,7 @@ def nl2lltl2dec(template, activities):
         'Absence': 'not_eventually_activity_a',
         'RespondedExistence': 'responded_existence',
         'Response': 'response',
-        'Precedence': 'eventually_a_then_b',
+        'Precedence': 'precedence',
         'ChainResponse': 'chain_response',
         'NotCoExistence': 'chain_response'
     }

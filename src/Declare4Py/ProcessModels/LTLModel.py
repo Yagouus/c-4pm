@@ -263,8 +263,8 @@ class LTLTemplate:
         for i in range(1, len(source)):
             formula += "|| " + source[i]
 
-        formula += ")) || G((!(" + target[1] + ")"
-        for i in range(1, len(target)):
+        formula += ")) || G((!(" + target[0] + ")"
+        for i in range(0, len(target)):
             formula += "||!(" + target[i] + ")"
 
         formula += "))"
