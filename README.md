@@ -209,9 +209,6 @@ running, some overlapping may occur. In case this happens, a simple refresh of t
 
 ## ✍🏼 Citing C-4PM
 
-> **Warning**  
-> Incomplete, will be updated after the conference proceedings are published.
-
 ```
 @inproceedings{Fontenla-Seco23,
   author    = {Yago Fontenla-Seco and
@@ -225,6 +222,7 @@ running, some overlapping may occur. In case this happens, a simple refresh of t
   series    = {{CEUR} Workshop Proceedings},
   volume    = {3469},
   pages     = {112-116},
+  url = {https://ceur-ws.org/Vol-3469/paper-20.pdf},
   publisher = {CEUR-WS.org},
   year      = {2023}
 }
