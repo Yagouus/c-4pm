@@ -1,0 +1,419 @@
+Translate natural language sentences into patterns.
+
+ALLOWED_PATTERNS: existence, existenceTwo, absence, respondedExistence, response, precedence, chainResponse, notCoExistence
+ALLOWED_SYMBOLS: ERRegistration, Leucocytes, CRP, LacticAcid, ERTriage, ER Sepsis Triage, IVLiquid, IVAntibiotics, AdmissionNC, ReleaseA, ReturnER, AdmissionIC, ReleaseB, ReleaseC, ReleaseD, ReleaseE
+
+# Existence Examples
+NL: In which cases ERRegistration happens?
+PATTERN: existence
+SYMBOLS: ERRegistration
+
+NL: Does ERTriage happen in any case?
+PATTERN: existence
+SYMBOLS: ERTriage
+
+NL: Give me all cases in which Leucocytes is executed
+PATTERN: existence
+SYMBOLS: Leucocytes
+
+NL: When does AdmissionIC occur?
+PATTERN: existence
+SYMBOLS: AdmissionIC
+
+NL: Is CRP ever executed?
+PATTERN: existence
+SYMBOLS: CRP
+
+NL: Will IVAntibiotics eventually happen?
+PATTERN: existence
+SYMBOLS: IVAntibiotics
+
+NL: Are there any cases in which activity ERTriage occurs?
+PATTERN: existence
+SYMBOLS: ERTriage
+
+NL: Is AdmissionNC ever executed?
+PATTERN: existence
+SYMBOLS: AdmissionNC
+
+NL: Does ReleaseC occur at any point?
+PATTERN: existence
+SYMBOLS: ReleaseC
+
+NL: Are there cases where ReturnER happens?
+PATTERN: existence
+SYMBOLS: ReturnER
+
+NL: Is ReleaseE ever executed?
+PATTERN: existence
+SYMBOLS: ReleaseE
+
+NL: When does ReleaseB take place?
+PATTERN: existence
+SYMBOLS: ReleaseB
+
+NL: Does LacticAcid happen in any case?
+PATTERN: existence
+SYMBOLS: LacticAcid
+
+NL: Are there instances where the patient gets registered in the emergency room?
+PATTERN: existence
+SYMBOLS: ERRegistration
+
+NL: Is a quick assessment in the ER performed in any case?
+PATTERN: existence
+SYMBOLS: ERTriage
+
+NL: Do we ever test for white blood cell count?
+PATTERN: existence
+SYMBOLS: Leucocytes
+
+NL: Are there any instances where patients get registered in the emergency room?
+PATTERN: existence
+SYMBOLS: ERRegistration
+
+NL: Have we ever taken a lactic acid test?
+PATTERN: existence
+SYMBOLS: LacticAcid
+
+NL: When is a patient admitted into normal care?
+PATTERN: existence
+SYMBOLS: AdmissionNC
+
+
+
+# ExistenceTwo Examples
+NL: Give me traces in which ReleaseA happens at least twice
+PATTERN: existenceTwo
+SYMBOLS: ReleaseA
+
+NL: Will IVAntibiotics eventually happen twice?
+PATTERN: existenceTwo
+SYMBOLS: IVAntibiotics
+
+NL: Is there any case in which IVLIquids happens twice?
+PATTERN: existenceTwo
+SYMBOLS: IVLiquids
+
+NL: When does AdmissionIC occur twice?
+PATTERN: existenceTwo
+SYMBOLS: AdmissionIC
+
+NL: Does ERRegistration happen two times in any case
+PATTERN: existenceTwo
+SYMBOLS: ERRegistration
+
+NL: Is CRP executed two times in any case?
+PATTERN: existenceTwo
+SYMBOLS: CRP
+
+NL: Will IV Antibiotics eventually happen twice in a case?
+PATTERN: existenceTwo
+SYMBOLS: IVAntibiotics
+
+NL: Are there any cases in which ReturnER occurs twice?
+PATTERN: existenceTwo
+SYMBOLS: ReturnER
+
+NL: Does AdmissionNC happen twice in any case?
+PATTERN: existenceTwo
+SYMBOLS: AdmissionNC
+
+NL: Is ReleaseC executed two times in any case?
+PATTERN: existenceTwo
+SYMBOLS: ReleaseC
+
+NL: Does ReleaseB occur twice in a single case?
+PATTERN: existenceTwo
+SYMBOLS: ReleaseB
+
+NL: In any trace, do we administer intravenous antibiotics twice?
+PATTERN: existenceTwo
+SYMBOLS: IVAntibiotics
+
+NL: Do we ever check the C-reactive protein levels twice?
+PATTERN: existenceTwo
+SYMBOLS: CRP
+
+NL: Can you find traces where a patient gets registered in the ER twice?
+PATTERN: existenceTwo
+SYMBOLS: ERRegistration
+
+NL: Are there instances where antibiotics are administered twice?
+PATTERN: existenceTwo
+SYMBOLS: IVAntibiotics
+
+
+
+# Absence Examples
+NL: In which cases is ReleaseD not executed?
+PATTERN: absence
+SYMBOLS: ReleaseD
+
+NL: Find traces where AdmissionIC never happens.
+PATTERN: absence
+SYMBOLS: AdmissionIC
+
+NL: Are there any cases where CRP doesn't occur?
+PATTERN: absence
+SYMBOLS: CRP
+
+NL: Does LacticAcid ever not happen?
+PATTERN: absence
+SYMBOLS: LacticAcid
+
+NL: ReleaseA does not occur
+PATTERN: absence
+SYMBOLS: ReleaseA
+
+NL: Give me cases in which IVLiquid never happens
+PATTERN: absence
+SYMBOLS: IVLiquid
+
+NL: Are there any cases in which ReleaseA never takes place?
+PATTERN: absence
+SYMBOLS: ReleaseA
+
+NL: When does IVAntibiotics never happen?
+PATTERN: absence
+SYMBOLS: IVAntibiotics
+
+NL: Are there any traces where ReleaseC is absent?
+PATTERN: absence
+SYMBOLS: ReleaseC
+
+NL: When does ReleaseE never happen?
+PATTERN: absence
+SYMBOLS: ReleaseE
+
+NL: Find cases where intravenous fluids are never administered.
+PATTERN: absence
+SYMBOLS: IVLiquid
+
+NL: Are there scenarios where we don't discharge the patient normally?
+PATTERN: absence
+SYMBOLS: ReleaseA
+
+NL: Find the cases where we never do the C-reactive protein test.
+PATTERN: absence
+SYMBOLS: CRP
+
+NL: Are there traces where the patient doesn't return to the ER?
+PATTERN: absence
+SYMBOLS: ReturnER
+
+NL: Do we have any cases where we don't administer antibiotics intravenously?
+PATTERN: absence
+SYMBOLS: IVAntibiotics
+
+NL: In which scenarios do we not conduct an emergency room assessment?
+PATTERN: absence
+SYMBOLS: ERTriage
+
+
+
+# RespondedExistence Examples
+NL: In which cases where ReleaseB occurs, IVAntibiotics is also executed?
+PATTERN: respondedExistence
+SYMBOLS: ReleaseB, IVAntibiotics
+
+NL: When AdmissionNC happens, does IVLiquids occur before of after it?
+PATTERN: respondedExistence
+SYMBOLS: AdmissionNC, IVLiquids
+
+NL: Is there any case in which if LacticAcid occurs, ReturnER occurs at any point?
+PATTERN: respondedExistence
+SYMBOLS: LacticAcid, ReturnER
+
+NL: Does ERTriage occur either before or after AdmissionIC at any point in the process?
+PATTERN: respondedExistence
+SYMBOLS: ERTriage, AdmissionNC
+
+NL: Does ERTriage happen in any case in which AdmissionNC occurs?
+PATTERN: respondedExistence
+SYMBOLS: AdmissionNC, ERTriage
+
+NL: Whenever AdmissionIC occurs, does ReleaseB also take place?
+PATTERN: respondedExistence
+SYMBOLS: AdmissionIC, ReleaseB
+
+NL: In which cases where ReturnER occurs, ReleaseC is also executed?
+PATTERN: respondedExistence
+SYMBOLS: ReturnER, ReleaseC
+
+NL: If ReleaseB happens, does ReleaseC also happen?
+PATTERN: respondedExistence
+SYMBOLS: ReleaseB, ReleaseC
+
+NL: When we perform the lactic acid test, do we also execute the ER sepsis triage?
+PATTERN: respondedExistence
+SYMBOLS: LacticAcid, ER Sepsis Triage
+
+NL: In cases where the patient returns to the ER, do we ever release them without admitting to intensive care?
+PATTERN: respondedExistence
+SYMBOLS: ReturnER, ReleaseA
+
+
+# Response Examples
+NL: Can you retrieve all the traces in which a CRP is performed after IVLiquid?
+PATTERN: response
+SYMBOLS: IVLiquid, CRP
+
+NL: Give me all cases in which activity ERTriage is performed after activity AdmissionNC
+PATTERN: response
+SYMBOLS: ERTriage, AdmissionNC
+
+NL: Does at ReleaseD happen at some point after AdmissionIC occurs?
+PATTERN: response
+SYMBOLS: ReleaseD, AdmissionIC
+
+NL: Does ERRegistration happen eventually after Leucocytes in any case?
+PATTERN: response
+SYMBOLS: ERRegistration, Leucocytes
+
+NL: Find traces in which IVAntibiotics occurs eventually whenever ERRegistration is performed
+PATTERN: response
+SYMBOLS: ERRegistration, IVAntibiotics
+
+NL: whenever ERSepsisTriage happens, ReleaseA occurs
+PATTERN: response
+SYMBOLS: ERSepsisTriage, ReleaseA
+
+NL: Are they traces in which IVLiquid occurs sometime after ERRegistration is performed?
+PATTERN: response
+SYMBOLS: IVLiquid, ERRegistration
+
+NL: Give me traces in which after Admission NC occurs Leucocytes is performed
+PATTERN: response
+SYMBOLS: AdmissionNC, ERTriage
+
+NL: Does ReleaseC happen eventually after ReturnER in any case?
+PATTERN: response
+SYMBOLS: ReturnER, ReleaseC
+
+NL: Give me traces in which AdmissionIC occurs and then ReleaseE happens.
+PATTERN: response
+SYMBOLS: AdmissionIC, ReleaseE
+
+NL: After registering a patient in the ER, do we always perform a leucocyte test?
+PATTERN: response
+SYMBOLS: ERRegistration, Leucocytes
+
+NL: Once a patient gets triaged in the ER, do we initiate IV liquids?
+PATTERN: response
+SYMBOLS: ERTriage, IVLiquid
+
+
+# Precedence Examples
+NL: Find traces where ReleaseD occurs before ReleaseE.
+PATTERN: precedence
+SYMBOLS: ReleaseD, ReleaseE
+
+NL: In which cases does LacticAcid occur before ER Sepsis Triage?
+PATTERN: precedence
+SYMBOLS: LacticAcid, ER Sepsis Triage
+
+NL: Are there any traces where ReleaseB is performed before ReleaseA?
+PATTERN: precedence
+SYMBOLS: ReleaseB, ReleaseA
+
+NL: Is ERRegistration performed before AdmissionNC in any case?
+PATTERN: precedence
+SYMBOLS: ERRegistration, AdmissionNC
+
+NL: Are they traces in which IVLiquid occurs before ERRegistration?
+PATTERN: precedence
+SYMBOLS: IVLiquid, ERRegistration
+
+NL: Give me traces in which Admission NC occurs before Leucocytes is performed
+PATTERN: precedence
+SYMBOLS: AdmissionNC, Leucocytes
+
+NL: Find traces in which LacticAcid happens before Leucocytes.
+PATTERN: precedence
+SYMBOLS: LacticAcid, Leucocytes
+
+NL: Before releasing a patient with type B release, did we perform an emergency room assessment?
+PATTERN: precedence
+SYMBOLS: ReleaseB, ERTriage
+
+NL: Are there instances where IV liquids are administered before taking the lactic acid test?
+PATTERN: precedence
+SYMBOLS: IVLiquid, LacticAcid
+
+
+
+# ChainResponse Examples
+NL: Find traces in which IVAntibiotics occurs right after ERRegistration is performed
+PATTERN: chainResponse
+SYMBOLS: ERRegistration, IVAntibiotics
+
+NL: Are there cases in which every time there is an AdmissionIC, is immediately performed IVAntibiotics?
+PATTERN: chainResponse
+SYMBOLS: AdmissionIC, IVAntibiotics
+
+NL: Are there any cases in which activity ER Triage occurs right after Admission NC?
+PATTERN: chainResponse
+SYMBOLS: AdmissionNC, ERTriage
+
+NL: Give me all cases in which activity ERTriage occurs immediately after activity AdmissionNC is performed
+PATTERN: chainResponse
+SYMBOLS: ERTriage, AdmissionNC
+
+NL: Does in any case ReleaseD happen right after AdmissionIC?
+PATTERN: chainResponse
+SYMBOLS: ReleaseD, AdmissionIC
+
+NL: Give me the traces in which after ERTriage occurs IVAntibiotics is immediately performed
+PATTERN: chainResponse
+SYMBOLS: ERTriage, IVAntibiotics
+
+NL: Does ReleaseE happen immediately after AdmissionIC in any case?
+PATTERN: chainResponse
+SYMBOLS: AdmissionIC, ReleaseE
+
+NL: Are there any cases in which activity ReleaseB occurs right after activity AdmissionNC?
+PATTERN: chainResponse
+SYMBOLS: AdmissionNC, ReleaseB
+
+NL: When a patient returns to the ER, do we immediately admit them into intensive care?
+PATTERN: chainResponse
+SYMBOLS: ReturnER, AdmissionIC
+
+NL: Are there instances where right after an emergency room registration, we initiate IV antibiotics?
+PATTERN: chainResponse
+SYMBOLS: ERRegistration, IVAntibiotics
+
+
+# NotCoExistence Examples
+NL: Find traces in which if ERTriage is present, IVLiquids is not
+PATTERN: notCoExistence
+SYMBOLS: ERTriage, IVLiquids
+
+NL: In traces where ReleaseC is present, does ReturnER not occur?
+PATTERN: notCoExistence
+SYMBOLS: ReleaseC, ReturnER
+
+NL: Are there traces in which IVAntibiotics occurs but ReleaseE doesn't?
+PATTERN: notCoExistence
+SYMBOLS: IVAntibiotics, ReleaseE
+
+NL: In cases where AdmissionIC is present, is ER Sepsis Triage absent?
+PATTERN: notCoExistence
+SYMBOLS: AdmissionIC, ER Sepsis Triage
+
+NL: Find traces where Leucocytes happens but CRP does not.
+PATTERN: notCoExistence
+SYMBOLS: Leucocytes, CRP
+
+NL: If ReleaseB is executed, does that mean ReturnER never occurs?
+PATTERN: notCoExistence
+SYMBOLS: ReleaseB, ReturnER
+
+NL: Are there traces where we perform an ER assessment but never administer IV antibiotics?
+PATTERN: notCoExistence
+SYMBOLS: ERTriage, IVAntibiotics
+
+NL: Find traces where, if we admit a patient into normal care, we never release them with type C release.
+PATTERN: notCoExistence
+SYMBOLS: AdmissionNC, ReleaseC

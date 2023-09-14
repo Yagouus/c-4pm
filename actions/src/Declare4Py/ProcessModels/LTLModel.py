@@ -9,6 +9,7 @@ from typing import List
 
 # THIS IS FOR LOCAL USE
 
+
 class LTLModel(ProcessModel, ABC):
 
     def __init__(self, backend: str = "lydia"):

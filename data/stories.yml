@@ -1,1 +1,8 @@
 version: "3.1"
+stories:
+- story: behavior check + search
+  steps:
+  - intent: behavior_check
+  - action: action_behavior_check
+  - intent: implicit_behavior_search
+  - action: action_implicit_behavior_search

@@ -160,16 +160,21 @@ The conversational agent can be run locally, or you may want to deploy it on an 
 
 To run C-4PM locally you need to:
 
-- Run Docker so Lydia will appropriately run in the background (each time Lydia is invoked it will create a new container, delete them when you finish
+1. Run Docker so Lydia will appropriately run in the background (each time Lydia is invoked it will create a new container, delete them when you finish
 running C-4pm to save some space).
-- Remember to activate your virtual environment.
-- Run the Rasa actions server. This can be done with the command `rasa run actions` in the `actions` folder inside the project root folder `cd actions`.
-- Go back to the main project's directory and run `main.py` file.
-- Go into your browser to `http://localhost:8080/` and enjoy 🤓.
+2. Activate your virtual environment. Place yourself on the C-4pm directory `cd /home/citius/c-4pm`
+and launch the virtual environment `source ./venv/bin/activate`.
+3. Train a Rasa NLU model if you've not done it before. This is done with the `rasa train` command. More info [here](#training-and-using-your-own-model).
+4. Run the Rasa Actions server: Place yourself in the `actions` folder inside the project root folder with `cd actions` and run the command `rasa run actions`.
+5. Run Rasa exposing the REST api: Go back go the main projects directory (`cd ..`) and run the command `rasa run --enable-api`
+6. Run `python main.py` file.
+7. Go into your browser to [`http://localhost:8080/`](http://localhost:8080/) and enjoy 🤓.
 
 ### Deploying C-4PM on a server
 
-To deploy C-4PM as a service, the service configuration files are provided in the `service` folder. Then, you need to:
+To deploy C-4PM on a server, the service configuration files are provided in the `service` folder. Specific code for making
+the app work in a server is needed, so server-version files of the main file and dash callbacks are provided in the `server` folder.
+Then, you need to:
 
 - Copy the files in the `service` directory to their corresponding folders (given you are using Linux/Mac):
   - `cp service/c-4pm.service /etc/systemd/system/`
@@ -180,6 +185,12 @@ To deploy C-4PM as a service, the service configuration files are provided in th
 - Finally, run the service with `systemctl restart c-4pm.service` (if it is already running and you update the files this will restart it).
 
 If you get any auth errors during the process, try using `sudo`.
+
+> **Warning**  
+> As no Rasa models are provided in the repo, you'll need to train a model when you try to deploy it on a server. 
+> So remember to activate the virtual environment `source ./venv/bin/activate` and run `rasa train` once you pull this
+> repository to your server.
+
 
 
 ## ⚠️ Limits on this Demo
@@ -193,8 +204,8 @@ used to perform the reasoning tasks.
 - The consistency checking and model checking tasks are limited in terms of formula size. Too big formulae make the
 satisfiability check too demanding and slow, which would make the use of the conversational interface unpleasant. 
 Optimizing this is planned as future work so bigger models can be used.
-- No session storage is used, so, if multiple users use the chatbot at the same time, some overlapping may occur. This
-is being currently fixed. In case this happens, a simple refresh of the page will start a new conversation.
+- Even session storage is used, if multiple users use the chatbot at the same time, due to only one action server
+running, some overlapping may occur. In case this happens, a simple refresh of the page will start a new conversation.
 
 ## ✍🏼 Citing C-4PM
 
@@ -212,8 +223,8 @@ is being currently fixed. In case this happens, a simple refresh of the page wil
   title     = {The Droid You’re Looking For: C-4PM, a Conversational Agent for Declarative Process Mining},
   booktitle = {{BPM} (PhD/Demos)},
   series    = {{CEUR} Workshop Proceedings},
-  volume    = {},
-  pages     = {},
+  volume    = {3469},
+  pages     = {112-116},
   publisher = {CEUR-WS.org},
   year      = {2023}
 }

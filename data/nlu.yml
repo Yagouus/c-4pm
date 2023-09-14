@@ -9,6 +9,22 @@ nlu:
       - Good day
       - Good morning
       - Hello there 
+      - Hi, how are you?
+      - Hey! What's up?
+      - Hallo, wie geht's?
+      - Good day to you!
+      - Good morning, how's your day starting?
+      - Hello there, what can I do for you today?
+      - Hi there!
+      - Hey, how's it going?
+      - Hello, good to see you.
+      - Good day, how are you doing?
+      - Morning! What's on the agenda today?
+      - Hallo, how have you been?
+      - Hiya!
+      - Hey there!
+      - Good morning, anything exciting planned for today?
+      - Hello there, how's everything going?
 
   - intent: goodbye
     examples: |
@@ -26,6 +42,17 @@ nlu:
       - am I talking to a bot?
       - am I talking to a human?
 
+  - intent: out_of_scope
+    examples: |
+      - I want to order food
+      - What is 2 + 2?
+      - Who's the US President?
+      - This does not work
+      - Esto no funciona
+      - Yago, sabemos que esto no funciona
+      - Está todo harcodeado
+      - Is it going to rain today?
+
     ### DECLARE intents
   - intent: upload
     examples: |
@@ -35,7 +62,6 @@ nlu:
       - Can I give you a log?
       - Is it possible to upload a log?
       - I want to upload a log
-      
 
   - intent: discovery
     examples: |
@@ -44,6 +70,16 @@ nlu:
       - Discover the specification
       - Extract the model of the process from the log
       - Mine the model of the process
+      - Could you identify the underlying model from this process?
+      - Is it possible to mine the model using the existing event log?
+      - Can you reveal the specification based on the logged data?
+      - Would you be able to extract the process model from this log?
+      - Can you figure out the model of the process from the events logged?
+      - Could we derive a specification from the event log?
+      - How about discovering the process model using the available log?
+      - Is it feasible to uncover the model from the event history?
+      - Can you help in mining the model from this set of events?
+      - Would you mind deriving the model from the recorded activities?
 
   - intent: activities
     examples: |
@@ -57,7 +93,16 @@ nlu:
       - What activities can be executed in the process?
       - List all the activities in the process
       - Tell me the possible activities of the process
-          
+      - Can you list all the activities that have taken place in this process?
+      - What activities have been executed so far in the process?
+      - Show me all the completed activities in the current process.
+      - Could you enumerate the activities that have occurred in this process?
+      - Would you mind sharing all the executed tasks in the process?
+      - I'd like to know every activity that has been carried out.
+      - Could you reveal all activities that have been performed in this process?
+      - Is it possible to get a comprehensive list of completed activities?
+      - What's the full list of activities that have been executed?
+      - Can you provide an inventory of all tasks that have been performed?
 
   - intent: convey_specification
     examples: |
@@ -65,7 +110,17 @@ nlu:
       - Give me a description of the specification.
       - Describe the process in natural language.
       - How is the model?
-      - Tell me how the model is specified.Can
+      - Tell me how the model is specified.
+      - Can you explain the process model in simple terms?
+      - I'd like an explanation of the process model, please.
+      - Could you give me a rundown of what this model represents?
+      - Would you mind breaking down the model's main components for me?
+      - Can you help me understand what this process model is all about?
+      - Could you describe the workflow represented by this model?
+      - Is it possible to get a layman's explanation of this model?
+      - How does this process model work, in a nutshell?
+      - Can you clarify the steps involved in this model?
+      - Would you provide an overview of the process model?
 
   - intent: conformance_check
     examples: |
@@ -124,6 +179,55 @@ nlu:
       - In which traces never happens [ER Sepsis Triage](connector)?
       - Is there any case in which if [Lactic Acid](connector) occurs, [Return ER](connector) occurs at any point?
       - Find traces in which [IV Antibiotics](connector) are given to the patient right after a [lactic acid](connector) test is performed
+      - Will they give [antibiotics](connector) to a patient twice?
+      - Is it possible they give [antibiotics](connector) to a patient two times?
+      - In which cases [Emergency Room Sign-In](connector) happens?
+      - Create a [Emergency Room Assessment](connector) translation bot
+      - Send patient to [Sepsis Assessment in ER](connector)
+      - Give me all cases in which [White Blood Cells](connector) is executed
+      - Is [ER Revisit](connector) ever executed?
+      - Take care of the patient with [Intravenous Fluid](connector)
+      - Will [Intravenous Antibiotics](connector) eventually happen?
+      - Is [Normal Care Admission](connector) executed in any case?
+      - Which cases have [Release Type A](connector) as an activity?
+      - Does [ER Revisit](connector) happen in any case?
+      - When does [Intensive Care Admission](connector) occur?
+      - In which cases [Emergency Room Sign-In](connector) happens twice?
+      - Create a [Emergency Room Assessment](connector) translation bot two times
+      - Send patient to [Sepsis Assessment in ER](connector) in two occasions
+      - Give me all cases in which [White Cells](connector) is executed twice
+      - Is [Normal Care Admission](connector) ever executed in two repeated occasions?
+      - Take care of the patient with two [IV Drip](connector)
+      - Will [Antibiotic Drip](connector) eventually happen twice?
+      - Is [C-Reactive Protein](connector) executed two times in any case?
+      - Which cases have [Release Type B](connector) as a double activity?
+      - Does [Emergency Room Entry](connector) happen two times in any case?
+      - When does [IC Hospital Admission](connector) occur twice?
+      - Can you retrieve all the traces in which a [Inflammation Marker](connector) is performed after [IV Solution](connector)?
+      - Give me all cases in which activity [Emergency Triage](connector) is performed after activity [Standard Care Admission](connector)
+      - Does [Emergency Room Entry](connector) happen after [WBCs](connector)?
+      - Does [Release Type D](connector) happen at some point after [Critical Care Admission](connector) occurs?
+      - Tell me in which cases [Intravenous Fluid](connector) never happens
+      - In which traces never happens [ER Sepsis Evaluation](connector)?
+      - Is there any case in which if [Lactate](connector) occurs, [ER Readmission](connector) occurs at any point?
+      - Find traces in which [IV ABX](connector) are given to the patient right after a [Blood Lactate](connector) test is performed
+      - Will they give [Antibiotic Drip](connector) to a patient twice?
+      - Is it possible they give [IV Antibacterial](connector) to a patient two times?
+      - Can you find instances when [Release Type E](connector) happens?
+      - Are there any cases where [Release Type C](connector) is followed by [Release Type D](connector)?
+      - When does [Lactic Acid Test](connector) usually occur in a case?
+      - How often does [Normal Care Admission](connector) precede [ER Sorting](connector)?
+      - In which cases [ER Readmission](connector) is followed by [Intravenous Antibiotics](connector)?
+      - Tell me in which cases [Release Type A](connector) is executed before [Release Type B](connector)
+
+  - intent: implicit_behavior_search
+    examples: |
+      - Can you give me some traces where this happens?
+      - Is there any case in which this behavior happens?
+      - Give me traces where this occurs
+      - Find instances in where this takes place
+      - Count the number of times this occurs
+      - Give me traces in which this happens
 
   - intent: behavior_check
     examples: |
@@ -137,6 +241,26 @@ nlu:
       - Does the model allow [ER Triage](connector) to happen after [IV Antibiotics](connector)?
       - Is it possible that [ER Triage](connector) occurs before [IV Liquids](connector)?
       - Can activity [IV Antibiotics](connector) be performed in a case where [Admission NC](connector) is performed?
+      - Is it possible to test a patient's [C-Reactive Protein](connector) before conducting an [Emergency Room Assessment](connector)?
+      - Can [Antibiotic Drip](connector) be administered before the patient is given a [Normal Care Admission](connector)?
+      - Is it allowed for an [Intensive Care Admission](connector) to occur after a [Sepsis Assessment in ER](connector)?
+      - If a patient has to [ER Revisit](connector), should it be directly followed by a [Release Type A](connector)?
+      - Is it permissible to give the patient [Intravenous Fluid](connector) without first going through an [Emergency Room Assessment](connector)?
+      - If a [Standard Care Admission](connector) hasn't occurred yet, is it possible to proceed with a [Type A Release](connector)?
+      - Could an [ER Sorting](connector) be performed after a patient receives a [Normal Care Admission](connector)?
+      - Is [Emergency Room Assessment](connector) ever done after administering [IV ABX](connector)?
+      - Can an [Emergency Room Triage](connector) occur before the patient gets an [IV Drip](connector)?
+      - In scenarios where [Normal Care Admission](connector) is in place, can [IV Antibacterial](connector) also be administered?
+      - Is it an option to measure the patient's [Inflammation Marker](connector) before doing [ER Triage](connector)?
+      - Can [IV Antibiotics](connector) be given prior to a [Standard Care Admission](connector)?
+      - Is it typical for an [IC Hospital Admission](connector) to follow an [ER Sepsis Evaluation](connector)?
+      - Should every [ER Readmission](connector) be directly succeeded by a [Release Type A](connector)?
+      - Can a patient receive [IV Solution](connector) without having gone through [Emergency Room Triage](connector)?
+      - If the patient hasn't been through an [Admission for Normal Care](connector), is it okay to go ahead with a [Release Type A](connector)?
+      - Could a patient undergo [Emergency Triage](connector) after receiving a [Admission for Standard Care](connector)?
+      - Does it ever happen that [ER Sorting](connector) takes place after [Intravenous Antibiotics](connector) have been given?
+      - Is it feasible for [Emergency Triage](connector) to precede the administration of [Intravenous Fluid](connector)?
+      - Is [Antibiotic Drip](connector) administered in cases where the patient has been through [Admission for Standard Care](connector)?
 
   - intent: query_check
     examples: |
@@ -147,7 +271,6 @@ nlu:
       - What can I do after performing a [CAT]{"entity": "activity", "role": "from"}?
       - What activities can precede an [Intervention]{"entity": "activity", "role": "to"}?
 
-
   - intent: generate_conformant
     examples: |
       - Can you generate a conforming trace for the corresponding model?
@@ -155,6 +278,16 @@ nlu:
       - Generate a log that conforms to the specification
       - Create new traces
       - Give me new traces based on the model
+      - Can you produce a trace that aligns with the given model?
+      - Would you be able to create a compliant trace for the model in question?
+      - Can you synthesize a log that adheres to the model's requirements?
+      - Could you generate a series of events that conform to the model?
+      - Would it be possible to get a trace that satisfies the model's conditions?
+      - How about creating a log that matches the model's specifications?
+      - Can you construct a trace that follows the model's guidelines?
+      - Is it possible to get a log that's in line with the model?
+      - Can you give me a trace that fits within the model's framework?
+      - Could you supply a new series of events that are model-compliant?
 
   - intent: consistency_check
     examples: |
@@ -164,9 +297,24 @@ nlu:
       - Is it possible that a trace is executed in the model?
       - Does the model allow for any behavior?
       - Is the model consistent?
+      - Are there any traces that would be considered valid according to the model?
+      - Can the model actually permit any kind of behavior?
+      - Is the model's specification achievable in practice?
+      - Is it feasible for a trace to be fully executed within the confines of the model?
+      - Does the model leave room for any particular sequence of activities?
+      - Can we confirm that the model is internally consistent?
+      - Is there a trace that satisfies all of the model's conditions?
+      - Does the model accommodate any possible behaviors?
+      - Could the model's specification ever be met in real-world scenarios?
+      - Is it conceivable for a trace to align with the model's guidelines?
+      - Would you say the model is free from contradictions?
+      - Can the model yield any valid event sequences?
+      - Does the model enable or restrict certain kinds of behaviors?
+      - Can we be sure that the model is free of inconsistencies?
+      - Is it possible for any trace to be compatible with the model?
+      - Is the process specification satisfiable?
 
 # Dictionaries for entities
-
   - lookup: connector
     examples: |
       - ER Registration
@@ -185,3 +333,150 @@ nlu:
       - Release C
       - Release D
       - Release E
+
+  - synonym: ER Registration
+    examples: |
+      - ER Registration
+      - Emergency Room Sign-In
+      - ER Check-In
+      - Emergency Room Registration
+      - Emergency Admission
+      - Hospital ER Admission
+      - Urgent Care Registration
+      - ER Admittance
+      - ER Entry
+      - Emergency Room Entry
+      - Registration
+
+  - synonym: Leucocytes
+    examples: |
+      - Leucocytes
+      - White Blood Cells
+      - WBCs
+      - Leukocytes
+      - White Cells
+      - WBC Count
+
+  - synonym: CRP
+    examples: |
+      - CRP
+      - C-Reactive Protein
+      - CRP Test
+      - C Reactive Protein Test
+      - Inflammation Marker
+
+  - synonym: LacticAcid
+    examples: |
+      - LacticAcid
+      - Lactate
+      - Lactic Acid Test
+      - Blood Lactate
+      - Lactic Acid Level
+
+  - synonym: ER Triage
+    examples: |
+      - ER Triage
+      - Emergency Room Assessment
+      - ER Initial Assessment
+      - ER Sorting
+      - Emergency Triage
+
+  - synonym: ER Sepsis Triage
+    examples: |
+      - ER Sepsis Triage
+      - Sepsis Assessment in ER
+      - Emergency Room Sepsis Assessment
+      - ER Sepsis Evaluation
+      - ER Sepsis Sorting
+
+  - synonym: IV Liquid
+    examples: |
+      - IV Liquid
+      - Intravenous Fluid
+      - IV Fluid
+      - IV Drip
+      - IV Solution
+
+  - synonym: IV Antibiotics
+    examples: |
+      - IV Antibiotics
+      - Intravenous Antibiotics
+      - IV ABX
+      - Antibiotic Drip
+      - IV Antibacterial
+      - Antibiotics
+
+  - synonym: Admission NC
+    examples: |
+      - Admission NC
+      - Normal Care Admission
+      - NC Hospital Admission
+      - Regular Care Admission
+      - Standard Care Admission
+
+  - synonym: Release A
+    examples: |
+      - Release A
+      - Release Type A
+      - A-Type Release
+      - Type A Discharge
+      - Release Category A
+
+  - synonym: Return ER
+    examples: |
+      - Return ER
+      - ER Revisit
+      - Emergency Room Return
+      - ER Readmission
+      - Return to Emergency Room
+
+  - synonym: Admission IC
+    examples: |
+      - Admission IC
+      - Intensive Care Admission
+      - ICU Admission
+      - IC Hospital Admission
+      - Critical Care Admission
+
+  - synonym: Release B
+    examples: |
+      - Release B
+      - Release Type B
+      - B-Type Release
+      - Type B Discharge
+      - Release Category B
+
+  - synonym: Release C
+    examples: |
+      - Release C
+      - Release Type C
+      - C-Type Release
+      - Type C Discharge
+      - Release Category C
+
+  - synonym: Release D
+    examples: |
+      - Release D
+      - Release Type D
+      - D-Type Release
+      - Type D Discharge
+      - Release Category D
+
+  - synonym: Release E
+    examples: |
+      - Release E
+      - Release Type E
+      - E-Type Release
+      - Type E Discharge
+      - Release Category E
+  
+
+
+
+
+
+
+
+
+
+

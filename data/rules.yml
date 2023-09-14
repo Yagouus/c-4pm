@@ -2,27 +2,28 @@
 version: "3.1"
 
 rules:
-  - rule: Say hello anytime the user says hello
+  - rule: Greeting - Say hello anytime the user says hello
     steps:
       - intent: greet
       - action: utter_greet
 
-  - rule: Say goodbye anytime the user says goodbye
+  - rule: Goodbye - Say goodbye anytime the user says goodbye
     steps:
       - intent: goodbye
       - action: utter_goodbye
 
-  - rule: Say 'I am a bot' anytime the user challenges
+  - rule: Challenge - Say 'I am a bot' anytime the user challenges
     steps:
       - intent: bot_challenge
       - action: utter_iamabot
 
-  - rule: Discovery
+  # Maybe add discovery from NL description of the process?
+  - rule: Discovery - Discovers a DECLARE specification from an Event Log
     steps:
       - intent: discovery
       - action: utter_discovery
 
-  - rule: Upload
+  - rule: Upload - Uploads a event log
     steps:
       - intent: upload
       - action: utter_upload
@@ -37,7 +38,7 @@ rules:
       - intent: behavior_check
       - action: action_behavior_check
 
-  - rule: query_check
+  - rule: Query check - Query possible activities after one activity, or similar, using Declare4py
     steps:
       - intent: query_check
       - action: utter_query_check
@@ -57,7 +58,7 @@ rules:
       - intent: behavior_search
       - action: action_behavior_search
 
-  - rule: generate_conformant
+  - rule: Generate Conformant - Generates conformant traces based on the process specification
     steps:
       - intent: generate_conformant
       - action: utter_generate_conformant
@@ -73,9 +74,17 @@ rules:
       - intent: consistency_check
       - action: action_consistency_check
 
-  # Out of scope rule
+  # Exceptional rules
+
+  # Fallback rule
   - rule: Ask the user to rephrase whenever they send a message with low NLU confidence
     steps:
     - intent: nlu_fallback
     - action: utter_please_rephrase
+
+  # Out of scope rule
+  - rule: out-of-scope
+    steps:
+      - intent: out_of_scope
+      - action: utter_out_of_scope
 

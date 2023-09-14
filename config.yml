@@ -5,7 +5,6 @@ pipeline:
 - name: RegexFeaturizer
 - name: LexicalSyntacticFeaturizer
 - name: CountVectorsFeaturizer
-- name: CountVectorsFeaturizer
   analyzer: char_wb
   min_ngram: 1
   max_ngram: 4
@@ -17,27 +16,26 @@ pipeline:
   epochs: 100
   constrain_similarities: true
 - name: FallbackClassifier
-  threshold: 0.3
-  ambiguity_threshold: 0.1
+  threshold: 0.7
+
 #- name: "SpacyNLP"
 #  model: "en_core_web_md"
 #  case_sensitive: False
-- name: "DucklingEntityExtractor"
-  # url of the running duckling server
-  url: "http://localhost:8000"
-  # dimensions to extract
-  dimensions: [ "time", "number", "amount-of-money", "distance", "email"]
-  # allows you to configure the locale, by default the language is
-  # used
-  locale: "en_GB"
-  # if not set the default timezone of Duckling is going to be used
-  # needed to calculate dates from relative expressions like "tomorrow"
-  timezone: "Europe/Berlin"
-  # Timeout for receiving response from http url of the running duckling server
-  # if not set the default timeout of duckling http url is set to 3 seconds.
-  timeout: 3
-- name: FallbackClassifier
-  threshold: 0.7
+
+#- name: "DucklingEntityExtractor"
+#  # url of the running duckling server
+#  url: "http://localhost:8000"
+#  # dimensions to extract
+#  dimensions: [ "time", "number", "amount-of-money", "distance", "email"]
+#  # allows you to configure the locale, by default the language is
+#  # used
+#  locale: "en_GB"
+#  # if not set the default timezone of Duckling is going to be used
+#  # needed to calculate dates from relative expressions like "tomorrow"
+#  timezone: "Europe/Berlin"
+#  # Timeout for receiving response from http url of the running duckling server
+#  # if not set the default timeout of duckling http url is set to 3 seconds.
+#  timeout: 3
 
 policies:
 - name: MemoizationPolicy

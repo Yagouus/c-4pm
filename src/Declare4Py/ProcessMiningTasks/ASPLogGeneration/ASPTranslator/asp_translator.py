@@ -1,7 +1,5 @@
 from __future__ import annotations
 
-import typing
-
 from src.Declare4Py.ProcessMiningTasks.ASPLogGeneration.ASPTranslator.declare_constraint_resolver import \
     DeclareModelConditionResolver2ASP
 from src.Declare4Py.ProcessModels.DeclareModel import DeclareModelAttributeType, DeclareModelEvent, DeclareModelAttr
