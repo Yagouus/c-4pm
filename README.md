@@ -209,6 +209,8 @@ running, some overlapping may occur. In case this happens, a simple refresh of t
 
 ## ✍🏼 Citing C-4PM
 
+The C-4PM paper is open-access and can be found [here](https://ceur-ws.org/Vol-3469/paper-20.pdf).
+
 ```
 @inproceedings{Fontenla-Seco23,
   author    = {Yago Fontenla-Seco and
